@@ -43,7 +43,7 @@ router.post('/create', async (req, res) => {
             title: req.body.title,
             views: 0,
             completed: 0,
-            ips: [],
+            ips: [''],
             time: 0
         }
         const rest = db.collection('Document').doc(code).set(data)

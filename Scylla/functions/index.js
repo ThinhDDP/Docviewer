@@ -11,6 +11,7 @@ admin.initializeApp({
 })
 
 const create = require('./src/create')
+const match = require('./src/match')
 
 
 const app = express()
@@ -19,6 +20,7 @@ app.use(cors({ origin: true }))
 app.use(bodyParser.json())
 
 app.use('/', create)
+app.use('/', match)
 
 
 
