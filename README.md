@@ -5,4 +5,4 @@ Synnefo is for frontend
 
 
 # Dependacies
-React, react-router, react-pro-sidebar, firebase-auth, react-icons
+React, react-router, react-pro-sidebar, firebase, react-icons, axios
