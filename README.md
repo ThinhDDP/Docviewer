@@ -9,18 +9,18 @@ React, react-router, react-pro-sidebar, firebase, react-icons, axios
 # Hosting
 ### With Firebase (*Free*)
 #### Setup Firestore
-Go to [Firebase Console](https://console.firebase.google.com) and choose firestore
-Make sure you have created the collection Document
+Go to [Firebase Console](https://console.firebase.google.com) and choose firestore\
+Make sure you have created the collection Document\
 
 #### Deploy with firebase
-Run `git clone https://github.com/ThinhDDP/Docviewer.git`
-Cd into Scylla `cd Docviewer/Scylla`
-Run `firebase init`. Make sure to check the option for functions and firestore
-Run `firebase deploy --only functions` to deploy the project
+Run `git clone https://github.com/ThinhDDP/Docviewer.git`\
+Cd into Scylla `cd Docviewer/Scylla`\
+Run `firebase init`. Make sure to check the option for functions and firestore\
+Run `firebase deploy --only functions` to deploy the project\
 
 #### Optional (Setup firebase emulator to test changes locally)
-When you are creating your firebase project, you will have an options to install the emulator. It is recommend to do so. You will need to setup emulators for both cloud functions and firestore.
-Then run `firebase emulator:start`to start the emulator (Note: the emulator reset the firestore every session so you need to recreate the default collection)
+When you are creating your firebase project, you will have an options to install the emulator. It is recommend to do so. You will need to setup emulators for both cloud functions and firestore.\
+Then run `firebase emulator:start`to start the emulator (Note: the emulator reset the firestore every session so you need to recreate the default collection)\
 
 
 
