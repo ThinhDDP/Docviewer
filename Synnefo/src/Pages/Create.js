@@ -27,7 +27,7 @@ class Create extends React.Component{
                     </div>
                     <p>Don't know what that is? <a href='https://www.youtube.com/watch?v=AAeloLXO8T0' target="_blank">See this</a></p>
                     <br/>
-                    <button className="btn">VIEW</button>
+                    <button className="btn">CREATE</button>
                     </div>
                 </div>
                 </div>
