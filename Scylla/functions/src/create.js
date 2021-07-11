@@ -30,7 +30,6 @@ const checkURL = async (url) => {
     const whitelistRef = await db.collection('Default').doc('identifier').get()
     const allowed = whitelistRef.get('allowedUrls')
     return(allowed.includes(domain))
-
 }
 
 const db = admin.firestore()
@@ -44,6 +43,7 @@ router.post('/create', async (req, res) => {
             title: req.body.title,
             views: 0,
             completed: 0,
+            ips: [],
             time: 0
         }
         const rest = db.collection('Document').doc(code).set(data)

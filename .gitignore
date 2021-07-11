@@ -118,3 +118,8 @@ dist
 .pnp.*
 
 public/
+
+
+# Firebase Hosting
+.firebaserc
+firebase-debug.log

@@ -10,7 +10,7 @@ admin.initializeApp({
     credential: admin.credential.applicationDefault()
 })
 
-const create = require('./create/restful/create')
+const create = require('./src/create')
 
 
 const app = express()
