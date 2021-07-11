@@ -3,6 +3,9 @@ import React from 'react'
 import './Login.css'
 import firebase from '../firebase'
 
+var storage = firebase.storage();
+var storageRef = storage.ref();
+
 export default class Register extends React.Component {
     constructor(){
         super();
@@ -15,16 +18,18 @@ export default class Register extends React.Component {
         this.handleChangesPassword = this.handleChangesPassword.bind(this)
         this.handleChangesName = this.handleChangesName.bind(this)
     }
-    logIn(email, password){
+    async logIn(email, password){
         if (email === '' || password == ''){
             document.getElementById('ref').innerHTML = "Password or email must not be empty"
             document.getElementById('ref').style.color = "red"
             return
         }
+        let imageLink = await storageRef.child('users/Default/default.png').getDownloadURL()
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(result => {
                 result.user.updateProfile({
-                    displayName: this.state.name
+                    displayName: this.state.name,
+                    photoURL: imageLink
                 })
                 .then(() => {
                     window.location.href = "/"

@@ -27,8 +27,7 @@ const createCode = async () => {
 
 const checkURL = async (url) => {
     const domain = new URL(url).hostname
-    const whitelistRef = await db.collection('Default').doc('identifier').get()
-    const allowed = whitelistRef.get('allowedUrls')
+    const allowed = ['docs.google.com']
     return(allowed.includes(domain))
 }
 
