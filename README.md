@@ -10,7 +10,7 @@ React, react-router, react-pro-sidebar, firebase, react-icons, axios
 ### With Firebase (*Free*)
 #### Setup Firestore
 Go to [Firebase Console](https://console.firebase.google.com) and choose firestore\
-Make sure you have created the collection Document\
+Make sure you have created the collection Document
 
 #### Deploy with firebase
 Run `git clone https://github.com/ThinhDDP/Docviewer.git`\
