@@ -13,7 +13,8 @@ class Create extends React.Component{
             state : 'idle',
             link : '',
             'title': '',
-            isLoading: false
+            isLoading: false,
+            code: null
         }
         this.handleInputChangesLink = this.handleInputChangesLink.bind(this)
         this.handleInputChangesTitle = this.handleInputChangesTitle.bind(this)
@@ -43,7 +44,9 @@ class Create extends React.Component{
                     isLoading: false
                 })
             }
-            console.log(response)
+            this.setState({
+                code: response.data
+            })
         }
     }
     handleInputChangesLink(event){
@@ -74,6 +77,7 @@ class Create extends React.Component{
                     <input ref={this.checkboxRef} type="checkbox"></input><label>Only me can check this file info</label>
                     <br/>
                     <button className="btn" onClick={() => this.createDoc()}>CREATE</button>
+                    <h2>{this.state.code ? `THIS IS THE CODE: ${this.state.code}` : ''}</h2>
                     </div>
                 </div>
                 </div>

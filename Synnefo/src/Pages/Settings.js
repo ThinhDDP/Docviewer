@@ -45,7 +45,7 @@ export default class settings extends React.Component {
                 <div className="content">
 
                     <div id="loaded">
-                        <img src={this.info[2]} width="5vw" height="5vh"/>
+                        <img src={this.info[2]} width="50vw" height="50h"/>
                         <p id="email">{this.info[0]}</p>
                         <p id="displayName">{this.info[1]}</p>
                     </div>
