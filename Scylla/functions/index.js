@@ -12,6 +12,8 @@ admin.initializeApp({
 
 const create = require('./src/create')
 const match = require('./src/match')
+const user = require('./src/user')
+const update = require('./src/update')
 
 
 const app = express()
@@ -21,7 +23,8 @@ app.use(bodyParser.json())
 
 app.use('/', create)
 app.use('/', match)
-
+app.use('/', update)
+app.use('/', user)
 
 
 exports.api = functions

@@ -41,12 +41,15 @@ router.post('/create', async (req, res) => {
             link: req.body.link,
             title: req.body.title,
             views: 0,
-            completed: 0,
+            completed: [''],
             ips: [''],
             time: 0
         }
-        const rest = db.collection('Document').doc(code).set(data)
-        res.send(code)
+        if (req.body.uid){
+            data.ownerId = req.body.uid
+        }
+        const rest = await db.collection('Document').doc(code).set(data)
+        if (rest){res.send(code)}
     }
     res.send("Invalid")
 })

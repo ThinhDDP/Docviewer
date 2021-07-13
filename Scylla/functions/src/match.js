@@ -15,6 +15,7 @@ const checkIp =  (ip, doc) => {
 
 router.post('/match/:id', async (req, res) => {
     try {
+        let updateIps
         const ip = req.body.ip
         let docRef = db.collection('Document').doc(req.params.id)
         let doc = await docRef.get()
@@ -24,11 +25,19 @@ router.post('/match/:id', async (req, res) => {
         const currentView = doc.get('views')
         let updatedIpsList = checkIp(ip, doc)
     
-        if (updatedIpsList != null){let updateIps = await docRef.update({ips: updatedIpsList, views: currentView + 1})}
-        res.send([doc.get('link'), doc.get('title'), doc.get('ips'), doc.get('views')])
+        if (updatedIpsList != null){
+                docRef.update({ips: updatedIpsList, views: currentView + 1}).then((result) => {
+                console.log('Successfully executed write at: ', result);
+                res.send([doc.get('views') + 1])
+            })
+        }
+        else {
+            res.send([doc.get('views')])
+        }
+
     }
     catch (e){
-        console.log(e)
+        res.send(e)
     }
 })
 
