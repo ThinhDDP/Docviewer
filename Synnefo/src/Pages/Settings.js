@@ -15,6 +15,8 @@ export default class settings extends React.Component {
         this.avatar = React.createRef();
 
 
+
+
     }
 
 
@@ -43,7 +45,7 @@ export default class settings extends React.Component {
         console.log("ok")
     }
     changeInfo() {
-        const user = firebase.auth().currentUser;
+        let user = firebase.auth().currentUser;
 
 
 
@@ -70,6 +72,38 @@ export default class settings extends React.Component {
         console.log("ok")
 
     }
+    reAuth() {
+        let passwordToReAuth = document.getElementById("pswReAuth")
+        let emailToReAuth = document.getElementById("emailToReAuth")
+
+
+
+        let credental = firebase.auth.EmailAuthProvider.credential(emailToReAuth.value, passwordToReAuth.value)
+        let user = firebase.auth().currentUser;
+
+        user.reauthenticateWithCredential(credental).then(() => {
+            document.getElementById("dangerZone").style.display = "none"
+            document.getElementById("contentdanger").style.display = "block"
+        }).catch((error) => {
+            document.getElementById("error1").innerHTML = error
+        })
+    }
+    changePSW() {
+        if (document.getElementById("changePSW").value == "") {
+            console.log("HAHA NO PASSWORD")
+        } else {
+            let user = firebase.auth().currentUser;
+            user.updatePassword(document.getElementById("changePSW").value).then(() => {
+                console.log("ok")
+                window.location = window.location
+            }).catch((error) => {
+                alert(error)
+            })
+
+        }
+
+    }
+
     render() {
         if (this.state.isLoading) {
             return (<div className="wrapper">
@@ -83,33 +117,56 @@ export default class settings extends React.Component {
             )
         }
         else {
-            return (<div className="wrapper">
-                <div className="bg">
-                    <div className="content">
+            return (
+                <div className="wrapper">
+                    <div className="bg">
+                        <div className="content">
 
-                        <div id="loaded">
-                            <img src={this.info[2]} width="50vw" height="50h" />
-                            <p id="email">Email : {this.info[0]}</p>
-                            <p id="displayName">Display name: {this.info[1]}</p>
+                            <div id="loaded">
+                                <img src={this.info[2]} width="50vw" height="50h" />
+                                <p id="email">Email : {this.info[0]}</p>
+                                <p id="displayName">Display name: {this.info[1]}</p>
 
 
-                            <h3>Changing your profile</h3>
+                                <h3>Changing your profile</h3>
 
-                            <p>Your avatar</p>
-                            <div><input type="file" ref={this.avatar} onChange={this.changePic} accept="image/*"  ></input></div>
-                            <p>Your info</p>
-                            <div><input type="text" placeholder="Diplay name" defaultValue={this.info[1]} ref={this.displayName} id="displayName" ></input></div>
-                            <div><input type="text" placholder="Email" defaultValue={this.info[0]} ref={this.email} id="displayName"></input></div>
-                            <button onClick={this.changeInfo} className="button">Change Info</button>
 
-                            <p id="error" style={{color: "red"}}></p>
+                                <p>Your avatar</p>
+                                <div><input type="file" ref={this.avatar} onChange={this.changePic} accept="image/*"  ></input></div>
+                                <p>Your info</p>
+                                <div><input type="text" placeholder="Diplay name" defaultValue={this.info[1]} ref={this.displayName} id="displayName" ></input></div>
+                                <div><input type="text" placeholder="Email" defaultValue={this.info[0]} ref={this.email} id="displayName"></input></div>
+                                <button onClick={this.changeInfo} className="button">Change Info</button>
+
+
+                                <div id="dangerZone">
+                                    <h3>Danger zone</h3>
+                                    <div id="re-authSection">
+                                        <p>Please reauthenicate to continue</p>
+                                        <input type="text" id="emailToReAuth"></input>
+                                        <input type="password" id="pswReAuth"></input>
+                                        <button onClick={this.reAuth} className="button">Button</button>
+                                        <p id="error1"></p>
+
+                                    </div>
+                                    <div id="contentdanger">
+                                        <p>Change your password</p>
+                                        <input type="password" id="pswChange"></input>
+                                        <button className="button" id="changePSW" onClick={this.changePSW}>Confirm change</button>
+
+                                        <button className="button" onClick={this.deleteAccount}>Delete account</button>
+                                    </div>
+                                </div>
+
+
+                                <p id="error2" style={{ color: "red" }}></p>
+
+                            </div>
 
                         </div>
-
                     </div>
-                </div>
 
-            </div>
+                </div>
             )
         }
     }
