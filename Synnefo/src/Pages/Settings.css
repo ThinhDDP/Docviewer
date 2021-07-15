@@ -7,10 +7,63 @@
     cursor: pointer;
 }
 
-#dangerZoneText{
-    color: red;
+.avatar p{
+    color:white;
 }
 
-#contentDanger{
+.avatar{
+    display:inline-block;
+    text-align: center;
+    margin-left: 22%;
+    margin-right: auto;
+    width: 30.5vw;
+    height: 14vh;
+    
+    background-color: #36393f;
+    display: block;
+}
+
+.avatar img{
+    display: inline;
+    float: left;
+    width: 5.5rem;
+    height: 5.5rem;
+}
+.avatar button{
+    margin-top: 5%;
+    float: left;
+    width: 10vw;
+    height: 4vh;
+    margin-left: 15%;
+}
+.avatar progress{
     display: none;
+    width: 12vw;
+    float: left;
+    margin-left: 12%;
+
+}
+
+.account-info input{
+    font-size: 1.3rem;
+    width: 15vw;
+    height: 3vh;
+}
+
+.account-info button{
+    transition: 300ms ease;
+    margin-top: 5%;
+    width: 10vw;
+    height: 5vh;
+}
+.security input{
+    font-size: 1.3rem;
+    width:15vw;
+    height:3vh
+}
+.security button{
+    transition: 300ms ease;
+    margin-top: 5%;
+    width:10vw;
+    height: 5vh;
 }
