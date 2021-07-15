@@ -42,3 +42,16 @@
     margin-left: 12%;
 
 }
+
+.account-info input{
+    font-size: 1.3rem;
+    width: 15vw;
+    height: 3vh;
+}
+
+.account-info button{
+    transition: 300ms ease;
+    margin-top: 5%;
+    width: 10vw;
+    height: 5vh;
+}

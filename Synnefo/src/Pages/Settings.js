@@ -12,6 +12,9 @@ export default class settings extends React.Component {
         super();
         this.state = {
             isLoading: true,
+            email: null,
+            username: null,
+            photoURL: null
         }
         this.info = []
         // this.displayName = React.createRef(); Changing text by innerHTML, really?
@@ -20,15 +23,22 @@ export default class settings extends React.Component {
         this.value = 0
         this.inputFile = React.createRef()
         this.progress = React.createRef()
+        this.btnRef = React.createRef()
         this.uploadFile = this.uploadFile.bind(this)
+        this.handleEmailChanges = this.handleEmailChanges.bind(this)
+        this.handleUsernameChanges = this.handleUsernameChanges.bind(this)
+        this.updateInfo = this.updateInfo.bind(this)
     }
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                this.info = [user.email, user.displayName, user.photoURL, user.uid] //User will have a default avatar now, so photoURL will works
+                //User will have a default avatar now, so photoURL will works
                 this.setState({
-                    isLoading: false //Set isLoading to false here, adn React will update accordingly
+                    isLoading: false, //Set isLoading to false here, adn React will update accordingly
+                    email: user.email,
+                    username: user.displayName,
+                    photoURL: user.photoURL
                 })
                 userCopy = firebase.auth().currentUser
                 imageRef = firebase.storage().ref().child(`users/${user.uid}/profile.jpg`);
@@ -77,6 +87,33 @@ export default class settings extends React.Component {
 
 
     }
+
+    handleEmailChanges(event){
+        this.setState({
+            email: event.target.value
+        })
+        this.btnRef.current.style.backgroundColor = "#5865F2"
+    }
+
+    handleUsernameChanges(event){
+        this.setState({
+            username: event.target.value
+        })
+        this.btnRef.current.style.backgroundColor = "#5865F2"
+    }
+
+    updateInfo(){
+        if (window.confirm("Do you really want to change your account info (This action cannot be undone)")){
+            userCopy.updateProfile({
+                email: this.state.email,
+                displayName: this.state.username
+            }).then(() => {
+                window.location.reload()
+            }).catch((e) => {
+                console.log(e)
+            })
+        }
+    }
     render() {
         if (this.state.isLoading) {
             return (<div className="wrapper">
@@ -92,7 +129,7 @@ export default class settings extends React.Component {
             return (
                 <div className="wrapper">
                     <div className="avatar">
-                        <img src={this.info[2]}></img>
+                        <img src={this.state.photoURL}></img>
                         <input type='file' id='file' ref={this.inputFile} style={{display: 'none'}} onChange={this.uploadFile} accept="image/*"/>
                         <button onClick={() => this.openFile()}>Change avatar</button>
                         <progress  ref={this.progress} id="file" min="0" value={this.value} max="100">{this.value}</progress>
@@ -107,10 +144,17 @@ export default class settings extends React.Component {
                         </TabList>
                         
                         <TabPanel>
-                            <div className="account-info">Account info</div>
+                            <div className="account-info" >
+                            <h2>Account info</h2>
+                            <p>Email</p>
+                            <input value={this.state.email} onChange={this.handleEmailChanges}></input>
+                            <p>Username</p>
+                            <input value={this.state.username} onChange={this.handleUsernameChanges}></input><br/>
+                            <button ref={this.btnRef} onClick={this.updateInfo}>Update info</button>
+                            </div>
                         </TabPanel>
                         <TabPanel>
-                            <div className="password">Password</div>
+                            <div className="password" >Password</div>
                         </TabPanel>
                     </Tabs>
                     </div>
