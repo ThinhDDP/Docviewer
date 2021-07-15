@@ -10,7 +10,50 @@ h1{
     color: whitesmoke;
     font-size: 1.6rem;
 }
+/* @media screen and (min-width: 800px){
+    .bg{
+        border-radius: 8px;
+        margin-left: 14vw;
+        width: 30vw;
+        height: fit-content;
+        background-color: #36393f;
+    }
+    .content {
+        padding: 3vh 0px;
+    }
+} */
 
+h2{
+    /* text-align: center; */
+    color: white;
+
+}
+
+
+
+#box1{
+    width:50%;
+    margin:auto;
+    
+    
+    
+}
+#box2{
+    width:50%;
+    margin:auto;
+
+    margin-top: 10px;
+    text-align: right;
+
+    
+}
+#box3{
+    width:50%;
+    margin:auto;
+
+    margin-top: 10px;
+    text-align: left;
+}
 body{
     background-color: #23272A !important;
 }
