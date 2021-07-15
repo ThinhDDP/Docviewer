@@ -7,10 +7,38 @@
     cursor: pointer;
 }
 
-#dangerZoneText{
-    color: red;
+.avatar p{
+    color:white;
 }
 
-#contentDanger{
+.avatar{
+    display:inline-block;
+    text-align: center;
+    margin-left: 22%;
+    margin-right: auto;
+    width: 30.5vw;
+    height: 10vh;
+    background-color: #36393f;
+    display: block;
+}
+
+.avatar img{
+    display: inline;
+    float: left;
+    width: 5.5rem;
+    height: 5.5rem;
+}
+.avatar button{
+    margin-top: 5%;
+    float: left;
+    width: 10vw;
+    height: 4vh;
+    margin-left: 15%;
+}
+.avatar progress{
     display: none;
+    width: 12vw;
+    float: left;
+    margin-left: 12%;
+
 }
