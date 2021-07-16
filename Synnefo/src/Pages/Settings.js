@@ -4,7 +4,7 @@ import "./Settings.css";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-let imageRef;
+var imageRef;
 let userCopy;
 
 export default class settings extends React.Component {
@@ -53,10 +53,6 @@ export default class settings extends React.Component {
                     email: user.email,
                     username: user.displayName,
                     photoURL: user.photoURL,
-
-
-
-
                 })
                 userCopy = firebase.auth().currentUser
      
@@ -95,6 +91,7 @@ export default class settings extends React.Component {
                 this.progress.current.style.display = "none"
                 return;
         }
+
         let task = imageRef.put(file)
         task.on('state_change',
             (snapshot) => {
@@ -180,7 +177,6 @@ export default class settings extends React.Component {
 
 
         let credential = firebase.auth.EmailAuthProvider.credential(email, password)
-
         if (email == "" || password == "") {
             document.getElementById("error").innerText = "Password or email must be not empty"
             document.getElementById("error").style.color = "red"
