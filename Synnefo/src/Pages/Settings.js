@@ -4,7 +4,7 @@ import "./Settings.css";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-var imageRef;
+let imageRef;
 let userCopy;
 
 export default class settings extends React.Component {
@@ -47,7 +47,7 @@ export default class settings extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                //User will have a default avatar now, so photoURL will works
+                //User will have a avatar now, so photoURL will works
                 this.setState({
                     isLoading: false, //Set isLoading to false here, adn React will update accordingly
                     email: user.email,
@@ -59,9 +59,8 @@ export default class settings extends React.Component {
 
                 })
                 userCopy = firebase.auth().currentUser
-                imageRef = firebase.storage().ref().child(`users/${user.uid}/profile.jpg`);
-        
-                
+     
+
             }
             else {
                 //Shouldn't happen, but we will redirect to home here
@@ -80,6 +79,22 @@ export default class settings extends React.Component {
         event.stopPropagation()
         event.preventDefault()
         let file = event.target.files[0]
+        let file_extension =  file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);
+        switch(file_extension){
+            case 'jpg':
+               imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.jpg`)
+               break;
+            case 'png':
+                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.png`)
+                break;
+            case 'gif':
+                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.gif`)
+                break;
+            default:
+                alert("Your file is invalid")
+                this.progress.current.style.display = "none"
+                return;
+        }
         let task = imageRef.put(file)
         task.on('state_change',
             (snapshot) => {
@@ -95,7 +110,6 @@ export default class settings extends React.Component {
 
     async assignImage() {
         let photo = await imageRef.getDownloadURL()
-        console.log(photo)
         userCopy.updateProfile({
             photoURL: photo
         }).then(() => {
@@ -166,7 +180,6 @@ export default class settings extends React.Component {
 
 
         let credential = firebase.auth.EmailAuthProvider.credential(email, password)
-        console.log(email, password)
 
         if (email == "" || password == "") {
             document.getElementById("error").innerText = "Password or email must be not empty"
