@@ -1,5 +1,5 @@
 {
-  "name": "doc-viewer",
+  "name": "docviewer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,18 +7,27 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "classnames": "^2.2.6",
     "firebase": "^8.7.1",
     "install": "^0.13.0",
+    "lodash": "^4.17.21",
+    "node-sass": "^6.0.1",
     "npm": "^7.19.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "package-merge": "^0.1.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-ga": "^2.7.0",
     "react-icons": "^4.2.0",
     "react-pro-sidebar": "^0.6.0",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "^4.0.3",
     "react-tabs": "^3.2.2",
     "web-vitals": "^1.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,10 +36,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -43,5 +49,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }

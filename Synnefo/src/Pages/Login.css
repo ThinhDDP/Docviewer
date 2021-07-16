@@ -83,11 +83,9 @@ input:focus{
     }
 }
 
-a:visited {
-    color: #5865F2;
-}
-p{
+
+/* p{
     color: #4f545c ;
     font-size: 0.9rem;
     margin: 10px;
-}
+} */
