@@ -1,0 +1,11 @@
+.codeInput input{
+    font-size: 1.3rem;
+    width: 15vw;
+    height: 3vh;
+}
+.codeInput button{
+    margin-top: 5%;
+    width: 10vw;
+    height: 4vh;
+    transition: 300ms ease;
+}

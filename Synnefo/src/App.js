@@ -11,6 +11,7 @@ import Home from './Pages/Home'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Settings from './Pages/Settings'
+import Open from './Pages/Open'
 
 
 
@@ -22,6 +23,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Home}></Route>
             <Route path="/create" component={Create}></Route>
+            <Route path="/open" component={Open}></Route>
             <Route path="/login" component={Login}></Route>
             <Route path="/register" component={Register}></Route>
             <Route path="/settings" component={Settings}></Route>
