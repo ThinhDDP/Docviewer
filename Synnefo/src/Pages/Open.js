@@ -6,6 +6,11 @@ var startTime;
 var endTime;
 
 var url = null;
+// function resizeIframe(obj) {
+//     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+// }
+
+
 export default class Open extends React.Component {
     constructor() {
         super()
@@ -17,7 +22,10 @@ export default class Open extends React.Component {
 
         this.showDoc = this.showDoc.bind(this)
         this.stopViewing = this.stopViewing.bind(this)
+
+
     }
+
     handleCodeChange(event) {
         this.setState({
             code: event.target.value
@@ -30,47 +38,42 @@ export default class Open extends React.Component {
         endTime = date.getSeconds();
         let time = endTime - startTime;
         //   time is the var u need;
-        window.location = "/"
+        window.location = window.location;
+
+    }
+
+    showDoc() {
+        let code = this.state.code;
+        let docContentId = document.getElementById("docContent")
 
         //change url variable, do some stuff and insert url here
+
         //....
-       
         
         if (url !== null) {
             docContentId.style.display = "block"
-            document.getElementById("doc").src = url
+            document.getElementById("doc").src = url;
+
             let date = new Date();
+
             startTime = date.getSeconds()
             //for looping
             let second = 0;
+
             setInterval(() => {
-                document.getElementById("timer").innerText = second.toString();
-                second++
+                
+                    document.getElementById("timer").innerText = second.toString();
+                    second++
+                
             }, 1000);
+
         } else {
-
-        
-        url = 'https://docs.google.com/document/d/1vtgCZ_6Dm09p5LNyaeU-8a_Z976yBMoPQLjAiU4TL68/preview'
-
-        if(url !== null){
-            docContentId.style.display = "block"
-            document.getElementById("doc").src = url;
-            resizeIframe(document.getElementById("doc"))
-
-            for(let i = 0; url != null; i++){
-                    setTimeout(() => {
-                        document.getElementById("timer") = i
-                    }, 1000)
-            }
-
-
-        }else{
             document.getElementById("error").style.display = "block"
 
         }
 
-        }
     }
+
     render() {
         return (
             <div className="wrapper">
