@@ -11,7 +11,23 @@
 }
 
 iframe{
-    width: 80%;
+    margin: auto;
+    width: 100%;
     height: 100vh;
-    position: absolute;
+    
 }
+#docContent{
+    display: none;
+}
+
+#docContent button{
+    margin-top: 5%;
+    width: 10vw;
+    height: 4vh;
+    transition: 300ms ease;
+}
+
+#docCotent button:hover{
+    color: #5865F2
+}
+
