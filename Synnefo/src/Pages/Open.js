@@ -1,8 +1,10 @@
 import firebase from "firebase";
 import React from "react";
 import "./Open.css";
+
 var startTime;
 var endTime;
+
 var url = null;
 export default class Open extends React.Component {
     constructor() {
@@ -29,10 +31,7 @@ export default class Open extends React.Component {
         let time = endTime - startTime;
         //   time is the var u need;
         window.location = "/"
-    }
-    showDoc() {
-        let code = this.state.code;
-        let docContentId = document.getElementById("docContent")
+
         //change url variable, do some stuff and insert url here
         //....
        
@@ -49,12 +48,29 @@ export default class Open extends React.Component {
                 second++
             }, 1000);
         } else {
+
+        
+        url = 'https://docs.google.com/document/d/1vtgCZ_6Dm09p5LNyaeU-8a_Z976yBMoPQLjAiU4TL68/preview'
+
+        if(url !== null){
+            docContentId.style.display = "block"
+            document.getElementById("doc").src = url;
+            resizeIframe(document.getElementById("doc"))
+
+            for(let i = 0; url != null; i++){
+                    setTimeout(() => {
+                        document.getElementById("timer") = i
+                    }, 1000)
+            }
+
+
+        }else{
             document.getElementById("error").style.display = "block"
 
         }
 
+        }
     }
-
     render() {
         return (
             <div className="wrapper">

@@ -48,9 +48,9 @@ class Header extends React.Component{
               <p>{this.state.menuCollapse ? "Logo" : "Big Logo"}</p>
               <div className="closemenu" onClick={this.menuIconClick}>
               {this.state.menuCollapse ? (
-                <FiArrowRightCircle/>
-              ) : (
                 <FiArrowLeftCircle/>
+              ) : (
+                <FiArrowRightCircle/>
               )}
             </div>
           </div>
