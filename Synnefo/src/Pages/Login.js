@@ -31,6 +31,22 @@ export default class Login extends React.Component {
                 if (e.code == "auth/wrong-password"){
                     document.getElementById('ref').innerHTML = "Wrong password"
                     document.getElementById('ref').style.color = "red"
+                }else if(e.code == "auth/app-deleted"){
+                    document.getElementById("ref").innerHTML = "App deleted"
+                    document.getElementById("ref").style.color = "red"
+                }else if(e.code == "auth/app-not-authorized"){
+                    document.getElementById("ref").innerHTML = "App not authorized"
+                    document.getElementById("ref").style.color = "red"
+                }else if(e.code == "auth/argument-error"){
+                    document.getElementById("ref").innerHTML = "There is an argument error"
+                    document.getElementById("ref").style.color = "red"
+
+                }else if(e.code == "auth/user-disabled"){
+                    document.getElementById("ref").innerHTML = "The user has been disabled"
+                    document.getElementById("ref").style.color = "red"
+                }else if(e.code == "auth/web-storage-unsupported"){
+                    document.getElementById("ref").innerHTML = "You are using unsupported browser"
+                    document.getElementById("ref").style.color = "red"
                 }
             })
     
