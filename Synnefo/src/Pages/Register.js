@@ -41,17 +41,17 @@ export default class Register extends React.Component {
                         document.getElementById("ref").innerHTML = "Email is already used"
                         document.getElementById("ref").style.color = "red"
                     case "auth/app-deleted":
-                        documnt.getElementById("ref").innerHTML = "App deleted"
+                        document.getElementById("ref").innerHTML = "App deleted"
                         document.getElementById("ref").style.color = "red"
                     case "auth/app-not-authorized":
                         document.getElementById("ref").innerHTML = "App not authorized"
                         document.getElementById("ref").style.color = "red"
                     case "auth/argument-error":
-                        doument.getElementById("ref").innerHTML = "There is an argument error"
+                        document.getElementById("ref").innerHTML = "There is an argument error"
                         document.getElementById("ref").style.color = "red"
 
                     case "auth/user-disabled":
-                        docment.getElementById("ref").innerHTML = "The user has been disabled"
+                        document.getElementById("ref").innerHTML = "The user has been disabled"
                         document.getElementById("ref").style.color = "red"
                     case "auth/web-storage-unsupported":
                         document.getElementById("ref").innerHTML = "You are using unsupported browser"
