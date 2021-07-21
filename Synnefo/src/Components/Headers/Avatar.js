@@ -32,10 +32,14 @@ export default class Avatar extends React.Component{
     getUser(){
         firebase.auth().onAuthStateChanged(user => {
             if (user){
-                this.state.user = user
+                this.setState({
+                    user: user
+                })
             }
             else {
-                this.state.user = "notLoggedIn"
+                this.setState({
+                    user: "notLoggedIn"
+                })
             }
             this.setState({
                 isLoading : false

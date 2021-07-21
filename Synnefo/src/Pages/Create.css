@@ -88,3 +88,64 @@ label{
     width: 5vw;
     height: 5vh;
 }
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+  html,
+  body {
+    height: 100%;
+  }
+  
+  .g_body{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .g-button{
+    margin-left: 5vw;
+    border: 1px solid rgb(66, 133, 244);
+    background: rgb(66, 133, 244);
+    display: flex;
+    width: 20vw;
+  }
+  
+  .g-logo{
+    width: 21px;
+    height: 21px;
+    padding: 8px 10px;
+    background: white;
+  }
+  
+  .g-text{
+    font-size: 16px;
+    padding: 8px 10px !important;
+    color: white;
+    font-family: roboto;
+    text-align: center;
+    margin-bottom: 0 !important;
+  }
+
+
+.fileBtn{
+    transition: 300ms ease;
+    border-radius: 5px;
+    width: 30vw;
+    height: 4vh;
+    text-align: center;
+    vertical-align: middle;
+    
+}
+
+.flex{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
