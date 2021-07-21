@@ -4,40 +4,40 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 const router = express.Router()
 
-const checkIp =  (ip, doc) => {
-    let ipsList = doc.get('ips')
-    if (!ipsList.includes(ip)){
-        ipsList.push(ip)
-        return ipsList
+const checkIp =  async (email, doc) => {
+    let emailsList = await doc.get('emails')
+    console.log(emailsList)
+    if (!emailsList.includes(email)){
+        emailsList.push(email)
+        return emailsList
     }
     return null
 }
 
 router.post('/match/:id', async (req, res) => {
     try {
-        let updateIps
-        const ip = req.body.ip
+        const email = req.body.email
         let docRef = db.collection('Document').doc(req.params.id)
         let doc = await docRef.get()
         if (!doc.exists){
             res.send("Document not found")
         }
         const currentView = doc.get('views')
-        let updatedIpsList = checkIp(ip, doc)
-    
+        let updatedIpsList = await checkIp(email, doc)
         if (updatedIpsList != null){
-                docRef.update({ips: updatedIpsList, views: currentView + 1}).then((result) => {
-                console.log('Successfully executed write at: ', result);
-                res.send([doc.get('views') + 1])
-            })
+            console.log([updatedIpsList, currentView])
+            docRef.update({emails: updatedIpsList, views: currentView + 1})
+            let returnId = await doc.get('id')
+            res.sendStatus(returnId)
         }
         else {
-            res.send([doc.get('views')])
+            let returnId = await doc.get('id')
+            res.sendStatus(returnId)
         }
 
     }
-    catch (e){
-        res.send(e)
+    catch(e){
+        console.log(e)
     }
 })
 

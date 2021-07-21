@@ -14,7 +14,7 @@ const create = require('./src/create')
 const match = require('./src/match')
 const user = require('./src/user')
 const update = require('./src/update')
-
+const track = require('./src/track')
 
 const app = express()
 
@@ -25,6 +25,7 @@ app.use('/', create)
 app.use('/', match)
 app.use('/', update)
 app.use('/', user)
+app.use('/', track)
 
 
 exports.api = functions

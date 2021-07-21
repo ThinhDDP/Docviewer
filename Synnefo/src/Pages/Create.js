@@ -2,7 +2,7 @@ import React from 'react'
 import firebase from '../firebase'
 import './Create.css'
 import axios from 'axios'
-import logo from '../Images/Spinning.gif'
+import ReactDOM from 'react-dom';
 
 let user = firebase.auth().currentUser //This is a lazy way because .currentUser is async call, but it will prob load before the user finish typing
 
@@ -12,72 +12,75 @@ class Create extends React.Component{
         this.state = {
             state : 'idle',
             link : '',
-            'title': '',
+            title: '',
             isLoading: false,
             code: null
         }
-        this.handleInputChangesLink = this.handleInputChangesLink.bind(this)
-        this.handleInputChangesTitle = this.handleInputChangesTitle.bind(this)
+        this.token = null
         this.checkboxRef = React.createRef() 
         this.serverURL = 'http://localhost:4444/docviewerapi/asia-east2/api/create'
 
     }
-    async createDoc(){
+    linkAccount(){
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/drive.readonly');
         this.setState({
             isLoading: true
         })
-        if (this.checkboxRef.current.checked){
-            if (user == null){
-                if (!alert("You must be signed in to use this feauture")){ //TODO: Turns this into a p tag
-                    window.location.href = '/'
-                }
-            }
-        }
-        else{
-            let data = {
-                title: this.state.title,
-                link: this.state.link
-            }
-            let response = await axios.post(this.serverURL, data)
-            if (response != undefined){
-                this.setState({
-                    isLoading: false
-                })
-            }
-            this.setState({
-                code: response.data
+        firebase.auth()
+            .signInWithPopup(provider)
+            .then(result => {
+                this.token = result.credential.accessToken
+                console.log(this.token)
+                this.listFiles()
             })
+            .catch(e => {
+                console.log(e)
+            })
+    }
+    listFiles(){
+        axios.get('https://www.googleapis.com/drive/v3/files?q=mimeType%3D%27application%2Fvnd.google-apps.document%27%20and%20trashed%3Dfalse', {
+            headers: {
+                Authorization: `Bearer ${this.token}`,
+                'Content-Length': 100,
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(res => {
+            this.setState({
+                isLoading: false,
+                state: 'choose'
+            })
+            console.log(res)
+            this.createButtons(res.data.files)
+            
+        })
+        .catch(e => {
+            console.log(e)
+        })
+    }
+    createButtons(files){
+        for (let i = 0; i < files.length; ++i){
+            let newBtn = document.createElement('button')
+            newBtn.innerHTML = files[i].name
+            newBtn.className = "fileBtn"
+            newBtn.addEventListener('click', () => this.sendIdToServer(files[i].id))
+            document.getElementById('container').appendChild(newBtn)
         }
     }
-    handleInputChangesLink(event){
-        this.setState({
-            link: event.target.value
-        })
-    }
-
-
-    handleInputChangesTitle(event){
-        this.setState({
-            title: event.target.value
-        })
+    sendIdToServer(id){
+        console.log(id)
     }
     render(){
-        if ((this.state.state == 'idle' || this.state.link == '' || this.state.link == null) && !this.state.isLoading){
+        if (this.state.state == 'idle' && !this.state.isLoading){
             return(
                 <div className="wrapper">
                 <div className="bg">
                     <div className='content'>
-                    <div className="title-wrapper">
-                        <input value={this.state.title} placeholder="Document's title" onChange={this.handleInputChangesTitle}></input>
-                    </div>
-                    <div className="input-wrapper">
-                        <input value={this.state.link} placeholder="Google Document preview link" onChange={this.handleInputChangesLink}></input>
-                    </div>
-                    <p>Don't know what that is? <a href='https://www.youtube.com/watch?v=AAeloLXO8T0' target="_blank">See this</a></p>
-                    <input ref={this.checkboxRef} type="checkbox"></input><label>Only me can check this file info</label>
-                    <br/>
-                    <button className="btn" onClick={() => this.createDoc()}>CREATE</button>
-                    <h2>{this.state.code ? `THIS IS THE CODE: ${this.state.code}` : ''}</h2>
+                    <button class="g-button" onClick={() => this.linkAccount()}>
+                        <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo"/>
+                        <p class="g-text">Sign in with Google</p>
+                    </button>
                     </div>
                 </div>
                 </div>
@@ -129,6 +132,16 @@ class Create extends React.Component{
                 </div>
                 </div>
             )
+        }
+        else if(this.state.state = "choose"){
+            return(<div className="wrapper">
+            <div className="bg">
+                <div className="content flex" id="container">
+                <h6>Choose the file you would like to present</h6>
+     
+                </div>
+            </div>
+            </div>)
         }
     }
 }

@@ -25,25 +25,19 @@ const createCode = async () => {
     }
 }
 
-const checkURL = async (url) => {
-    const domain = new URL(url).hostname
-    const allowed = ['docs.google.com']
-    return(allowed.includes(domain))
-}
 
 const db = admin.firestore()
 const router = express.Router()
 
 router.post('/create', async (req, res) => {
-    if (await checkURL(req.body.link)){
         const code =  await createCode()
         const data = {
-            link: req.body.link,
-            title: req.body.title,
+            id: req.body.id,
             views: 0,
             completed: [''],
-            ips: [''],
-            time: 0
+            emails: [''],
+            time: 0,
+            author: req.body.uid ? req.body.uid : null
         }
         if (req.body.uid){
             data.ownerId = req.body.uid
@@ -51,8 +45,8 @@ router.post('/create', async (req, res) => {
         const rest = await db.collection('Document').doc(code).set(data)
         if (rest){res.send(code)}
     }
-    res.send("Invalid")
-})
+
+)
 
 
 module.exports = router
