@@ -36,34 +36,37 @@ export default class Register extends React.Component {
                     })
             })
             .catch((e) => {
-                if (e.code == "auth/email-already-in-use") {
-                    document.getElementById("ref").innerHTML = "Email is already used"
-                    document.getElementById("ref").style.color = "red"
-                } else if (e.code == "auth/app-deleted") {
-                    document.getElementById("ref").innerHTML = "App deleted"
-                    document.getElementById("ref").style.color = "red"
-                } else if (e.code == "auth/app-not-authorized") {
-                    document.getElementById("ref").innerHTML = "App not authorized"
-                    document.getElementById("ref").style.color = "red"
-                } else if (e.code == "auth/argument-error") {
-                    document.getElementById("ref").innerHTML = "There is an argument error"
-                    document.getElementById("ref").style.color = "red"
+                switch (e.code) {
+                    case "auth/email-already-in-use":
+                        document.getElementById("ref").innerHTML = "Email is already used"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/app-deleted":
+                        documnt.getElementById("ref").innerHTML = "App deleted"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/app-not-authorized":
+                        document.getElementById("ref").innerHTML = "App not authorized"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/argument-error":
+                        doument.getElementById("ref").innerHTML = "There is an argument error"
+                        document.getElementById("ref").style.color = "red"
 
-                } else if (e.code == "auth/user-disabled") {
-                    document.getElementById("ref").innerHTML = "The user has been disabled"
-                    document.getElementById("ref").style.color = "red"
-                } else if (e.code == "auth/web-storage-unsupported") {
-                    document.getElementById("ref").innerHTML = "You are using unsupported browser"
-                    document.getElementById("ref").style.color = "red"
-                } else if (e.code == "auth/credential-already-in-use") {
-                    document.getElementById("ref").innerHTML = "You typed a display name which is already used"
-                    document.getElementById("ref").style.color = "red"
-                } else if(e.code == "auth/account-exists-with-different-credential"){
-                    document.getElementById("ref").innerHTML = "The account exists with different credential"
+                    case "auth/user-disabled":
+                        docment.getElementById("ref").innerHTML = "The user has been disabled"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/web-storage-unsupported":
+                        document.getElementById("ref").innerHTML = "You are using unsupported browser"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/credential-already-in-use":
+                        document.getElementById("ref").innerHTML = "You typed a display name which is already used"
+                        document.getElementById("ref").style.color = "red"
+                    case "auth/account-exists-with-different-credential":
+                        document.getElementById("ref").innerHTML = "The account exists with different credential"
+
+
                 }
             })
 
-    }
+        }
     handleChangesEmail(event) {
         this.setState({
             email: event.target.value
