@@ -16,7 +16,7 @@ export default class settings extends React.Component {
             username: null,
             photoURL: null,
 
-            reAuth_psw: null,
+            oldPassword: null,
             password: null,
         }
         this.info = []
@@ -33,15 +33,13 @@ export default class settings extends React.Component {
         this.updateInfo = this.updateInfo.bind(this)
 
 
-        this.reAuth_psw = React.createRef()
-        this.reAuth_btn = React.createRef()
 
-        this.handlePasswordReAuthChanges = this.handlePasswordReAuthChanges.bind(this)
-        this.reAuth = this.reAuth.bind(this)
 
         this.changePSWbtn = React.createRef();
         this.changePSW = this.changePSW.bind(this)
         this.handlePasswordChanges = this.handlePasswordChanges.bind(this)
+        this.handleOldPasswordChanges = this.handleOldPasswordChanges.bind(this)
+
     }
 
     componentDidMount() {
@@ -55,7 +53,10 @@ export default class settings extends React.Component {
                     photoURL: user.photoURL,
                 })
                 userCopy = firebase.auth().currentUser
-     
+                console.log(firebase.auth().currentUser.providerData[0]["providerId"])
+
+
+
 
             }
             else {
@@ -75,11 +76,11 @@ export default class settings extends React.Component {
         event.stopPropagation()
         event.preventDefault()
         let file = event.target.files[0]
-        let file_extension =  file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);
-        switch(file_extension){
+        let file_extension = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);
+        switch (file_extension) {
             case 'jpg':
-               imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.jpg`)
-               break;
+                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.jpg`)
+                break;
             case 'png':
                 imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.png`)
                 break;
@@ -126,13 +127,13 @@ export default class settings extends React.Component {
         })
         this.changePSWbtn.current.style.backgroundColor = "#5865F2"
     }
-    handlePasswordReAuthChanges(event) {
-        this.setState({
-            reAuth_psw: event.target.value
-        })
-        this.reAuth_btn.current.style.backgroundColor = "#5865F2"
-    }
 
+    handleOldPasswordChanges(event) {
+        this.setState({
+            oldPassword: event.target.value
+        })
+        this.changePSWbtn.current.style.backgroundColor = "#5865F2"
+    }
     handleEmailChanges(event) {
         this.setState({
             email: event.target.value
@@ -161,38 +162,30 @@ export default class settings extends React.Component {
     }
     changePSW() {
         if (window.confirm("Do you really want to change your password? (This action cannot be undone)")) {
-            userCopy.updatePassword(this.state.password).then(() => {
-                window.location = window.location;
-            }).catch((e) => {
-                document.getElementById("error").innerText = e;
-                document.getElementById("error").style.color = "red"
-            })
+            
+            if (firebase.auth().currentUser.providerData[0]["providerId"] == "password") {
+                let credential = firebase.auth.EmailAuthProvider.credential(this.state.email, this.state.oldPassword)
+
+                userCopy.reauthenticateWithCredential(credential).then(() => {
+                    userCopy.updatePassword(this.state.password).then(() => {
+                        window.location = window.location;
+                    }).catch((e) => {
+                        document.getElementById("error").innerText = e;
+                        document.getElementById("error").style.color = "red"
+                    })
+                }).catch((e) => {
+                    document.getElementById("error").innerText = e;
+                    document.getElementById("error").style.color = "red"
+
+                })
+
+            }else{
+                alert("This option is not avalible to Google authenicated users")
+            }
+
         }
     }
-    reAuth() {
-        let email = this.state.email;
-        let password = this.state.reAuth_psw;
 
-
-
-
-        let credential = firebase.auth.EmailAuthProvider.credential(email, password)
-        if (email == "" || password == "") {
-            document.getElementById("error").innerText = "Password or email must be not empty"
-            document.getElementById("error").style.color = "red"
-        } else {
-            userCopy.reauthenticateWithCredential(credential).then(() => {
-                document.getElementById("mainSecurity").style.display = "block"
-                document.getElementById("reAuth-section").style.display = "none"
-                document.getElementById("error").innerText = ""
-            }).catch((e) => {
-                document.getElementById("error").innerText = e
-                document.getElementById("error").style.color = "red"
-            })
-        }
-
-
-    }
     render() {
         if (this.state.isLoading) {
             return (<div className="wrapper">
@@ -234,17 +227,11 @@ export default class settings extends React.Component {
                                 </TabPanel>
                                 <TabPanel>
                                     <div className="security">
-                                        <div id="reAuth-section">
-                                            <h2>Please reauthenicate to proceed</h2>
 
-                                            <p>Password</p>
-                                            <input type="password" onChange={this.handlePasswordReAuthChanges} ></input><br />
-                                            <button onClick={this.reAuth} ref={this.reAuth_btn}>Reauthenicate</button>
+                                        <div id="mainSecurity">
 
-                                        </div>
-                                        <div id="mainSecurity" style={{ display: "none" }}>
-                                            <p>Change password</p>
-                                            <input type="password" onChange={this.handlePasswordChanges}></input><br />
+                                            <input type="password" onChange={this.handleOldPasswordChanges} placeholder="Old password"></input><br />
+                                            <input type="password" onChange={this.handlePasswordChanges} placeholder="New password" style={{ margin: "5%" }}></input><br />
                                             <button onClick={this.changePSW} ref={this.changePSWbtn}>Confirm change</button>
 
                                         </div>

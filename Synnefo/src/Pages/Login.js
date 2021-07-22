@@ -122,7 +122,7 @@ export default class Login extends React.Component {
                     "weak-password": "The password must be 6 characters long or more.",
                     "web-storage-unsupported": "This browser is not supported or 3rd party cookies and data may be disabled."
                 }
-                document.getElementById("ref").innerText = authErros[authError]
+                document.getElementById("ref").innerText = authErrors[authError]
                 document.getElementById("ref").style.color = "red"
             })
 
