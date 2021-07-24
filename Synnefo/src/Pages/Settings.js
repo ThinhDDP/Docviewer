@@ -39,7 +39,6 @@ export default class settings extends React.Component {
         this.changePSW = this.changePSW.bind(this)
         this.handlePasswordChanges = this.handlePasswordChanges.bind(this)
         this.handleOldPasswordChanges = this.handleOldPasswordChanges.bind(this)
-
     }
 
     componentDidMount() {
@@ -233,7 +232,6 @@ export default class settings extends React.Component {
                                             <input type="password" onChange={this.handleOldPasswordChanges} placeholder="Old password"></input><br />
                                             <input type="password" onChange={this.handlePasswordChanges} placeholder="New password" style={{ margin: "5%" }}></input><br />
                                             <button onClick={this.changePSW} ref={this.changePSWbtn}>Confirm change</button>
-
                                         </div>
                                         <p id="error"></p>
                                     </div>

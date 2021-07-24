@@ -149,3 +149,9 @@ label{
     flex-direction: column;
     justify-content: space-between;
 }
+
+.submitBtn{
+    border-radius: 5px;
+    width: 10vw;
+    height: 5vh;
+}

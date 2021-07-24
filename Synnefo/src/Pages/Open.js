@@ -37,7 +37,19 @@ export default class Open extends React.Component {
     }
 
     render() {
-        if (this.state.state == 'idle'){
+        if(this.state.state == "idle"){
+            return(
+                <div className="wrapper">
+                    <div className="bg">
+                        <div className="content">
+                            <input placeholder="Document code"></input>
+                            <button>VIEW</button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        if (this.state.state == 'open'){
             return(
                 <div className="wrapper">
                 <div className="bg">

@@ -13,15 +13,17 @@ class Create extends React.Component{
             state : 'idle',
             link : '',
             title: '',
-            isLoading: false,
-            code: null
+            isLoading: true,
+            code: null,
+            provider: null
         }
         this.token = null
-        this.checkboxRef = React.createRef() 
-        this.serverURL = 'http://localhost:4444/docviewerapi/asia-east2/api/create'
-
+        this.fileId = null
+        this.uid = null
+        this.serverURL = 'http://localhost:3333/docviewerapi/asia-east2/api/create'
+        this.optionRef = React.createRef()
     }
-    linkAccount(){
+    signInAccount(){
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/drive.readonly');
         this.setState({
@@ -31,8 +33,10 @@ class Create extends React.Component{
             .signInWithPopup(provider)
             .then(result => {
                 this.token = result.credential.accessToken
+                this.uid = result.user.uid
                 console.log(this.token)
                 this.listFiles()
+
             })
             .catch(e => {
                 console.log(e)
@@ -64,22 +68,107 @@ class Create extends React.Component{
             let newBtn = document.createElement('button')
             newBtn.innerHTML = files[i].name
             newBtn.className = "fileBtn"
-            newBtn.addEventListener('click', () => this.sendIdToServer(files[i].id))
+            newBtn.addEventListener('click', () => this.assignId(files[i].id))
             document.getElementById('container').appendChild(newBtn)
         }
     }
-    sendIdToServer(id){
-        console.log(id)
+    assignId(id){
+        this.fileId = id
+        let buttons = document.getElementsByClassName('fileBtn')
+        console.log("Started")
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].remove();
+        }
+        this.setState({
+            state: "settings"
+        })
+    }
+    createDocument(){
+        let data = {
+            id: this.fileId
+        }
+        switch(this.optionRef.current.value){
+            case 'Only':
+                data.uid = this.uid
+                console.log(data)
+            default:
+                this.setState({
+                    isLoading: true
+                })
+                axios.post(this.serverURL, data).then(req => {
+                    console.log(req)
+                    this.setState({
+                        isLoading: false,
+                        state: 'display',
+                        code: req.data
+                    })
+                })
+        }
+    }
+    componentDidMount(){
+        firebase.auth().onAuthStateChanged(user => {
+            
+            if (user){
+                this.setState({
+                    provider: user.providerData[0].providerId,
+                    isLoading: false
+                })
+            }
+            else {
+                this.setState({
+                    provider: "no",
+                    isLoading: false
+                })
+                
+            }
+        })
+    }
+    linkAccount(){
+        var googleProvider = new firebase.auth.GoogleAuthProvider();
+        googleProvider.addScope('https://www.googleapis.com/auth/drive.readonly')
+        firebase.auth().currentUser.linkWithPopup(googleProvider).then(result => {
+            this.token = result.credential.accessToken
+            this.uid = result.user.uid
+            this.listFiles()
+        }).catch(e => {
+            console.log(e)
+        })
     }
     render(){
-        if (this.state.state == 'idle' && !this.state.isLoading){
+        if (this.state.provider == "no"){
+            return(
+                <div className="wrapper">
+                <div className="bg">
+                    <div className='content'>
+                        <h3>You must be signed in to create a document</h3>
+                    </div>
+                </div>
+                </div>
+            )
+        }
+        else if (this.state.state == 'idle' && this.state.provider == "google.com" && !this.state.isLoading){
+            return(
+                <div className="wrapper">
+                <div className="bg">
+                    <div className='content'>
+                    <button class="g-button" onClick={() => this.signInAccount()}>
+                        <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo"/>
+                        <p class="g-text">Sign in with Google</p>
+                    </button>
+                    </div>
+                </div>
+                </div>
+            )
+        }
+
+        else if (this.state.state == 'idle' && this.state.provider == "password" && !this.state.isLoading){
             return(
                 <div className="wrapper">
                 <div className="bg">
                     <div className='content'>
                     <button class="g-button" onClick={() => this.linkAccount()}>
                         <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo"/>
-                        <p class="g-text">Sign in with Google</p>
+                        <p class="g-text">Link with Google</p>
                     </button>
                     </div>
                 </div>
@@ -91,7 +180,7 @@ class Create extends React.Component{
             <div className="wrapper">
                 <div className="bg">
                     <div className='content'>
-                        <h1>Creating your document</h1>
+                        <h1>Loading</h1>
                         <svg class="load"version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                             viewBox="0 0 100 100" enable-background="new 0 0 100 100">
                             <path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
@@ -133,7 +222,7 @@ class Create extends React.Component{
                 </div>
             )
         }
-        else if(this.state.state = "choose"){
+        else if(this.state.state == "choose"){
             return(<div className="wrapper">
             <div className="bg">
                 <div className="content flex" id="container">
@@ -142,6 +231,34 @@ class Create extends React.Component{
                 </div>
             </div>
             </div>)
+        }
+        else if (this.state.state == "settings"){
+            return(<div className="wrapper">
+                <div className="bg">
+                    <div className="content">
+                        <h6 for="options">Who can see this file statistic</h6>
+                        <select ref={this.optionRef} name="options">
+                            <option value="Everyone">Everyone with code</option>
+                            <option value="Only">Only me</option>
+                            
+                        </select><br/>
+                        <button className="submitBtn" onClick={() => this.createDocument()}>Create document</button>
+                    </div>
+                </div>
+            </div>
+            )          
+        }
+        else if (this.state.state == "display"){
+            return(
+                <div className="wrapper">
+                    <div className="bg">
+                        <div className="content">
+                            <h4>Your code is {this.state.code}</h4>
+                            <button className="submitBtn" onClick={() => window.location.reload()}>Create another document</button>
+                        </div>
+                    </div>
+                </div>
+            )
         }
     }
 }
