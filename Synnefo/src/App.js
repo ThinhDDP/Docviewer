@@ -12,6 +12,7 @@ import Login from './Pages/Login'
 import Register from './Pages/Register'
 import Settings from './Pages/Settings'
 import Open from './Pages/Open'
+import Track from './Pages/Track'
 
 
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/login" component={Login}></Route>
             <Route path="/register" component={Register}></Route>
             <Route path="/settings" component={Settings}></Route>
+            <Route path="/track" component={Track}></Route>
           </Switch>
         </BrowserRouter>
 

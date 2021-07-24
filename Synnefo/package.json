@@ -16,7 +16,9 @@
     "npm": "^7.19.1",
     "package-merge": "^0.1.2",
     "react": "^16.13.1",
+    "react-chartjs-2": "^3.0.4",
     "react-dom": "^16.13.1",
+    "react-dropdown": "^1.9.2",
     "react-ga": "^2.7.0",
     "react-icons": "^4.2.0",
     "react-pro-sidebar": "^0.6.0",
@@ -50,6 +52,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }
