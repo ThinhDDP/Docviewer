@@ -31,3 +31,20 @@ iframe{
     color: #5865F2
 }
 
+.doc{
+    background-color: whitesmoke;
+    width: 60vw;  
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: black;  
+}
+
+.doc-wrapper{
+    text-align: center;
+    padding: 10vw;
+    padding-left: 25vw;
+    background-color: #485461;
+    background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
+    height: fit-content;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

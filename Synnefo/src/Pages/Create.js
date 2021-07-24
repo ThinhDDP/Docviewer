@@ -73,17 +73,17 @@ class Create extends React.Component{
         }
     }
     assignId(id){
-        this.fileId = id
-        let buttons = document.getElementsByClassName('fileBtn')
-        console.log("Started")
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].remove();
+        var arrayelements = Array.prototype.slice.call(document.getElementsByClassName('fileBtn'));
+        for (let i = 0; i < arrayelements.length; i++) {
+            arrayelements[i].remove();
         }
+        this.fileId = id
         this.setState({
             state: "settings"
         })
     }
     createDocument(){
+        console.log(this.fileId)
         let data = {
             id: this.fileId
         }
@@ -96,7 +96,6 @@ class Create extends React.Component{
                     isLoading: true
                 })
                 axios.post(this.serverURL, data).then(req => {
-                    console.log(req)
                     this.setState({
                         isLoading: false,
                         state: 'display',
@@ -236,7 +235,7 @@ class Create extends React.Component{
             return(<div className="wrapper">
                 <div className="bg">
                     <div className="content">
-                        <h6 for="options">Who can see this file statistic</h6>
+                        <h6>Who can see this file statistic</h6>
                         <select ref={this.optionRef} name="options">
                             <option value="Everyone">Everyone with code</option>
                             <option value="Only">Only me</option>

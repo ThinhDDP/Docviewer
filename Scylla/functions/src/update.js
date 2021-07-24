@@ -36,7 +36,7 @@ router.post('/update', async (req, res) => {
         const update = await docRef.update({completed: currentCompletedList, time: currentSecond + seconds})
         if (update){res.send("Done")} 
     }
-    res.send("This user has already complted this document")
+    res.send("This user has already completed this document")
 
 })
 
