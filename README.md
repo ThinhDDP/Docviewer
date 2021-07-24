@@ -4,7 +4,7 @@ Scylla is for backend
 Synnefo is for frontend
 
 # Dependacies
-React, react-router, react-pro-sidebar, firebase, react-icons, axios
+React, react-router, react-pro-sidebar, firebase, react-icons, axios, google-docs-api-parser
 
 # Hosting
 ### With Firebase (*Free*)
