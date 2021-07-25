@@ -1,7 +1,5 @@
-import {Router, Switch, Route, BrowserRouter} from 'react-router-dom'
+import {Switch, Route, BrowserRouter} from 'react-router-dom'
 import './App.css';
-import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import firebase from "firebase/app";
 import "firebase/auth";
 import 'react-pro-sidebar/dist/css/styles.css';
 import Header from './Components/Headers/Header'
@@ -13,6 +11,7 @@ import Register from './Pages/Register'
 import Settings from './Pages/Settings'
 import Open from './Pages/Open'
 import Track from './Pages/Track'
+import Recent from "./Pages/Recent"
 
 
 
@@ -29,6 +28,7 @@ function App() {
             <Route path="/register" component={Register}></Route>
             <Route path="/settings" component={Settings}></Route>
             <Route path="/track" component={Track}></Route>
+            <Route path="/recent" component={Recent}></Route>
           </Switch>
         </BrowserRouter>
 

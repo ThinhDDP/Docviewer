@@ -7,7 +7,7 @@ import 'react-tabs/style/react-tabs.css';
 var imageRef;
 let userCopy;
 
-export default class settings extends React.Component {
+export default class Settings extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -162,12 +162,12 @@ export default class settings extends React.Component {
     changePSW() {
         if (window.confirm("Do you really want to change your password? (This action cannot be undone)")) {
             
-            if (firebase.auth().currentUser.providerData[0]["providerId"] == "password") {
+            if (firebase.auth().currentUser.providerData[0]["providerId"] === "password") {
                 let credential = firebase.auth.EmailAuthProvider.credential(this.state.email, this.state.oldPassword)
 
                 userCopy.reauthenticateWithCredential(credential).then(() => {
                     userCopy.updatePassword(this.state.password).then(() => {
-                        window.location = window.location;
+                        window.location.reload()
                     }).catch((e) => {
                         document.getElementById("error").innerText = e;
                         document.getElementById("error").style.color = "red"
@@ -200,7 +200,7 @@ export default class settings extends React.Component {
             return (
                 <div className="wrapper">
                     <div className="avatar">
-                        <img src={this.state.photoURL}></img>
+                        <img src={this.state.photoURL} alt="Your avatar"></img>
                         <input type='file' id='file' ref={this.inputFile} style={{ display: 'none' }} onChange={this.uploadFile} accept="image/*" />
                         <button onClick={() => this.openFile()}>Change avatar</button>
                         <progress ref={this.progress} id="file" min="0" value={this.value} max="100">{this.value}</progress>

@@ -36,7 +36,7 @@ export default class Track extends React.Component {
 
 
             specificDocumentChart: {},
-            data: {}
+            
 
 
 
@@ -131,7 +131,7 @@ export default class Track extends React.Component {
         document.getElementById("tableStats").innerHTML = `<tr><th>User UID</th><th>Seconds</th></tr>`
 
 
-        if (renderData["document-code"] == "Global") {
+        if (renderData["document-code"] === "Global") {
             document.getElementById("others").innerText = "User stats is not avalible for global"
             let data = this.state.data
             let labels = []
@@ -182,17 +182,7 @@ export default class Track extends React.Component {
             chartRenderData_time.push(renderData["total-time"])
 
 
-            let chartRender = {
-                labels: chartRenderData_users,
-                datasets: [
-                    {
-                        label: "Time",
-                        data: chartRenderData_time,
-                        backgroundColor: 'rgb(255, 99, 132)'
-                    }
-                ]
 
-            }
 
             this.setState({
                 dataChart: {

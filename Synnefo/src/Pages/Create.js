@@ -2,9 +2,8 @@ import React from 'react'
 import firebase from '../firebase'
 import './Create.css'
 import axios from 'axios'
-import ReactDOM from 'react-dom';
 
-let user = firebase.auth().currentUser //This is a lazy way because .currentUser is async call, but it will prob load before the user finish typing
+// let user = firebase.auth().currentUser //This is a lazy way because .currentUser is async call, but it will prob load before the user finish typing
 
 class Create extends React.Component{
     constructor(){
@@ -91,6 +90,7 @@ class Create extends React.Component{
             case 'Only':
                 data.uid = this.uid
                 console.log(data)
+                break
             default:
                 this.setState({
                     isLoading: true
@@ -134,7 +134,7 @@ class Create extends React.Component{
         })
     }
     render(){
-        if (this.state.provider == "no"){
+        if (this.state.provider === "no"){
             return(
                 <div className="wrapper">
                 <div className="bg">
@@ -145,7 +145,7 @@ class Create extends React.Component{
                 </div>
             )
         }
-        else if (this.state.state == 'idle' && this.state.provider == "google.com" && !this.state.isLoading){
+        else if (this.state.state === 'idle' && this.state.provider === "google.com" && !this.state.isLoading){
             return(
                 <div className="wrapper">
                 <div className="bg">
@@ -160,7 +160,7 @@ class Create extends React.Component{
             )
         }
 
-        else if (this.state.state == 'idle' && this.state.provider == "password" && !this.state.isLoading){
+        else if (this.state.state === 'idle' && this.state.provider === "password" && !this.state.isLoading){
             return(
                 <div className="wrapper">
                 <div className="bg">
@@ -221,7 +221,7 @@ class Create extends React.Component{
                 </div>
             )
         }
-        else if(this.state.state == "choose"){
+        else if(this.state.state === "choose"){
             return(<div className="wrapper">
             <div className="bg">
                 <div className="content flex" id="container">
@@ -231,7 +231,7 @@ class Create extends React.Component{
             </div>
             </div>)
         }
-        else if (this.state.state == "settings"){
+        else if (this.state.state === "settings"){
             return(<div className="wrapper">
                 <div className="bg">
                     <div className="content">
@@ -247,7 +247,7 @@ class Create extends React.Component{
             </div>
             )          
         }
-        else if (this.state.state == "display"){
+        else if (this.state.state === "display"){
             return(
                 <div className="wrapper">
                     <div className="bg">

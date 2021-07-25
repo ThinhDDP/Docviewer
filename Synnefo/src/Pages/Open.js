@@ -90,7 +90,7 @@ export default class Open extends React.Component {
                 </div>
             )
         }
-        else if(!this.state.isLoading && this.state.state == "idle"){
+        else if(!this.state.isLoading && this.state.state === "idle"){
             return(
                 <div className="wrapper">
                     <div className="bg">
@@ -102,7 +102,7 @@ export default class Open extends React.Component {
                 </div>
             )
         }
-        else if (!this.state.isLoading && this.state.state == 'open'){
+        else if (!this.state.isLoading && this.state.state === 'open'){
             return(
                 <div className='doc-wrapper'>
                 <span>You have been reading for {this.state.minutes}:{this.state.seconds}</span>

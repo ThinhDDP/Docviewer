@@ -4,10 +4,9 @@ import {Link} from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css';
 import './Header.css'
 //Import Icons
-import {FaHome, FaHeart, FaUserCircle} from 'react-icons/fa'
+import {FaHome} from 'react-icons/fa'
 import {GiBackwardTime} from 'react-icons/gi'
 import {HiDocumentText} from 'react-icons/hi'
-import {BsThreeDotsVertical} from 'react-icons/bs'
 import {FiArrowLeftCircle, FiArrowRightCircle} from 'react-icons/fi'
 import Avatar from './Avatar';
 
