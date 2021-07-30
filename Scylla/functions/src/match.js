@@ -21,7 +21,7 @@ const savedViewed = async(uid, docRef) => {
     let usrRef = db.collection('Users').doc(uid)
     let usr = await usrRef.get()
     let usrData = await usr.get('viewed')
-    usrData.push(docRef)
+    usrData.push(await docRef.id)
     usrRef.update({viewed: usrData})
     console.log(uid)
     let email = (await admin.auth().getUser(uid)).email
