@@ -15,7 +15,7 @@ const match = require('./src/match')
 const user = require('./src/user')
 const update = require('./src/update')
 const track = require('./src/track')
-
+const viewed = require('./src/viewed')
 const app = express()
 
 app.use(cors({ origin: true }))
@@ -26,6 +26,7 @@ app.use('/', match)
 app.use('/', update)
 app.use('/', user)
 app.use('/', track)
+app.use('/', viewed)
 
 
 exports.api = functions

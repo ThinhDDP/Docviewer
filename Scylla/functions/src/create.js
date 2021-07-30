@@ -30,12 +30,14 @@ const db = admin.firestore()
 const router = express.Router()
 
 const savedOwned = async (uids, docRef) => {
-    uids.map(async (uid) => {
-        let docRef = db.collection('Users').doc(uid)
-        let usrCompleted = await (await docRef.get()).get('owned')
+
+    for (let i = 0; i < uids.length; ++i){
+        console.log(uids)
+        let usrRef = db.collection('Users').doc(uids[i])
+        let usrCompleted = await (await usrRef.get()).get('owned')
         usrCompleted.push(docRef)
-        docRef.update({owned: usrCompleted})
-    })
+        usrRef.update({owned: usrCompleted})
+    }
 }
 
 router.post('/create', async (req, res) => {
@@ -49,7 +51,7 @@ router.post('/create', async (req, res) => {
             time: 0,
             author: req.body.uid,
             perm: req.body.perm,
-            time: req.body.name
+            title: req.body.name
         }
         const saved = await savedOwned(req.body.uid, docRef)
         const rest = await docRef.set(data)

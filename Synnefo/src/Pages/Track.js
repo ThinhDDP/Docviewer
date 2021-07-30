@@ -5,7 +5,6 @@ import { Bar } from "react-chartjs-2"
 
 
 
-
 export default class Track extends React.Component {
     constructor() {
         super()
@@ -14,7 +13,7 @@ export default class Track extends React.Component {
             data: [],
             chartdata: [],
             selectedDocumentId: "",
-            selectedDisplay: "Chart",
+            selectedDisplay: "Table",
             dropdownOptions: [],
             views : ""
 

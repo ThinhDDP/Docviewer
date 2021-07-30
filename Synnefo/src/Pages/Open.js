@@ -12,13 +12,13 @@ import marked from 'marked'
 
 
 export default class Open extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             state: 'idle',
             minutes: 0,
             seconds: 0,
-            code: '',
+            code: props.code ? props.code : '',
             isLoading: true
         }
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -37,6 +37,9 @@ export default class Open extends React.Component {
         })
     }
     componentDidMount(){
+        if(this.state.code){
+            this.sendCode(this.state.code)
+        }
         firebase.auth().onAuthStateChanged(user => {
             if (user){
                 this.email = user.email

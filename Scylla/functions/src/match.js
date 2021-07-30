@@ -18,12 +18,13 @@ const checkIp =  async (email, doc) => {
 }
 
 const savedViewed = async(uid, docRef) => {
-    let usrRef = db.collection('Users').ref(uid)
+    let usrRef = db.collection('Users').doc(uid)
     let usr = await usrRef.get()
     let usrData = await usr.get('viewed')
     usrData.push(docRef)
     usrRef.update({viewed: usrData})
-    let email = await admin.auth().auth.getUser(uid).email
+    console.log(uid)
+    let email = (await admin.auth().getUser(uid)).email
     return (await checkIp(email, await docRef.get()))
 }
 
@@ -40,19 +41,19 @@ const getDocData = async(id) => {
 router.post('/match/:id', async (req, res) => {
     try {
         const uid = req.body.uid
+
         let docRef = db.collection('Document').doc(req.params.id)
         let doc = await docRef.get()
         if (!doc.exists){
             res.send("Document not found")
         }
-        const currentView = doc.get('views')
-        let updatedIpsList = await savedViewed(uid, docRef)
-        if(!email){
-            console.log([currentView])
-            docRef.update({ views: currentView + 1})
+        if(!uid){
             let returnId = await doc.get('id')
             res.send(await getDocData(returnId))
         }
+        const currentView = doc.get('views')
+        let updatedIpsList = await savedViewed(uid, docRef)
+
         if (updatedIpsList != null){
             console.log([updatedIpsList, currentView])
             docRef.update({emails: updatedIpsList, views: currentView + 1})

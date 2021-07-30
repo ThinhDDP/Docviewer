@@ -1,15 +1,16 @@
 import React from "react";
+import Open from './Open.js'
+
 export default class Recent extends React.Component {
     constructor(){
         super()
-        console.log("This is a useless-constructor")
+        this.state = {
+            code: 9021
+        }
     }
     render(){
         return(
-        <div>
-            <p style={{textAlign: "center"}}>Hi</p>
-
-        </div>
+        <Open code={this.state.code}/>
         )
     }
 }
