@@ -12,7 +12,6 @@ router.post('/track/:id', async (req, res) => {
     const authorUid = await doc.get('author')
     
     if (!authorUid || authorUid == uid){
-        console.log("LOL?")
         res.send([doc.get('views'), doc.get('completed'), doc.get('time')])
     }
     res.send('This Document only allows the author to track it')

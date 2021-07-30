@@ -15,7 +15,7 @@ export default class settings extends React.Component {
             email: null,
             username: null,
             photoURL: null,
-
+            uid: null,
             oldPassword: null,
             password: null,
         }
@@ -50,6 +50,7 @@ export default class settings extends React.Component {
                     email: user.email,
                     username: user.displayName,
                     photoURL: user.photoURL,
+                    uid: user.uid
                 })
                 userCopy = firebase.auth().currentUser
                 console.log(firebase.auth().currentUser.providerData[0]["providerId"])
@@ -78,13 +79,13 @@ export default class settings extends React.Component {
         let file_extension = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);
         switch (file_extension) {
             case 'jpg':
-                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.jpg`)
+                imageRef = firebase.storage().ref(`users/${this.state.uid}/profile.jpg`)
                 break;
             case 'png':
-                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.png`)
+                imageRef = firebase.storage().ref(`users/${this.state.uid}/profile.png`)
                 break;
             case 'gif':
-                imageRef = firebase.storage().ref(`users/${userCopy.uid}/profile.gif`)
+                imageRef = firebase.storage().ref(`users/${this.state.uid}/profile.gif`)
                 break;
             default:
                 alert("Your file is invalid")
@@ -110,7 +111,7 @@ export default class settings extends React.Component {
         userCopy.updateProfile({
             photoURL: photo
         }).then(() => {
-            this.info[2] = userCopy.photoURL
+            this.info[2] = this.state.photoURL
             window.location.reload()
         }).catch((e) => {
             console.log(e)
@@ -217,6 +218,7 @@ export default class settings extends React.Component {
                                 <TabPanel>
                                     <div className="account-info" >
                                         <h2>Account info</h2>
+                                        <p>UID : {this.state.uid}</p>
                                         <p>Email</p>
                                         <input value={this.state.email} onChange={this.handleEmailChanges}></input>
                                         <p>Username</p>

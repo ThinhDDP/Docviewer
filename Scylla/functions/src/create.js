@@ -29,20 +29,30 @@ const createCode = async () => {
 const db = admin.firestore()
 const router = express.Router()
 
+const savedOwned = async (uids, docRef) => {
+    uids.map(async (uid) => {
+        let docRef = db.collection('Users').doc(uid)
+        let usrCompleted = await (await docRef.get()).get('owned')
+        usrCompleted.push(docRef)
+        docRef.update({owned: usrCompleted})
+    })
+}
+
 router.post('/create', async (req, res) => {
         const code =  await createCode()
+        let docRef = db.collection('Document').doc(code)
         const data = {
             id: req.body.id,
             views: 0,
             completed: [''],
             emails: [''],
             time: 0,
-            author: req.body.uid ? req.body.uid : null
+            author: req.body.uid,
+            perm: req.body.perm,
+            time: req.body.name
         }
-        if (req.body.uid){
-            data.ownerId = req.body.uid
-        }
-        const rest = await db.collection('Document').doc(code).set(data)
+        const saved = await savedOwned(req.body.uid, docRef)
+        const rest = await docRef.set(data)
         if (rest){res.send(code)}
     }
 
