@@ -16,7 +16,7 @@ export default class Login extends React.Component {
         this.handleChangesPassword = this.handleChangesPassword.bind(this)
     }
     logIn(email, password) {
-        if (email === '' || password == '') {
+        if (email === '' || password === '') {
             document.getElementById('ref').innerHTML = "Password or email must not be empty"
             document.getElementById('ref').style.color = "red"
             return
@@ -164,7 +164,7 @@ export default class Login extends React.Component {
                         <div className="input-wrapper">
                             <input required value={this.state.password} type="password" placeholder="Password" onChange={this.handleChangesPassword}></input>
                         </div>
-                        <p>Forgot your password? <a href="#">Reset it</a></p>
+                        <p>Forgot your password? <a href="/login (REMEMBER OK? this is done due to warning)">Reset it</a></p>
                         <button className="btn" onClick={() => this.logIn(this.state.email, this.state.password)}>LOG IN</button>
                         <p>Don't have an account? <a href='/register' target="_blank" >Register</a></p>
                         <button class="g-button" onClick={() => this.signInAccount()}>

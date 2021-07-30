@@ -19,7 +19,7 @@ export default class Register extends React.Component {
         this.handleChangesName = this.handleChangesName.bind(this)
     }
     async logIn(email, password) {
-        if (email === '' || password == '') {
+        if (email === '' || password === '') {
             document.getElementById('ref').innerHTML = "Password or email must not be empty"
             document.getElementById('ref').style.color = "red"
             return
