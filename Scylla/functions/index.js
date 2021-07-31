@@ -16,6 +16,7 @@ const user = require('./src/user')
 const update = require('./src/update')
 const track = require('./src/track')
 const viewed = require('./src/viewed')
+const owned = require('./src/owned')
 const app = express()
 
 app.use(cors({ origin: true }))
@@ -27,7 +28,7 @@ app.use('/', update)
 app.use('/', user)
 app.use('/', track)
 app.use('/', viewed)
-
+app.use('/', owned)
 
 exports.api = functions
                 .region('asia-east2')

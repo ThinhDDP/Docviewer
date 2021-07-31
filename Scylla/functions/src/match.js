@@ -7,6 +7,7 @@ const db = admin.firestore()
 const router = express.Router()
 
 
+
 const checkIp =  async (email, doc) => {
     let emailsList = await doc.get('emails')
     console.log(emailsList)
@@ -21,9 +22,8 @@ const savedViewed = async(uid, docRef) => {
     let usrRef = db.collection('Users').doc(uid)
     let usr = await usrRef.get()
     let usrData = await usr.get('viewed')
-    usrData.push(await docRef.id)
+    usrData[docRef.id] = await (await docRef.get()).get('title')
     usrRef.update({viewed: usrData})
-    console.log(uid)
     let email = (await admin.auth().getUser(uid)).email
     return (await checkIp(email, await docRef.get()))
 }

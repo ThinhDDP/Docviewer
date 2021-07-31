@@ -2,6 +2,7 @@
 import React from 'react'
 import './Login.css'
 import firebase from '../firebase'
+import axios from 'axios'
 
 var storage = firebase.storage();
 var storageRef = storage.ref();
@@ -27,12 +28,13 @@ export default class Register extends React.Component {
         let imageLink = await storageRef.child('users/Default/default.png').getDownloadURL()
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(result => {
+                this.RegisterOnSever(result.user.uid)
                 result.user.updateProfile({
                     displayName: this.state.name,
                     photoURL: imageLink
                 })
                     .then(() => {
-                        window.location.href = "/"
+                        this.RegisterOnSever(result.user.uid)
                     })
             })
             .catch((e) => {
@@ -149,11 +151,16 @@ export default class Register extends React.Component {
             firebase.auth()
                 .signInWithPopup(provider)
                 .then(result => {
-                    window.location.reload()
+                    this.signInAccount(result.user.uid)
                 })
                 .catch(e => {
                     console.log(e)
                 })
+    }
+    RegisterOnSever(uid){
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
+            window.location.href = '/'
+        })
     }
     handleChangesEmail(event) {
         this.setState({
