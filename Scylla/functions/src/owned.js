@@ -5,13 +5,11 @@ const db = admin.firestore()
 const router = express.Router()
 
 
-router.post('/viewed/:uid', async (req, res) => {
+router.post('/owned/:uid', async (req, res) => {
     let uid = req.params.uid
     let doc = await db.collection('Users').doc(uid).get()
-    console.log('********' + doc)
-    let viewed = await doc.get('viewed')
-    let completed = await doc.get('completed')
-    res.send([viewed, completed])
+    let owned = await doc.get('owned')
+    res.send([owned])
 })
 
 module.exports = router
