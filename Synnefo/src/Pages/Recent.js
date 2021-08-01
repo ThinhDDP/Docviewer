@@ -82,7 +82,7 @@ export default class Recent extends React.Component {
                             <div className="sectionRecent" id="completedSection">
 
                                 <div className="cardDoc">
-                                    <p>Document-id</p>
+                                    <p>Document-id2</p>
                                     <button onClick={this.handleViewDocClick("document-id")}>View document</button>
                                 </div>
                                 <div className="cardDoc">
