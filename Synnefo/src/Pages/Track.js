@@ -139,7 +139,7 @@ export default class Track extends React.Component {
                 break;
             }
             default: {
-                break;
+                console.log("huh")
             }
         }
 
