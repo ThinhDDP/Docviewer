@@ -1,41 +1,36 @@
-.sectionRecent{
-  
-    height:fit-content;
-    margin:auto;
-
-    display:flex;
+.sectionRecent {
+    height: fit-content;
+    margin: auto;
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    
     width: 50vw;
-    
-    
+    margin-bottom: 0.6%;
 }
 
-#docLists{
+#docLists {
     background-color: #36393f;
     border-radius: 8px;
-    
-
 }
-.cardDoc{
+
+.cardDoc {
     flex-basis: auto;
-    border:0;
-    margin-bottom:01.6%
+    border: 0;
+    /* margin-bottom: 01.6% */
 }
 
-button{
+button {
     border: 0;
     width: 15vw;
     height: 6vh;
-    background-color:   #5865F2;
+    background-color: #5865F2;
     border-radius: 8px;
     font-size: 1.2rem;
     font-weight: bold;
     transition: 300ms ease;
-    
 }
-.button:hover{
+
+button:hover {
     background-color: #7289DA;
     cursor: pointer;
 }

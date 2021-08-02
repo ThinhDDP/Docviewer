@@ -1,44 +1,82 @@
 import React from "react";
 import Open from './Open.js'
 import "./Recent.css"
-import Pagination from "react-js-pagination";
+import 'react-tabs/style/react-tabs.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-// require("bootstrap/less/boostrap.less")
+
 
 export default class Recent extends React.Component {
     constructor() {
         super()
         this.state = {
             code: 9021,
-
+            viewedData: [],
+            completedData: [],
 
         }
         this.handleViewDocClick = this.handleViewDocClick.bind(this)
+        this.renderCards = this.renderCards.bind(this)
+
+
+
     }
     componentDidMount() {
-        let requestResponse = {
-
+        let data = {
+            "viewed": ["abcdefg", "abcdefg", "abcdefg", "abcdefg", "abcdefg", "abcdefg", "abcdefg",],
+            "completed": ["dewdew", "dwedwdwd", "dwdew"]
         }
 
-
-
-    }
-    renderCards(data) {
-
-    }
-    handleViewDocClick(value) {
-        console.log(value)
-
+        this.setState({
+            viewedData: data["viewed"],
+            completedData: data["completed"],
+        });
+        console.log(data)
+        this.renderCards(data["completed"], data["viewed"]);
     }
 
+    renderCards(completed, viewed) {
+        console.log(viewed.length)
+        let viewed_length = viewed.length
+        if (document.getElementById("viewedSection") == null) {
+            document.getElementById("completedSection").innerHTML = ""
+            for (let i = 0; i < completed.length; i++) {
+                document.getElementById("completedSection").innerHTML +=
+                `<div className ="cardDoc">
+                    <p>${completed[i]}</p>
+                    <button onClick=${this.handleViewDocClick} id=${completed[i]}>View document</button>    
+                </div>`
+            }
+        } else {
+            document.getElementById("viewedSection").innerHTML = ""
+            for (let i = 0; i < viewed_length; i++) {
+                document.getElementById("viewedSection").innerHTML +=
+                    `
+                <div className="cardDoc">
+                    <p>${viewed[i]}</p>
+                    <button onClick=${this.handleViewDocClick} id=${viewed[i]}>View document</button>
+                </div>
+                `
+
+            }
+        }
+
+    }
+    handleViewDocClick(event) {
+        this.setState({ code: event.target.id })
+        document.getElementById("docLists").style.display = "none"
+        document.getElementById("viewDoc").style.display = "block"
+
+    }
+    handleTabClick(selectedTab, unselectedTab) {
+        this.renderCards(this.state.completedData, this.state.viewedData)
+    }
     render() {
-
         return (
             <div className="wrapper">
                 <div id="docLists">
 
 
-                    <Tabs>
+                    <Tabs onSelect={(firstTab, lastTab) => this.handleTabClick(firstTab, lastTab)}>
                         <TabList>
                             <Tab>Viewed Documents</Tab>
                             <Tab>Completed Documents</Tab>
@@ -46,66 +84,17 @@ export default class Recent extends React.Component {
                         <TabPanel>
                             <div id="viewed">
                                 <h3>Viewed Documents</h3>
-                                <div className="sectionRecent" id="viewedSection">
+                                <div className="sectionRecent" id="viewedSection"></div>
 
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                    <div className="cardDoc">
-                                        <p>Document-id</p>
-                                        <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                    </div>
-                                </div>
 
 
                             </div>
                         </TabPanel>
                         <TabPanel>
-                            <h3>Completed Documents</h3>
-                            <div className="sectionRecent" id="completedSection">
-
-                                <div className="cardDoc">
-                                    <p>Document-id2</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
+                            <div id="completed">
+                                <h3>Completed Documents</h3>
+                                <div className="sectionRecent" id="completedSection"></div>
                                 </div>
-                                <div className="cardDoc">
-                                    <p>Document-id</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                </div>
-                                <div className="cardDoc">
-                                    <p>Document-id</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                </div>
-                                <div className="cardDoc">
-                                    <p>Document-id</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                </div>
-                                <div className="cardDoc">
-                                    <p>Document-id</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                </div>
-                                <div className="cardDoc">
-                                    <p>Document-id</p>
-                                    <button onClick={this.handleViewDocClick("document-id")}>View document</button>
-                                </div>
-                            </div>
 
                         </TabPanel>
                     </Tabs>
