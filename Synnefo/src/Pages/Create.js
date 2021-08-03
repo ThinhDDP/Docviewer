@@ -14,13 +14,15 @@ class Create extends React.Component{
             title: '',
             isLoading: true,
             code: null,
-            provider: null
+            provider: null,
         }
         this.token = null
         this.fileId = null
         this.uid = null
         this.serverURL = 'http://localhost:3333/docviewerapi/asia-east2/api/create'
         this.optionRef = React.createRef()
+        this.email = []
+        this.handleTitleChange = this.handleTitleChange.bind(this)
     }
     signInAccount(){
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -33,6 +35,7 @@ class Create extends React.Component{
             .then(result => {
                 this.token = result.credential.accessToken
                 this.uid = result.user.uid
+                this.state.email = result.user.email
                 console.log(this.token)
                 this.listFiles()
 
@@ -84,25 +87,32 @@ class Create extends React.Component{
     createDocument(){
         console.log(this.fileId)
         let data = {
+            name: this.state.title,
             id: this.fileId
         }
         switch(this.optionRef.current.value){
             case 'Only':
-                data.uid = this.uid
+                data.perm = 'Only'
+                this.getAllEmails()
+                data.uid = this.email
                 console.log(data)
                 break
-            default:
-                this.setState({
-                    isLoading: true
-                })
-                axios.post(this.serverURL, data).then(req => {
-                    this.setState({
-                        isLoading: false,
-                        state: 'display',
-                        code: req.data
-                    })
-                })
+            case 'Everyone':
+                data.perm = 'Everyone'
+                data.uid = [this.state.email]
+                console.log(data)
+                break
         }
+        this.setState({
+            isLoading: true
+        })
+        axios.post(this.serverURL, data).then(req => {
+            this.setState({
+                isLoading: false,
+                state: 'display',
+                code: req.data
+            })
+        })
     }
     componentDidMount(){
         firebase.auth().onAuthStateChanged(user => {
@@ -122,6 +132,27 @@ class Create extends React.Component{
             }
         })
     }
+    getAllEmails(){
+        let container = document.getElementById('add')
+        let emails_input = container.getElementsByTagName('input')
+        for (let i = 0; i < emails_input.length; ++i){
+            this.email.push(emails_input[i].value.trim())
+        }
+        this.email.push(this.state.email)
+    }
+    chooseAuthor(){
+        if (this.optionRef.current.value == "Only"){
+            document.getElementById('add').style.display = "block"
+        }
+        else {
+            document.getElementById('add').style.display = "none"
+        }
+    }
+    handleTitleChange(event){
+        this.setState({
+            title: event.target.value
+        })
+    }
     linkAccount(){
         var googleProvider = new firebase.auth.GoogleAuthProvider();
         googleProvider.addScope('https://www.googleapis.com/auth/drive.readonly')
@@ -132,6 +163,13 @@ class Create extends React.Component{
         }).catch(e => {
             console.log(e)
         })
+    }
+
+    addInput(){
+        let input = document.createElement("input")
+        input.placeholder = "User's email"
+        let container = document.getElementById('add')
+        container.insertBefore(input, container.firstChild)
     }
     render(){
         if (this.state.provider === "no"){
@@ -223,24 +261,26 @@ class Create extends React.Component{
         }
         else if(this.state.state === "choose"){
             return(<div className="wrapper">
-            <div className="bg">
-                <div className="content flex" id="container">
+            <div id="container" className="bg">
                 <h6>Choose the file you would like to present</h6>
      
                 </div>
-            </div>
             </div>)
         }
         else if (this.state.state === "settings"){
             return(<div className="wrapper">
                 <div className="bg">
                     <div className="content">
+                        <input value={this.state.title} onChange={this.handleTitleChange} placeholder="Document's title"></input>
                         <h6>Who can see this file statistic</h6>
-                        <select ref={this.optionRef} name="options">
+                        <select onChange={() => this.chooseAuthor()} ref={this.optionRef} name="options">
                             <option value="Everyone">Everyone with code</option>
                             <option value="Only">Only me</option>
-                            
                         </select><br/>
+                        <div id="add" className="add" style={{display: 'none'}}>                      
+                        <input placeholder="User's email"></input><br/>
+                        <button onClick={() => this.addInput()} className="add">Add</button><br/>
+                        </div>
                         <button className="submitBtn" onClick={() => this.createDocument()}>Create document</button>
                     </div>
                 </div>

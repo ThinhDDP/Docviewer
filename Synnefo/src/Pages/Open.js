@@ -24,6 +24,8 @@ export default class Open extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.contentRef = React.createRef()
         this.email = null
+        this.startTime = null
+        this.uid = null
     }
 
     countUp(currentTime){
@@ -43,6 +45,7 @@ export default class Open extends React.Component {
         firebase.auth().onAuthStateChanged(user => {
             if (user){
                 this.email = user.email
+                this.uid = user.uid
             }
             this.setState({
                 isLoading: false
@@ -76,10 +79,30 @@ export default class Open extends React.Component {
         
     }
     startTimer(){
-        let startTime = Date.now()
+        this.startTime = Date.now()
         setInterval(() => {
-            this.countUp(startTime)
+            this.countUp(this.startTime)
         }, 1000);
+    }
+    docComplete(){
+        let seconds = Math.floor((Date.now() - this.startTime) / 1000)
+        let data = {
+            "seconds" : seconds,
+            "uid": this.uid,
+            "code": this.state.code
+        }
+        axios.post('http://localhost:3333/docviewerapi/asia-east2/api/update', data).then(result => {
+            switch (result.data){
+                case 'No account':
+                    alert("You must have an account to do this")
+                case 'This user has already completed this document':
+                    alert("You have already completed this document")
+                case 'Done':
+                    alert("Your response has been recieved")
+                default:
+                    window.location.reload()
+            }
+        })
     }
     render() {
         if(this.state.isLoading){
@@ -112,8 +135,9 @@ export default class Open extends React.Component {
                     <div className="doc">
                         
                         <div ref={this.contentRef} >
-                            Test
+
                         </div>
+                        <button onClick={() => this.docComplete()}>Complete</button>
                     </div>
                     </div>
             )
