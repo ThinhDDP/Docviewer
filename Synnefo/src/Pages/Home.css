@@ -8,3 +8,10 @@
     height: 5vh;
     background-color: #5865F2;
 }
+button{
+    border-radius: 8px;
+    
+    background-color: #5865F2;
+    width: 5vw;
+    height:5vh
+}

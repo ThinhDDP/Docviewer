@@ -19,7 +19,7 @@
     /* margin-bottom: 01.6% */
 }
 
-button {
+#docLists button {
     border: 0;
     width: 15vw;
     height: 6vh;
@@ -30,7 +30,7 @@ button {
     transition: 300ms ease;
 }
 
-button:hover {
+#docLists button:hover {
     background-color: #7289DA;
     cursor: pointer;
 }
