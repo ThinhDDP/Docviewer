@@ -27,6 +27,9 @@ router.post('/update', async (req, res) => {
     const seconds = req.body.seconds
     const code = req.body.code
     const uid = req.body.uid
+    if (!uid ){
+        res.send("No account")
+    }
     let docRef = db.collection('Document').doc(code)
     let currentCompletedList = await checkUser((await docRef.get()),uid, seconds)
     console.log(currentCompletedList)

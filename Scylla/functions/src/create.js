@@ -40,12 +40,19 @@ const createCode = async () => {
 const db = admin.firestore()
 const router = express.Router()
 
-const savedOwned = async (uids, docRef, title) => {
-    for (let i = 0; i < uids.length; ++i){
-        console.log(uids[i])
-        let usrRef = db.collection('Users').doc(uids[i])
+const toUid = async (email) => {
+    let userRecord = await admin.auth().getUserByEmail(email)
+    return userRecord.uid
+}
+
+const savedOwned = async (emails, docRef, title) => {
+    for (let i = 0; i < emails.length; ++i){
+        let uid = await toUid(emails[i])
+        console.log(uid)
+        let usrRef = db.collection('Users').doc(uid)
         let usrCompleted = await (await usrRef.get()).get('owned')
         usrCompleted[docRef.id] = title
+        console.log(usrCompleted)
         usrRef.update({owned: usrCompleted})
     }
 }
