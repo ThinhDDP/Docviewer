@@ -16,6 +16,7 @@ Make sure you have created the collection Document
 Run `git clone https://github.com/ThinhDDP/Docviewer.git`\
 Cd into Scylla `cd Docviewer/Scylla`\
 Run `firebase init`. Make sure to check the option for functions and firestore\
+Follow [this guide](https://firebase.google.com/docs/admin/setup) to setup the admin SDK\
 Run `firebase deploy --only functions` to deploy the project
 
 #### Optional (Setup firebase emulator to test changes locally)
