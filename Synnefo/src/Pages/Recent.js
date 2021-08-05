@@ -6,11 +6,12 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 
 
+
 export default class Recent extends React.Component {
     constructor() {
         super()
         this.state = {
-            code: 9021,
+            code: "",
             viewedDocs: {},
             completedDocs: {},
 
@@ -33,7 +34,7 @@ export default class Recent extends React.Component {
             "abcdef23g": "ching cheng hanj",
         }
         let viewedDocs = {
-            "viewedviewedveiwed12": "viewedDOcumentConfirm",
+            "whatijustsaw   ": "testingslow",
             "wdwhat": "test1",
             "test2": "test3",
             "test4": "tes5",
@@ -50,7 +51,7 @@ export default class Recent extends React.Component {
         document.getElementById("niceLists").style.display = "none"
         document.getElementById("viewDoc").style.display = "block"
 
-
+        console.log(event.target.innerText)
     }
     render() {
         let completedDocs = this.state.completedDocs;
@@ -61,17 +62,23 @@ export default class Recent extends React.Component {
 
         for (const document_id in completedDocs) {
             arrayDocs_completed.push(
-                <div className="cardDoc">
-                    <p>{completedDocs[document_id]}</p>
-                    <button onClick={this.handleViewDocClick} id={document_id}>View document</button>
+
+                <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
+                    <img src="https://cdn.iconscout.com/icon/free/png-256/document-970-453728.png" id={document_id}></img>
+                    <div className="container">
+                        <p id={document_id}>{completedDocs[document_id]}</p>
+                    </div>
                 </div>
             )
         }
+
         for (const document_id in viewedDocs) {
             arrayDocs_viewed.push(
-                <div className="cardDoc">
-                    <p>{viewedDocs[document_id]}</p>
-                    <button onClick={this.handleViewDocClick} id={document_id}>View document</button>
+                <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
+                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
+                    <div className="container">
+                        <p id={document_id}>{viewedDocs[document_id]}</p>
+                    </div>
                 </div>
             )
         }

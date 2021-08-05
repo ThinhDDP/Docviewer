@@ -16,22 +16,26 @@
 .cardDoc {
     flex-basis: auto;
     border: 0;
-    /* margin-bottom: 01.6% */
-}
-
-#docLists button {
-    border: 0;
-    width: 15vw;
-    height: 6vh;
-    background-color: #5865F2;
-    border-radius: 8px;
+    margin:01.6%;
+    width:10vw;
     font-size: 1.2rem;
-    font-weight: bold;
-    transition: 300ms ease;
+    text-align: left;
+    word-wrap: break-word;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    min-width: 5vw;
+    
+    transition: 300ms ease; 
+
+}
+.cardDoc:hover{
+    /* background-color: #7289Da; */
+    cursor:pointer;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
-#docLists button:hover {
-    background-color: #7289DA;
-    cursor: pointer;
+.cardDoc img{
+    margin: auto;
+    height: 10vh;
+    border-radius: 5px 5px 0 0;
 }
 
