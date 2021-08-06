@@ -12,7 +12,7 @@ import Settings from './Pages/Settings'
 import Open from './Pages/Open'
 import Track from './Pages/Track'
 import Recent from "./Pages/Recent"
-
+import CheckPublic from './Pages/CheckPublic';
 
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
             <Route path="/settings" component={Settings}></Route>
             <Route path="/track" component={Track}></Route>
             <Route path="/recent" component={Recent}></Route>
+            <Route paht="/checkpublic" component={CheckPublic}></Route>
           </Switch>
         </BrowserRouter>
 

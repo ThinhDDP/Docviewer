@@ -66,6 +66,7 @@ class Header extends React.Component{
               <MenuItem><Link to="/create">Create</Link></MenuItem>
               <MenuItem><Link to="/open">Open</Link></MenuItem>
               <MenuItem><Link to="/track">Track</Link></MenuItem>
+              <MenuItem><Link to="/checkpublic">Check public</Link></MenuItem>
           </SubMenu>
            
         </Menu>
