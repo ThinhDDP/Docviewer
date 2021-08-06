@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import React from 'react'
 import "firebase/auth"
 import './Login.css'
-
+import axios from 'axios'
 
 
 export default class Login extends React.Component {
@@ -136,11 +136,17 @@ export default class Login extends React.Component {
         firebase.auth()
             .signInWithPopup(provider)
             .then(result => {
-                window.location.reload()
+                this.RegisterOnSever(result.user.uid)
             })
             .catch(e => {
                 console.log(e)
             })
+    }
+    RegisterOnSever(uid){
+        console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
+            window.location.href = '/'
+        })
     }
     handleChangesEmail(event) {
         this.setState({

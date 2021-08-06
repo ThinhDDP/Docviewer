@@ -5,11 +5,14 @@ const db = admin.firestore()
 const router = express.Router()
 
 
+const toEmail = async (uid) => {
+    return (await admin.auth().getUser(uid)).email
+}
 
 const checkUser = async (doc, uid, time) => {
     let completedList = await doc.get('completed')
     if (!completedList.hasOwnProperty(uid)){
-        completedList[uid] = time
+        completedList[await toEmail(uid)] = time
         return completedList
     }
     return null

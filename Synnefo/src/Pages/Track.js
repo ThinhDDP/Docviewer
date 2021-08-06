@@ -1,7 +1,9 @@
 import "./Track.css"
 import React from "react";
 import { Bar } from 'react-chartjs-2';
-
+import axios from "axios";
+import Loading from '../Components/Loading'
+import firebase from '../firebase'
 
 
 export default class Track extends React.Component {
@@ -17,54 +19,68 @@ export default class Track extends React.Component {
             tableRows: [],
             chartData: [],
             views: 0,
-            currentPiceOfData: {}
-
+            currentPiceOfData: {},
+            isLoading: true
         }
         this.viewStats = this.viewStats.bind(this)
         this.renderStats = this.renderStats.bind(this)
+        this.uid = null
     }
     componentDidMount() {
-
-
-        let documents_ids = {
-            "code1": "title1",
-            "code2": "title2",
-            "code3": "title3",
-            "code4": "title4",
-            "code5": "title5",
-            "code6": "title6"
-        }
-
-
-        this.setState({
-            document_ids: documents_ids,
+        firebase.auth().onAuthStateChanged(user => {
+            if (user){
+                this.setState({
+                    isLoading: false
+                })
+                this.uid = user.uid
+                this.getDocIds()
+            }
+            else {
+                this.setState({
+                    isLoading: "notLoggedIn"
+                })
+            }
         })
-
-
+    }
+    getDocIds(){
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/owned/${this.uid}`).then(result => {
+            console.log(result)
+            this.setState({
+                document_ids: result.data[0],
+            })
+        })
     }
     viewStats(event) {
         let id = event.target.id
         this.setState({
             document: id,
+            isLoading: true
+        })
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${id}`).then(result => {
+            console.log(result)
+            this.setState({
+                isLoading: false
+            })
+
+            this.renderStats(result.data)
+            document.getElementById("superDocs").style.display = "none"
+            document.getElementById("docStats").style.display = "block"
 
         })
-        let currentDocumentData = {}
-        this.renderStats(currentDocumentData)
-        document.getElementById("superDocs").style.display = "none"
-        document.getElementById("docStats").style.display = "block"
+
 
 
 
     }
     renderStats(document) {
-
+        console.log("Loaded")
         let currentDocumentData = document
 
-        let uidsAndTime = currentDocumentData["complete-time"]
+        let uidsAndTime = currentDocumentData[1]
         let tableRows = []
         let users = []
         let time = []
-        let views = "" + currentDocumentData["total-views"]
+        let views = "" + currentDocumentData[0]
         for (const uid in uidsAndTime) { //render table
             tableRows.push(
                 <tr>
@@ -97,76 +113,95 @@ export default class Track extends React.Component {
         document.getElementById("docStats").style.display = "none"
     }
     render() {
-        let data = this.state.data
-
-        // rendering doc cards
-        let documents = this.state.document_ids
-
-        let jsxDocumentsLists = []
-        for (const docId in documents) {
-            jsxDocumentsLists.push(
-                <div className="cardDoc" onClick={this.viewStats} id={docId}>
-                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docId}></img>
-                    <div className="container">
-                        <p id={docId}>{documents[docId]}</p>
-                    </div>
-                </div>
+        if (this.state.isLoading){
+            return (
+                <Loading/>
             )
-
         }
+        else if (this.state.isLoading == "notLoggedIn"){
+            return (
+                <div className="wrapper">
+                    <div className="bg">
+                        <div className="content">
+                            <h3>You must be logged in to use this feauture</h3>
+                        </div>
+                    </div>
+                </div>
 
+            )
+        }
+        else if (!this.state.isLoading){
+            let data = this.state.data
 
-
-        let currentDocument = this.state.document
-
-        let options = {
-            scales: {
-                yAxes: [
-                    {
-                        ticks: {
-                            beginAtZero: true,
+            // rendering doc cards
+            let documents = this.state.document_ids
+    
+            let jsxDocumentsLists = []
+            for (const docId in documents) {
+                jsxDocumentsLists.push(
+                    <div className="cardDoc" onClick={this.viewStats} id={docId}>
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docId}></img>
+                        <div className="container">
+                            <p id={docId}>{documents[docId]}</p>
+                        </div>
+                    </div>
+                )
+    
+            }
+    
+    
+    
+            let currentDocument = this.state.document
+    
+            let options = {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true,
+                            },
                         },
-                    },
-                ],
-            },
-            maintainAspectRatio: false
+                    ],
+                },
+                maintainAspectRatio: false
+            }
+            let chartdata = this.state.chartData
+            return (
+                <div>
+                    <div className="wrapper needbg" id="superDocs">
+                        <div id="docs">
+                            <h3>Choose a document to view its stats</h3>
+                            <div className="cardLists">
+                                {jsxDocumentsLists}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="docStats" style={{ display: "none" }} className="wrapper">
+    
+                        <div id="docsstats">
+                            <p onClick={this.goBack}> &larr; Back</p>
+                            <h3>Stats for {currentDocument}</h3>
+                            <p>This document has {this.state.views} views</p>
+                            <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
+                                <Bar data={this.state.chartData} options={options} />
+                            </div>
+                            <div id="table" style={{ width: "50vw", margin: "auto", textAlign: "left" }}>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>User's email</th>
+                                            <th>Time (in seconds)</th>
+                                        </tr>
+                                        {this.state.tableRows}
+                                    </tbody>
+                                </table>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            )
         }
-        let chartdata = this.state.chartData
-        return (
-            <div>
-                <div className="wrapper needbg" id="superDocs">
-                    <div id="docs">
-                        <h3>Choose a document to view its stats</h3>
-                        <div className="cardLists">
-                            {jsxDocumentsLists}
-                        </div>
-                    </div>
-                </div>
-                <div id="docStats" style={{ display: "none" }} className="wrapper">
-
-                    <div id="docsstats">
-                        <p onClick={this.goBack}> &larr; Back</p>
-                        <h3>Stats for {currentDocument}</h3>
-                        <p>This document has {this.state.views} views</p>
-                        <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
-                            <Bar data={this.state.chartData} options={options} />
-                        </div>
-                        <div id="table" style={{ width: "50vw", margin: "auto", textAlign: "left" }}>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>User UID</th>
-                                        <th>Time (in seconds)</th>
-                                    </tr>
-                                    {this.state.tableRows}
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        )
     }
 }
