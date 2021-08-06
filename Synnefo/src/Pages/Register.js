@@ -151,13 +151,14 @@ export default class Register extends React.Component {
             firebase.auth()
                 .signInWithPopup(provider)
                 .then(result => {
-                    this.signInAccount(result.user.uid)
+                    this.RegisterOnSever(result.user.uid)
                 })
                 .catch(e => {
                     console.log(e)
                 })
     }
     RegisterOnSever(uid){
+        console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
             window.location.href = '/'
         })
