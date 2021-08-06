@@ -1,28 +1,64 @@
 import "./Track.css"
 import React from "react";
 import Dropdown from "react-dropdown";
-import { Bar } from "react-chartjs-2"
+import { Bar } from 'react-chartjs-2';
 
 
+// const Data = (props) => {
+//     let tableData = props.tableData;
+//     let jsxTable = []
+//     console.log(props)
+//     for (const uid in tableData) {
+//         jsxTable.push(
+//             <tr>
+//                 <td>{uid}</td>
+//                 <td>{tableData[uid]}</td>
+//             </tr>
+//         )
+//     }
+//     return (
+//         <div>
+//             <p onClick={console.log("need to go back")}> ← Back</p>
+//             <p>Your document has a total of {props.views} views</p>
+//             <div className="chart">
+//                 <Bar data={props.Data} options={{ scales: { yAxes: [{ ticks: { beginAtZero: true, }, },], }, maintainAspectRatio: false }}></Bar>
+//             </div>
+//             <div className="table">
+//                 <table>
+//                     <tr>
+//                         <th>User UID</th>
+//                         <th>Time (in seconds)</th>
+//                     </tr>
+//                     {jsxTable}
+//                 </table>
+//             </div>
+//         </div>
+//     )
 
+
+// }
 export default class Track extends React.Component {
     constructor() {
         super()
 
         this.state = {
             data: [],
-            chartdata: [],
-            selectedDocumentId: "",
-            selectedDisplay: "Table",
-            dropdownOptions: [],
-            views : ""
+
+            document_ids: [],
+
+            document: "",
+            tableRows: [],
+            chartData: [],
+            views: 0,
 
 
         }
-        this.renderChart = this.renderChart.bind(this)
-        this.renderTable = this.renderTable.bind(this)
-        this.changeDocument = this.changeDocument.bind(this)
-        this.changeDisplayData = this.changeDisplayData.bind(this)
+        // this.renderChart = this.renderChart.bind(this)
+        // this.renderTable = this.renderTable.bind(this)
+        // this.changeDocument = this.changeDocument.bind(this)
+        // this.changeDisplayData = this.changeDisplayData.bind(this)
+        this.viewStats = this.viewStats.bind(this)
+        this.renderStats = this.renderStats.bind(this)
     }
     componentDidMount() {
         //the time will be counted in seconds
@@ -46,6 +82,54 @@ export default class Track extends React.Component {
                     "uid2": 35
                 },
                 "total-time": 23
+            }, {
+                "document-code": "23e24e672e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
+            }, {
+                "document-code": "23e214e2e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
+            }, {
+                "document-code": "23e245e2e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
+            }, {
+                "document-code": "23e214e2e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
+            }, {
+                "document-code": "23e24ee2e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
+            }, {
+                "document-code": "23e2w4e2e",
+                "total-views": 93,
+                "complete-time": {
+                    "uid": 11,
+                    "uid2": 35
+                },
+                "total-time": 23
             },
 
         ] //data for testing
@@ -56,162 +140,137 @@ export default class Track extends React.Component {
             dropdowns.push(data[i]["document-code"])
         }
 
-        this.setState({ data: data, dropdownOptions: dropdowns, selectedDocumentId: data[0]["document-code"], isLoading:false })
-        console.log(data)
-        this.renderChart(data[0]) //default is the first one
-        this.setState({views: "" + data[0]["total-views"]})
-        
-    }
-    renderChart(data) {
-
-        let users = [];
-        let time = [];
-        for (let element in data["complete-time"]) {
-            users.push(element)
-            time.push(data["complete-time"][element])
-        }
-        users.push("Total")
-        time.push(data["total-time"])
         this.setState({
-            chartdata: {
-                labels: users,
-                datasets: [
-                    {
-                        label: "Time(in seconds)",
-                        data: time,
-                        backgroundColor: 'rgb(255, 99, 132)'
-                    },
+            data: data,
+            document_ids: dropdowns,
 
-                ]
+        })
+        // console.log(data)
+        // this.renderChart(data[0]) //default is the first one
+        // this.setState({ views: "" + data[0]["total-views"] })
 
-            }
+    }
+    viewStats(event) {
+        let id = event.target.id
+        this.setState({
+            document: id
         })
 
+        this.renderStats(id)
+        document.getElementById("superDocs").style.display = "none"
+        document.getElementById("docStats").style.display = "block"
+
+
+
     }
-    renderTable(data) {
-        document.getElementById("tableInfo").innerHTML = `
-            <tr>
-                <th>Users UID</th>
-                <th>Time read(seconds)</th>
-            </tr>
-        `
-        for (let element in data["complete-time"]) {
-            document.getElementById("tableInfo").innerHTML += `
-            <tr>
-                <td>${element}</td>
-                <td>${data["complete-time"][element]}</td>
-            </tr>
-            `
+    renderStats(document) {
+        let data = this.state.data
+        let documents = this.state.document_ids
+        let currentDocument = document
+
+        let uidsAndTime = data[documents.indexOf(currentDocument)]["complete-time"]
+        let tableRows = []
+        let users = []
+        let time = []
+        let views = "" + data[documents.indexOf(currentDocument)]["total-views"]
+        for (const uid in uidsAndTime) { //render table
+            tableRows.push(
+                <tr>
+                    <td>{uid}</td>
+                    <td>{uidsAndTime[uid]}</td>
+                </tr>
+            )
+            users.push(uid)
+            time.push(uidsAndTime[uid])
         }
-    }
-
-    changeDocument(option) {
-        let docsIDs = this.state.dropdownOptions
-        let no = docsIDs.indexOf(option.label)
-
-        console.log(this.state.selectedDisplay)
-        console.log(this.state.selectedDocumentId)
-        switch (this.state.selectedDisplay) {
-            case "Chart": {
-                this.renderChart(this.state.data[no]);
-                this.renderChart(this.state.data[no]);
-                document.getElementById("chart").style.display = "block"
-                document.getElementById("table").style.display = "none"
-                break;
-
-            }
-
-            case "Table": {
-                this.renderChart(this.state.data[no]); 
-                this.renderChart(this.state.data[no]); 
-                document.getElementById("chart").style.display = "none"
-                document.getElementById("table").style.display = "block"
-                
-                break;
-            }
-
-            case "Both": {
-                this.renderChart(this.state.data[no])
-                this.renderTable(this.state.data[no])
-
-                document.getElementById("chart").style.display = "block"
-                document.getElementById("table").style.display = "block"
-                break;
-            }
-            default: {
-                console.log("huh")
-            }
+        let chartdata = {
+            labels: users,
+            datasets: [
+                {
+                    label: "Time (in seconds)",
+                    data: time,
+                    backgroundColor: 'rgb(255, 99, 132)',
+                }
+            ]
         }
-
-        let views = "" + this.state.data[no]["total-views"]
         this.setState({
-            selectedDocumentId: option.label,
+            tableRows: tableRows,
+            chartData: chartdata,
             views: views
         })
+        console.log(data)
+        console.log(documents)
+        console.log(currentDocument)
+        console.log(chartdata)
+        console.log(tableRows)
     }
-    changeDisplayData(option) {
-        let docsIds = this.state.dropdownOptions;
-        let currentDocumentNo = docsIds.indexOf(this.state.selectedDocumentId)
-
-        switch (option.label) {
-            case "Chart": {
-
-                document.getElementById("chart").style.display = "block"
-                document.getElementById("table").style.display = "none"
-                this.renderChart(this.state.data[currentDocumentNo])
-                this.renderTable(this.state.data[currentDocumentNo])
-                break;
-            }
-            case "Table": {
-                document.getElementById("chart").style.display = "none"
-                document.getElementById("table").style.display = "block"
-                this.renderTable(this.state.data[currentDocumentNo])
-                this.renderChart(this.state.data[currentDocumentNo])
-                break;
-            }
-            case "Both": {
-                document.getElementById("chart").style.display = "block"
-                document.getElementById("table").style.display = "block"
-                this.renderTable(this.state.data[currentDocumentNo])
-                this.renderChart(this.state.data[currentDocumentNo])
-                break;
-            }
-            default: {
-                console.log("error occured")
-            }
-        }
+    goBack() {
+        document.getElementById("superDocs").style.display = "block"
+        document.getElementById("docStats").style.display = "none"
     }
     render() {
+        let data = this.state.data
 
+        // rendering doc cards
+        let documents = this.state.document_ids
+        let jsxDocumentsLists = documents.map(id => {
+            return (
+                <div className="cardDoc" onClick={this.viewStats} id={id}>
+                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={id}></img>
+                    <div className="container">
+                        <p id={id}>{id}</p>
+                    </div>
+                </div>
+            )
+        })
+        let currentDocument = this.state.document
+
+        let options = {
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    },
+                ],
+            },
+            maintainAspectRatio: false
+        }
+        let chartdata = this.state.chartData
         return (
-            <div className="content">
-                <div id="documents-list" style={{ width: "1%", margin: "auto", textAlign:"center" }}>
-                    <Dropdown
-                        options={this.state.dropdownOptions}
-                        value={this.state.dropdownOptions[0]}
-                        onChange={this.changeDocument}
-                    />
-                </div>
-                <div id="chooseTypeofData" style={{ width: "1%", margin: "auto" }}>
-                    <Dropdown
-                        options={["Chart", "Table", "Both"]}
-                        value={"Chart"}
-                        onChange={this.changeDisplayData}
-                    />
-                </div>
-                <div className="stats">
-                    <p style={{ textAlign: "center" }}>This document has {this.state.views} views</p>
-                    <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
-                        <Bar data={this.state.chartdata} options={{ scales: { yAxes: [{ ticks: { beginAtZero: true, }, },], }, maintainAspectRatio: false }}></Bar>
-
-                    </div>
-                    <div id="table" style={{ display: "none", width: "50vw", margin: "auto" }}>
-                        <table id="tableInfo">
-
-                        </table>
+            <div>
+                <div className="wrapper needbg" id="superDocs">
+                    <div id="docs">
+                        <h3>Choose a document to view its stats</h3>
+                        <div className="cardLists">
+                            {jsxDocumentsLists}
+                        </div>
                     </div>
                 </div>
+                <div id="docStats" style={{ display: "none" }} className="wrapper">
 
+                    <div id="docsstats">
+                        <p onClick={this.goBack}> &larr; Back</p>
+                        <h3>Stats for {currentDocument}</h3>
+                        <p>This document has {this.state.views} views</p>
+                        <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
+                            <Bar data={this.state.chartData} options={options} />
+                        </div>
+                        <div id="table" style={{ width: "50vw", margin: "auto", textAlign: "left" }}>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>User UID</th>
+                                        <th>Time (in seconds)</th>
+                                    </tr>
+                                    {this.state.tableRows}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
             </div>
 
         )
