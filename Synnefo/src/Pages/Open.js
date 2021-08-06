@@ -3,7 +3,7 @@ import firebase from "firebase";
 import React from "react";
 import "./Open.css";
 import marked from 'marked'
-
+import Loading from "../Components/Loading";
 
 
 // function resizeIframe(obj) {
@@ -57,8 +57,9 @@ export default class Open extends React.Component {
         this.setState({
             isLoading: true
         })
+        console.log(this.state.isLoading)
         let data = {
-            email: this.email
+            uid: this.uid
         }
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/match/${this.state.code}`, data).then(result => {
             this.setState({
@@ -95,25 +96,22 @@ export default class Open extends React.Component {
             switch (result.data){
                 case 'No account':
                     alert("You must have an account to do this")
+                    break
                 case 'This user has already completed this document':
                     alert("You have already completed this document")
+                    break
                 case 'Done':
                     alert("Your response has been recieved")
-                default:
-                    window.location.reload()
+                    break
+
             }
+            window.location.reload()
         })
     }
     render() {
         if(this.state.isLoading){
             return(
-                <div className="wrapper">
-                    <div className="bg">
-                        <div className="content codeInput">
-                            <h4>Fetching data</h4>
-                        </div>
-                    </div>
-                </div>
+                <Loading/>
             )
         }
         else if(!this.state.isLoading && this.state.state === "idle"){

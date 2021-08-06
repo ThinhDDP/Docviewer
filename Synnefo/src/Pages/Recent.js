@@ -3,17 +3,19 @@ import Open from './Open.js'
 import "./Recent.css"
 import 'react-tabs/style/react-tabs.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
-
+import axios from 'axios'
+import Loading from "../Components/Loading.js";
+import firebase from "firebase";
 
 
 export default class Recent extends React.Component {
     constructor() {
         super()
         this.state = {
-            code: "",
+            code: null,
             viewedDocs: {},
             completedDocs: {},
+            isLoading: true
 
         }
         this.handleViewDocClick = this.handleViewDocClick.bind(this)
@@ -23,28 +25,16 @@ export default class Recent extends React.Component {
 
     }
     componentDidMount() {
-
-        let completedDocs = {
-            "abcdefg": "dwdewdw",
-            "abcdefg1": "whatareyouupto",
-            "abcdefg2": "welcomeToMyChannel",
-            "abcdef3g": "Never gonna give up you up",
-            "abcdefg3": "hello friends",
-            "abcdefg4": "what the heck",
-            "abcdef23g": "ching cheng hanj",
-        }
-        let viewedDocs = {
-            "whatijustsaw   ": "testingslow",
-            "wdwhat": "test1",
-            "test2": "test3",
-            "test4": "tes5",
-            "test6": "test7",
-            "test8": "test9"
-        }
-        this.setState({
-            completedDocs: completedDocs,
-            viewedDocs: viewedDocs
-        });
+        firebase.auth().onAuthStateChanged(user => {
+            if (user){
+                this.getViewedAndCompleted(user.uid)
+            }
+            else{
+                this.setState({
+                    isLoading: "notLoggedIn "
+                })
+            }
+        })
     }
     handleViewDocClick(event) {
         this.setState({ code: event.target.id })
@@ -53,7 +43,38 @@ export default class Recent extends React.Component {
 
         console.log(event.target.innerText)
     }
+    handleViewDocClick(event) {
+        this.setState({ code: event.target.id })
+        console.log(this.state.code)
+
+    }
+    getViewedAndCompleted(uid){
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/viewed/${uid}`).then(result => {
+            this.setState({
+                viewedDocs: result.data[0],
+                completedDocs: result.data[1],
+                isLoading: false
+            })
+        })
+    }
     render() {
+        if (this.state.isLoading){
+            return (
+                <Loading/>
+            )
+        }
+        else if (this.state.isLoading == "notLoggedIn"){
+            return (
+                <div className="wrapper">
+                <div className="bg">
+                    <div className='content'>
+                        <h3>You must be signed in to create a document</h3>
+                    </div>
+                </div>
+                </div>
+            )
+        }
+        else if (!this.state.isLoading && !this.state.code){
         let completedDocs = this.state.completedDocs;
         let viewedDocs = this.state.viewedDocs;
 
@@ -112,11 +133,17 @@ export default class Recent extends React.Component {
                         </Tabs>
                     </div>
                 </div>
-                <div id="viewDoc" style={{ display: "none" }}>
-                    <Open code={this.state.code} />
-                </div>
             </div>
 
         )
+        }
+        else if (this.state.code){
+            return (
+                <>
+                    <Open code={this.state.code}/>
+                </>
+            )
+        }
     }
+
 }

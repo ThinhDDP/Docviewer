@@ -3,6 +3,7 @@ import React from 'react';
 import "./Settings.css";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import Loading from '../Components/Loading';
 
 var imageRef;
 let userCopy;
@@ -188,13 +189,8 @@ export default class Settings extends React.Component {
 
     render() {
         if (this.state.isLoading) {
-            return (<div className="wrapper">
-                <div className="bg">
-                    <div className="content">
-                        <p id="loader">Loading user info</p>
-                    </div>
-                </div>
-            </div>
+            return (
+                        <Loading/>
             )
         }
         else {

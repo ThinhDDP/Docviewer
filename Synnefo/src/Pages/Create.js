@@ -271,7 +271,7 @@ class Create extends React.Component{
             return(<div className="wrapper">
                 <div className="bg">
                     <div className="content">
-                        <input value={this.state.title} onChange={this.handleTitleChange} placeholder="Document's title"></input>
+                        <input required value={this.state.title} onChange={this.handleTitleChange} placeholder="Document's title"></input>
                         <h6>Who can see this file statistic</h6>
                         <select onChange={() => this.chooseAuthor()} ref={this.optionRef} name="options">
                             <option value="Everyone">Everyone with code</option>
