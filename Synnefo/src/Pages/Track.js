@@ -1,42 +1,9 @@
 import "./Track.css"
 import React from "react";
-import Dropdown from "react-dropdown";
 import { Bar } from 'react-chartjs-2';
 
 
-// const Data = (props) => {
-//     let tableData = props.tableData;
-//     let jsxTable = []
-//     console.log(props)
-//     for (const uid in tableData) {
-//         jsxTable.push(
-//             <tr>
-//                 <td>{uid}</td>
-//                 <td>{tableData[uid]}</td>
-//             </tr>
-//         )
-//     }
-//     return (
-//         <div>
-//             <p onClick={console.log("need to go back")}> ← Back</p>
-//             <p>Your document has a total of {props.views} views</p>
-//             <div className="chart">
-//                 <Bar data={props.Data} options={{ scales: { yAxes: [{ ticks: { beginAtZero: true, }, },], }, maintainAspectRatio: false }}></Bar>
-//             </div>
-//             <div className="table">
-//                 <table>
-//                     <tr>
-//                         <th>User UID</th>
-//                         <th>Time (in seconds)</th>
-//                     </tr>
-//                     {jsxTable}
-//                 </table>
-//             </div>
-//         </div>
-//     )
 
-
-// }
 export default class Track extends React.Component {
     constructor() {
         super()
@@ -50,113 +17,39 @@ export default class Track extends React.Component {
             tableRows: [],
             chartData: [],
             views: 0,
-
+            currentPiceOfData: {}
 
         }
-        // this.renderChart = this.renderChart.bind(this)
-        // this.renderTable = this.renderTable.bind(this)
-        // this.changeDocument = this.changeDocument.bind(this)
-        // this.changeDisplayData = this.changeDisplayData.bind(this)
         this.viewStats = this.viewStats.bind(this)
         this.renderStats = this.renderStats.bind(this)
     }
     componentDidMount() {
-        //the time will be counted in seconds
 
 
-        let data = [
-            {
-                "document-code": "233e24",
-                "total-views": 99,
-                "complete-time": {
-                    "uid": 12,
-                    "uid2": 34
-                },
-                "total-time": 23
-            },
-            {
-                "document-code": "23e24e2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e24e672e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e214e2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e245e2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e214e2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e24ee2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            }, {
-                "document-code": "23e2w4e2e",
-                "total-views": 93,
-                "complete-time": {
-                    "uid": 11,
-                    "uid2": 35
-                },
-                "total-time": 23
-            },
-
-        ] //data for testing
-
-        // data = [] // your data here
-        let dropdowns = []
-        for (let i = 0; i < data.length; i++) {
-            dropdowns.push(data[i]["document-code"])
+        let documents_ids = {
+            "code1": "title1",
+            "code2": "title2",
+            "code3": "title3",
+            "code4": "title4",
+            "code5": "title5",
+            "code6": "title6"
         }
 
-        this.setState({
-            data: data,
-            document_ids: dropdowns,
 
+        this.setState({
+            document_ids: documents_ids,
         })
-        // console.log(data)
-        // this.renderChart(data[0]) //default is the first one
-        // this.setState({ views: "" + data[0]["total-views"] })
+
 
     }
     viewStats(event) {
         let id = event.target.id
         this.setState({
-            document: id
-        })
+            document: id,
 
-        this.renderStats(id)
+        })
+        let currentDocumentData = {}
+        this.renderStats(currentDocumentData)
         document.getElementById("superDocs").style.display = "none"
         document.getElementById("docStats").style.display = "block"
 
@@ -164,15 +57,14 @@ export default class Track extends React.Component {
 
     }
     renderStats(document) {
-        let data = this.state.data
-        let documents = this.state.document_ids
-        let currentDocument = document
 
-        let uidsAndTime = data[documents.indexOf(currentDocument)]["complete-time"]
+        let currentDocumentData = document
+
+        let uidsAndTime = currentDocumentData["complete-time"]
         let tableRows = []
         let users = []
         let time = []
-        let views = "" + data[documents.indexOf(currentDocument)]["total-views"]
+        let views = "" + currentDocumentData["total-views"]
         for (const uid in uidsAndTime) { //render table
             tableRows.push(
                 <tr>
@@ -198,11 +90,7 @@ export default class Track extends React.Component {
             chartData: chartdata,
             views: views
         })
-        console.log(data)
-        console.log(documents)
-        console.log(currentDocument)
-        console.log(chartdata)
-        console.log(tableRows)
+
     }
     goBack() {
         document.getElementById("superDocs").style.display = "block"
@@ -213,16 +101,22 @@ export default class Track extends React.Component {
 
         // rendering doc cards
         let documents = this.state.document_ids
-        let jsxDocumentsLists = documents.map(id => {
-            return (
-                <div className="cardDoc" onClick={this.viewStats} id={id}>
-                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={id}></img>
+
+        let jsxDocumentsLists = []
+        for (const docId in documents) {
+            jsxDocumentsLists.push(
+                <div className="cardDoc" onClick={this.viewStats} id={docId}>
+                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docId}></img>
                     <div className="container">
-                        <p id={id}>{id}</p>
+                        <p id={docId}>{documents[docId]}</p>
                     </div>
                 </div>
             )
-        })
+
+        }
+
+
+
         let currentDocument = this.state.document
 
         let options = {
