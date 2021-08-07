@@ -148,24 +148,24 @@ export default class Track extends React.Component {
         document.getElementById("checkPublic").style.display="block"
     }
     render() {
-        // if (this.state.isLoading) {
-        //     return (
-        //         <Loading />
-        //     )
-        // }
-        // else if (this.state.isLoading == "notLoggedIn") {
-        //     return (
-        //         <div className="wrapper">
-        //             <div className="bg">
-        //                 <div className="content">
-        //                     <h3>You must be logged in to use this feauture</h3>
-        //                 </div>
-        //             </div>
-        //         </div>
+        if (this.state.isLoading) {
+            return (
+                <Loading />
+            )
+        }
+        else if (this.state.isLoading == "notLoggedIn") {
+            return (
+                <div className="wrapper">
+                    <div className="bg">
+                        <div className="content">
+                            <h3>You must be logged in to use this feauture</h3>
+                        </div>
+                    </div>
+                </div>
 
-        //     )
-        // }
-        // else if (!this.state.isLoading) {
+            )
+        }
+        else if (!this.state.isLoading) {
             let data = this.state.data
 
             // rendering doc cards
@@ -253,5 +253,5 @@ export default class Track extends React.Component {
 
             )
         }
-    // }
+    }
 }
