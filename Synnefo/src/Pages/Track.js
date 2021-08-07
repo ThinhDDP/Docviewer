@@ -148,7 +148,7 @@ export default class Track extends React.Component {
         document.getElementById("checkPublic").style.display="block"
     }
     render() {
-        if (this.state.isLoading) {
+        if (this.state.isLoading == true) {
             return (
                 <Loading />
             )
@@ -210,7 +210,7 @@ export default class Track extends React.Component {
                                 <div className="cardDoc" onClick={this.renderDocPublicSection}>
                                     <img src="https://img.icons8.com/cotton/2x/public-cloud.png"></img>
                                     <div className="cotainer">
-                                        <p>Check if doc is public</p>
+                                        <p>Public Document</p>
                                     </div>
                                 </div>
                                 {jsxDocumentsLists}
@@ -243,7 +243,7 @@ export default class Track extends React.Component {
                     <div className="wrapper" id="checkPublic" style={{ display: "none" }}>
                         <div className="bg">
                             <p onClick={this.goBackCheckPublic}> &larr; Back</p>
-                            <h3>Check if your document is public</h3>
+                            <h3>Track public Document</h3>
                             <input type="text" placeholder="Document code"></input><br></br>
                             <button onClick={this.checkPublic}>Check</button>
                             <p id="output">{this.state.output}</p>
