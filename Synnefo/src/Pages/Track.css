@@ -42,4 +42,18 @@
     height: 10vh;
     border-radius: 5px 5px 0 0;
 }
+#checkPublic input{
+    width: 15vw;
+    height:5vh;
+    margin: auto;
+}
+#checkPublic button{
+
+    font-size: 1.2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    width:8vw;
+    height: 5vh;
+}
 

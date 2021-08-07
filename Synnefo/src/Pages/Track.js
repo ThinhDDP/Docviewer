@@ -20,15 +20,18 @@ export default class Track extends React.Component {
             chartData: [],
             views: 0,
             currentPiceOfData: {},
-            isLoading: true
+            isLoading: true,
+            code: "",
+            output: "",
         }
         this.viewStats = this.viewStats.bind(this)
         this.renderStats = this.renderStats.bind(this)
+        this.checkPublic = this.checkPublic.bind(this)
         this.uid = null
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            if (user){
+            if (user) {
                 this.setState({
                     isLoading: false
                 })
@@ -42,7 +45,7 @@ export default class Track extends React.Component {
             }
         })
     }
-    getDocIds(){
+    getDocIds() {
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/owned/${this.uid}`).then(result => {
             console.log(result)
             this.setState({
@@ -112,30 +115,62 @@ export default class Track extends React.Component {
         document.getElementById("superDocs").style.display = "block"
         document.getElementById("docStats").style.display = "none"
     }
-    render() {
-        if (this.state.isLoading){
-            return (
-                <Loading/>
-            )
-        }
-        else if (this.state.isLoading == "notLoggedIn"){
-            return (
-                <div className="wrapper">
-                    <div className="bg">
-                        <div className="content">
-                            <h3>You must be logged in to use this feauture</h3>
-                        </div>
-                    </div>
-                </div>
+    checkPublic() {
+        let code = this.state.code;
+        let Ispublic = false;
+        //do some stuff
+        // set the public variable
 
-            )
+        if(Ispublic == false){
+            document.getElementById("output").style.color = "red";
+            this.setState({
+                output: "This document is not public"
+            })
+        }else{
+            document.getElementById("output").style.color = "green";
+            this.setState({
+                output: "This document is public"
+            })
         }
-        else if (!this.state.isLoading){
+
+    }
+    handleDocIdChange(event){
+        this.setState({
+            code : event.target.value
+        })
+    }
+    goBackCheckPublic() {
+        document.getElementById("superDocs").style.display = "block"
+        document.getElementById("checkPublic").style.display="none"
+    }
+    renderDocPublicSection(){
+        document.getElementById("superDocs").style.display = "none"
+        document.getElementById("checkPublic").style.display="block"
+    }
+    render() {
+        // if (this.state.isLoading) {
+        //     return (
+        //         <Loading />
+        //     )
+        // }
+        // else if (this.state.isLoading == "notLoggedIn") {
+        //     return (
+        //         <div className="wrapper">
+        //             <div className="bg">
+        //                 <div className="content">
+        //                     <h3>You must be logged in to use this feauture</h3>
+        //                 </div>
+        //             </div>
+        //         </div>
+
+        //     )
+        // }
+        // else if (!this.state.isLoading) {
             let data = this.state.data
 
             // rendering doc cards
             let documents = this.state.document_ids
-    
+
             let jsxDocumentsLists = []
             for (const docId in documents) {
                 jsxDocumentsLists.push(
@@ -146,13 +181,13 @@ export default class Track extends React.Component {
                         </div>
                     </div>
                 )
-    
+
             }
-    
-    
-    
+
+
+
             let currentDocument = this.state.document
-    
+
             let options = {
                 scales: {
                     yAxes: [
@@ -172,12 +207,18 @@ export default class Track extends React.Component {
                         <div id="docs">
                             <h3>Choose a document to view its stats</h3>
                             <div className="cardLists">
+                                <div className="cardDoc" onClick={this.renderDocPublicSection}>
+                                    <img src="https://img.icons8.com/cotton/2x/public-cloud.png"></img>
+                                    <div className="cotainer">
+                                        <p>Check if doc is public</p>
+                                    </div>
+                                </div>
                                 {jsxDocumentsLists}
                             </div>
                         </div>
                     </div>
                     <div id="docStats" style={{ display: "none" }} className="wrapper">
-    
+
                         <div id="docsstats">
                             <p onClick={this.goBack}> &larr; Back</p>
                             <h3>Stats for {currentDocument}</h3>
@@ -195,13 +236,22 @@ export default class Track extends React.Component {
                                         {this.state.tableRows}
                                     </tbody>
                                 </table>
-    
+
                             </div>
                         </div>
                     </div>
+                    <div className="wrapper" id="checkPublic" style={{ display: "none" }}>
+                        <div className="bg">
+                            <p onClick={this.goBackCheckPublic}> &larr; Back</p>
+                            <h3>Check if your document is public</h3>
+                            <input type="text" placeholder="Document code"></input><br></br>
+                            <button onClick={this.checkPublic}>Check</button>
+                            <p id="output">{this.state.output}</p>
+                        </div>
+                    </div>
                 </div>
-    
+
             )
         }
-    }
+    // }
 }
