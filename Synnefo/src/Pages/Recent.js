@@ -31,7 +31,7 @@ export default class Recent extends React.Component {
             }
             else{
                 this.setState({
-                    isLoading: "notLoggedIn "
+                    isLoading: "notLoggedIn"
                 })
             }
         })
@@ -58,7 +58,7 @@ export default class Recent extends React.Component {
         })
     }
     render() {
-        if (this.state.isLoading){
+        if (this.state.isLoading == true){
             return (
                 <Loading/>
             )
