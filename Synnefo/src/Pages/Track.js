@@ -120,7 +120,7 @@ export default class Track extends React.Component {
         let Ispublic = false;
         //do some stuff
         // set the public variable
-
+        document.getElementById("output") = ""
         if(Ispublic == false){
             document.getElementById("output").style.color = "red";
             this.setState({
@@ -131,6 +131,9 @@ export default class Track extends React.Component {
             this.setState({
                 output: "This document is public"
             })
+            //that is the code
+            this.renderStats(code)
+
         }
 
     }
@@ -146,6 +149,7 @@ export default class Track extends React.Component {
     renderDocPublicSection(){
         document.getElementById("superDocs").style.display = "none"
         document.getElementById("checkPublic").style.display="block"
+        document.getElementById("output") = ""
     }
     render() {
         if (this.state.isLoading == true) {
