@@ -30,6 +30,6 @@ app.use('/', track)
 app.use('/', viewed)
 app.use('/', owned)
 
-exports.api = functions
-                .region('asia-east2')
-                .https.onRequest(app)
+app.listen(3000, () => {
+    console.log("Server setup")
+})
