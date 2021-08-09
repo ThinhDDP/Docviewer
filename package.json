@@ -1,12 +1,8 @@
 {
-  "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "name": "docviewer",
+  "description": "docviewer heroku api",
   "scripts": {
-    "serve": "firebase emulators:start --only functions",
-    "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "start": "node app.js"
   },
   "engines": {
     "node": "14"
@@ -14,9 +10,10 @@
   "main": "./src/index.js",
   "dependencies": {
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "firebase-admin": "^9.8.0",
     "firebase-backend": "^0.2.2",
-    "firebase-functions": "^3.14.1"
+    "parse-google-docs-json": "^1.1.1"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"
