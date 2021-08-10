@@ -88,6 +88,9 @@ export default class Settings extends React.Component {
             case 'gif':
                 imageRef = firebase.storage().ref(`users/${this.state.uid}/profile.gif`)
                 break;
+            case 'jpeg':
+                imageRef = firebase.storage().ref(`users/${this.state.uid}/profile.jpeg`)
+                break;
             default:
                 alert("Your file is invalid")
                 this.progress.current.style.display = "none"
@@ -163,7 +166,7 @@ export default class Settings extends React.Component {
     }
     changePSW() {
         if (window.confirm("Do you really want to change your password? (This action cannot be undone)")) {
-            
+
             if (firebase.auth().currentUser.providerData[0]["providerId"] === "password") {
                 let credential = firebase.auth.EmailAuthProvider.credential(this.state.email, this.state.oldPassword)
 
@@ -180,7 +183,7 @@ export default class Settings extends React.Component {
 
                 })
 
-            }else{
+            } else {
                 alert("This option is not avalible to Google authenicated users")
             }
 
@@ -190,7 +193,7 @@ export default class Settings extends React.Component {
     render() {
         if (this.state.isLoading) {
             return (
-                        <Loading/>
+                <Loading />
             )
         }
         else {

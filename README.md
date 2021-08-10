@@ -26,3 +26,6 @@ Then run `firebase emulator:start`to start the emulator (Note: the emulator rese
 
 
 *Free*: Inorder to use Cloud Functions, Firebase **Required** you to have the Pay As You Go (Blaze plan), but Cloud Functions can remained free up to 2M invocations/month, 5GB outbound/month, ... for more details [see here](https://firebase.google.com/pricing#cloud-functions)
+
+### With Heroku
+#### Switch to heroku branch

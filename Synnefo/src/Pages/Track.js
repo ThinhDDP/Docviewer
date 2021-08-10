@@ -140,8 +140,7 @@ export default class Track extends React.Component {
             }
         })
         let Ispublic = false;
-        // document.getElementById("output") = ""
-        
+
 
     }
     handleDocIdChange(event){
@@ -156,7 +155,6 @@ export default class Track extends React.Component {
     renderDocPublicSection(){
         document.getElementById("superDocs").style.display = "none"
         document.getElementById("checkPublic").style.display="block"
-        // document.getElementById("output") = ""
     }
     render() {
         if (this.state.isLoading == true) {
