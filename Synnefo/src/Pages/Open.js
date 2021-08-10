@@ -4,7 +4,7 @@ import React from "react";
 import "./Open.css";
 import marked from 'marked'
 import Loading from "../Components/Loading";
-
+import {useParams} from 'react-router-dom'
 
 // function resizeIframe(obj) {
 //     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
@@ -19,7 +19,7 @@ export default class Open extends React.Component {
             minutes: 0,
             seconds: 0,
             code: props.code ? props.code : '',
-            isLoading: true
+            isLoading: true,
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.contentRef = React.createRef()
@@ -27,7 +27,14 @@ export default class Open extends React.Component {
         this.startTime = null
         this.uid = null
     }
+    getURLParams(){
+        let url = new URL(window.location)
+        let idParams = new URLSearchParams(url.search)
 
+        this.setState({
+            code: idParams.get('code')
+        }, () => {this.sendCode(this.state.code)})
+    }
     countUp(currentTime){
         let offset = Math.floor((Date.now() - currentTime) / 1000)
 
@@ -39,6 +46,7 @@ export default class Open extends React.Component {
         })
     }
     componentDidMount(){
+        this.getURLParams()
         if(this.state.code){
             this.sendCode(this.state.code)
         }
@@ -110,6 +118,7 @@ export default class Open extends React.Component {
     }
     render() {
         if(this.state.isLoading){
+            console.log("Loading")
             return(
                 <Loading/>
             )

@@ -117,24 +117,30 @@ export default class Track extends React.Component {
     }
     checkPublic() {
         let code = this.state.code;
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, {uid: this.uid}).then((data)=> {
+            if (data.data != "This Document only allows the author to track it"){
+                Ispublic = true;
+            }
+            else {
+                Ispublic = false;
+            }
+            if(Ispublic == false){
+                document.getElementById("output").style.color = "red";
+                this.setState({
+                    output: "This document is not public"
+                })
+            }else{
+                document.getElementById("output").style.color = "green";
+                this.setState({
+                    output: "This document is public"
+                })
+                //that is the code
+                this.renderStats(data.data)
+    
+            }
+        })
         let Ispublic = false;
-        //do some stuff
-        // set the public variable
-        document.getElementById("output").innerHTML = ""
-        if(Ispublic == false){
-            document.getElementById("output").style.color = "red";
-            this.setState({
-                output: "This document is not public"
-            })
-        }else{
-            document.getElementById("output").style.color = "green";
-            this.setState({
-                output: "This document is public"
-            })
-            //that is the code
-            this.renderStats(code)
 
-        }
 
     }
     handleDocIdChange(event){
@@ -149,7 +155,6 @@ export default class Track extends React.Component {
     renderDocPublicSection(){
         document.getElementById("superDocs").style.display = "none"
         document.getElementById("checkPublic").style.display="block"
-        document.getElementById("output").innerHTML = ""
     }
     render() {
         if (this.state.isLoading == true) {
