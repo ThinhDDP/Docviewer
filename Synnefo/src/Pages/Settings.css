@@ -66,3 +66,15 @@
     width:10vw;
     height: 5vh;
 }
+.banner{
+    display:inline-block;
+    text-align: center;
+    margin-left: 22%;
+    margin-right: auto;
+    width: 30.5vw;
+    height: 11vh;
+    background-color: #36393f;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 1%;
+}

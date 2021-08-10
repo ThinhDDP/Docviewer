@@ -33,12 +33,18 @@ export default class Register extends React.Component {
                     displayName: this.state.name,
                     photoURL: imageLink
                 })
+
                     .then(() => {
+                        firebase.auth().currentUser.sendEmailVerification()
+                            .then(() => {
+                                console.log("sent email")
+                            })
                         this.RegisterOnSever(result.user.uid)
+
                     })
             })
             .catch((e) => {
-                
+
 
                 let authError = e.code.substr(5, e.length);
 
@@ -142,22 +148,22 @@ export default class Register extends React.Component {
 
 
     }
-    signInAccount(){
-            var provider = new firebase.auth.GoogleAuthProvider();
-            provider.addScope('https://www.googleapis.com/auth/drive.readonly');
-            this.setState({
-                isLoading: true
+    signInAccount() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/drive.readonly');
+        this.setState({
+            isLoading: true
+        })
+        firebase.auth()
+            .signInWithPopup(provider)
+            .then(result => {
+                this.RegisterOnSever(result.user.uid)
             })
-            firebase.auth()
-                .signInWithPopup(provider)
-                .then(result => {
-                    this.RegisterOnSever(result.user.uid)
-                })
-                .catch(e => {
-                    console.log(e)
-                })
+            .catch(e => {
+                console.log(e)
+            })
     }
-    RegisterOnSever(uid){
+    RegisterOnSever(uid) {
         console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
             window.location.href = '/'
@@ -196,9 +202,9 @@ export default class Register extends React.Component {
                         <button className="btn" onClick={() => this.logIn(this.state.email, this.state.password)}>REGISTER</button>
                         <p>Already have an account? <a href='/login' target="_blank" >Login</a></p>
                         <button class="g-button" onClick={() => this.signInAccount()}>
-                        <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo"/>
-                        <p class="g-text">Sign in with Google</p>
-                    </button>
+                            <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo" />
+                            <p class="g-text">Sign in with Google</p>
+                        </button>
                     </div>
                 </div>
             </div>

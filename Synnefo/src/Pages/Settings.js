@@ -19,11 +19,10 @@ export default class Settings extends React.Component {
             uid: null,
             oldPassword: null,
             password: null,
+           
         }
         this.info = []
-        // this.displayName = React.createRef(); Changing text by innerHTML, really?
-        // this.email = React.createRef(); 
-        // this.avatar = React.createRef();
+
         this.value = 0
         this.inputFile = React.createRef()
         this.progress = React.createRef()
@@ -189,7 +188,13 @@ export default class Settings extends React.Component {
 
         }
     }
-
+    resendEmail(){
+        let currentuser = firebase.auth().currentUser
+        firebase.auth().currentUser.sendEmailVerification()
+        .then(()=>{
+            window.location = window.location
+        })
+    }
     render() {
         if (this.state.isLoading) {
             return (
@@ -197,9 +202,23 @@ export default class Settings extends React.Component {
             )
         }
         else {
+            let banner = ""
+            let currentUser = firebase.auth().currentUser
+            if(currentUser.emailVerified == true){
+                banner = ""
+            }
+            else{
+                banner= (<div className="banner">
+                    <p>Your email address is not verified, check your inbox or resend</p>
+                    <button onClick={this.resendEmail}>Resend</button>
+                </div>)
+            }
+            console.log(currentUser.emailVerified)
             return (
                 <div className="wrapper">
+                    {banner}
                     <div className="avatar">
+                        
                         <img src={this.state.photoURL} alt="Your avatar"></img>
                         <input type='file' id='file' ref={this.inputFile} style={{ display: 'none' }} onChange={this.uploadFile} accept="image/*" />
                         <button onClick={() => this.openFile()}>Change avatar</button>
@@ -207,7 +226,10 @@ export default class Settings extends React.Component {
                     </div>
                     <br />
                     <div className="bg">
+
                         <div className="content">
+                            
+                            
                             <Tabs>
                                 <TabList>
                                     <Tab>Account info</Tab>
