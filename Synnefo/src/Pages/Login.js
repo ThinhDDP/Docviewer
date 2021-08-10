@@ -10,10 +10,15 @@ export default class Login extends React.Component {
         super();
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            resetEmail: '',
         }
         this.handleChangesEmail = this.handleChangesEmail.bind(this)
         this.handleChangesPassword = this.handleChangesPassword.bind(this)
+        this.handleChangeResetEmail = this.handleChangeResetEmail.bind(this)
+        this.renderLogin = this.renderLogin.bind(this)
+        this.renderResetPassword = this.renderResetPassword.bind(this)
+        this.sendResetEmail = this.sendResetEmail.bind(this)
     }
     logIn(email, password) {
         if (email === '' || password === '') {
@@ -127,7 +132,7 @@ export default class Login extends React.Component {
             })
 
     }
-    signInAccount(){
+    signInAccount() {
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/drive.readonly');
         this.setState({
@@ -142,7 +147,7 @@ export default class Login extends React.Component {
                 console.log(e)
             })
     }
-    RegisterOnSever(uid){
+    RegisterOnSever(uid) {
         console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
             window.location.href = '/'
@@ -158,25 +163,68 @@ export default class Login extends React.Component {
             password: event.target.value
         })
     }
+    renderResetPassword() {
+        document.getElementById("login").style.display = "none"
+        document.getElementById("resetPassword").style.display = "block"
+    }
+    renderLogin() {
+        document.getElementById("login").style.display = "block"
+        document.getElementById("resetPassword").style.display = "none"
+    }
+    handleChangeResetEmail(event) {
+        this.setState({
+            resetEmail: event.target.value
+        })
+    }
+    sendResetEmail(){
+        let email = this.state.resetEmail
+        firebase.auth().sendPasswordResetEmail(email)
+            .then(()=>{
+                this.setState({
+                    error: "",
+                    output: "Reset password email has been sent"
+                })
+            })
+            .catch((error)=>{
+                this.setState({
+                    output: "",
+                    error: `${error.message}`
+                })
+            })
+    }
     render() {
         return (
             <div className="wrapper">
                 <div className="bg">
                     <div className='content'>
-                        <p id="ref"></p>
-                        <div className="title-wrapper">
-                            <input required value={this.state.email} placeholder="Email or Username" onChange={this.handleChangesEmail}></input>
+                        <div id="login">
+                            <p id="ref"></p>
+                            <div className="title-wrapper">
+                                <input required value={this.state.email} placeholder="Email or Username" onChange={this.handleChangesEmail}></input>
+                            </div>
+                            <div className="input-wrapper">
+                                <input required value={this.state.password} type="password" placeholder="Password" onChange={this.handleChangesPassword}></input>
+                            </div>
+                            <p>Forgot your password? <a onClick={this.renderResetPassword}>Reset it</a></p>
+                            <button className="btn" onClick={() => this.logIn(this.state.email, this.state.password)}>LOG IN</button>
+                            <p>Don't have an account? <a href='/register' target="_blank" >Register</a></p>
+                            <button class="g-button" onClick={() => this.signInAccount()}>
+                                <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo" />
+                                <p class="g-text">Sign in with Google</p>
+                            </button>
                         </div>
-                        <div className="input-wrapper">
-                            <input required value={this.state.password} type="password" placeholder="Password" onChange={this.handleChangesPassword}></input>
+                        <div id="resetPassword" style={{ display: "none" }}>
+
+                            <p onClick={this.renderLogin}>&larr; Back</p>
+                            <p>Enter your email so we can send a reset password email</p>
+                            <div className="title-wrapper">
+                                <input required placeholder="Email" onChange={this.handleChangeResetEmail}></input>
+                            </div>
+                            <p style={{color: "red"}}>{this.state.error}</p>
+                            <p style={{color: "green"}}>{this.state.output}</p>
+                            <button onClick={this.sendResetEmail}>Send email</button>
+
                         </div>
-                        <p>Forgot your password? <a href="/login (REMEMBER OK? this is done due to warning)">Reset it</a></p>
-                        <button className="btn" onClick={() => this.logIn(this.state.email, this.state.password)}>LOG IN</button>
-                        <p>Don't have an account? <a href='/register' target="_blank" >Register</a></p>
-                        <button class="g-button" onClick={() => this.signInAccount()}>
-                        <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo"/>
-                        <p class="g-text">Sign in with Google</p>
-                        </button>
                     </div>
                 </div>
             </div>
