@@ -11,12 +11,14 @@
   "engines": {
     "node": "14"
   },
-  "main": "./src/index.js",
+  "main": "index.js",
   "dependencies": {
     "dotenv": "^10.0.0",
     "firebase-admin": "^9.8.0",
     "firebase-backend": "^0.2.2",
-    "firebase-functions": "^3.14.1"
+    "firebase-functions": "^3.14.1",
+    "nodemailer": "^6.6.3",
+    "parse-google-docs-json": "^1.1.1"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"
