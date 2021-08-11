@@ -23,6 +23,8 @@ class Create extends React.Component{
         this.optionRef = React.createRef()
         this.email = []
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.mail = []
+        this.sendMail = this.sendMail.bind(this)
     }
     signInAccount(){
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -43,6 +45,15 @@ class Create extends React.Component{
             .catch(e => {
                 console.log(e)
             })
+    }
+    switchState(){
+        this.perm = this.optionRef.current.value
+        if (this.perm == "Only"){
+            this.getAllEmails()
+        }
+        this.setState({
+            state: "emails"
+        })
     }
     listFiles(){
         axios.get('https://www.googleapis.com/drive/v3/files?q=mimeType%3D%27application%2Fvnd.google-apps.document%27%20and%20trashed%3Dfalse', {
@@ -66,7 +77,8 @@ class Create extends React.Component{
         })
     }
     createButtons(files){
-        for (let i = 0; i < files.length; ++i){
+        let length = files.length
+        for (let i = 0; i < length; ++i){
             let newBtn = document.createElement('button')
             newBtn.innerHTML = files[i].name
             newBtn.className = "fileBtn"
@@ -84,13 +96,13 @@ class Create extends React.Component{
             state: "settings"
         })
     }
-    createDocument(){
+    async createDocument(){
         console.log(this.fileId)
         let data = {
             name: this.state.title,
             id: this.fileId
         }
-        switch(this.optionRef.current.value){
+        switch(this.perm){
             case 'Only':
                 data.perm = 'Only'
                 this.getAllEmails()
@@ -106,13 +118,8 @@ class Create extends React.Component{
         this.setState({
             isLoading: true
         })
-        axios.post(this.serverURL, data).then(req => {
-            this.setState({
-                isLoading: false,
-                state: 'display',
-                code: req.data
-            })
-        })
+        let result = await axios.post(this.serverURL, data)
+        return result.data
     }
     componentDidMount(){
         firebase.auth().onAuthStateChanged(user => {
@@ -169,7 +176,31 @@ class Create extends React.Component{
         let input = document.createElement("input")
         input.placeholder = "User's email"
         let container = document.getElementById('add')
+        let linebreak = document.createElement("br");
+        input.appendChild(linebreak)
         container.insertBefore(input, container.firstChild)
+    }
+    async sendMail(){
+        let container = document.getElementById('add')
+        let emails_input = container.getElementsByTagName('input')
+        for (let i = 0; i < emails_input.length; ++i){
+            this.mail.push(emails_input[i].value.trim())
+        }
+        console.log(this.mail)
+        this.createDocument().then((code) => {
+            this.setState({
+                code: code
+            })
+            axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/mail/${code}`, {
+                email: this.mail,
+                author: this.email
+            }).then((result) => {
+                this.setState({
+                    state: 'display',
+                    isLoading: false
+                })
+            })
+        })
     }
     render(){
         if (this.state.provider === "no"){
@@ -267,6 +298,24 @@ class Create extends React.Component{
                 </div>
             </div>)
         }
+        else if (this.state.state == "emails"){
+            return (
+                <div className="wrapper">
+                    <div className="bg">
+                    
+                        <div className="content">
+                        <div className="mail">
+                        <div id="add" className="add">                      
+                        <input placeholder="User's email"></input><br/>
+                        <button onClick={() => this.addInput()} className="add">Add</button><br/>
+                        </div>
+                        </div>
+                        <button onClick={() => this.sendMail()}>Create</button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
         else if (this.state.state === "settings"){
             return(<div className="wrapper">
                 <div className="bg">
@@ -281,7 +330,7 @@ class Create extends React.Component{
                         <input placeholder="User's email"></input><br/>
                         <button onClick={() => this.addInput()} className="add">Add</button><br/>
                         </div>
-                        <button className="submitBtn" onClick={() => this.createDocument()}>Create document</button>
+                        <button className="submitBtn" onClick={() => this.switchState()}>Next</button>
                     </div>
                 </div>
             </div>

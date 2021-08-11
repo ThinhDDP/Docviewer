@@ -89,7 +89,7 @@ input:focus{
 .add input{
     margin-left: 0vw;
     margin-top: 2%;
-    width: 15vw;
+    width: 20vw;
     height: 3.5vh;
 }
 
@@ -170,9 +170,14 @@ label{
 }
 
 .bg{
-    min-height: 30vh;
+    min-height: 50vh;
     overflow: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+
+.mail{
+    text-align: center;
 }

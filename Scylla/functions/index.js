@@ -17,6 +17,7 @@ const update = require('./src/update')
 const track = require('./src/track')
 const viewed = require('./src/viewed')
 const owned = require('./src/owned')
+const mail = require('./src/mail')
 const app = express()
 
 app.use(cors({ origin: true }))
@@ -29,6 +30,7 @@ app.use('/', user)
 app.use('/', track)
 app.use('/', viewed)
 app.use('/', owned)
+app.use('/', mail)
 
 exports.api = functions
                 .region('asia-east2')

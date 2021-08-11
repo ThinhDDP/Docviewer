@@ -46,10 +46,8 @@ export default class Open extends React.Component {
         })
     }
     componentDidMount(){
-        this.getURLParams()
-        if(this.state.code){
-            this.sendCode(this.state.code)
-        }
+
+
         firebase.auth().onAuthStateChanged(user => {
             if (user){
                 this.email = user.email
@@ -58,6 +56,10 @@ export default class Open extends React.Component {
             this.setState({
                 isLoading: false
             })
+            this.getURLParams()
+            if(this.state.code){
+                this.sendCode(this.state.code)
+            }
         })
         
     }
