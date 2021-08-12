@@ -1,9 +1,8 @@
-
 import React from 'react'
 import './Login.css'
 import firebase from '../firebase'
 import axios from 'axios'
-
+import Modal from 'react-modal'
 var storage = firebase.storage();
 var storageRef = storage.ref();
 
@@ -13,7 +12,8 @@ export default class Register extends React.Component {
         this.state = {
             email: '',
             password: '',
-            name: ''
+            name: '',
+            modalOpen: false,
         }
         this.handleChangesEmail = this.handleChangesEmail.bind(this)
         this.handleChangesPassword = this.handleChangesPassword.bind(this)
@@ -28,7 +28,7 @@ export default class Register extends React.Component {
         let imageLink = await storageRef.child('users/Default/default.png').getDownloadURL()
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(result => {
-                this.RegisterOnSever(result.user.uid)
+
                 result.user.updateProfile({
                     displayName: this.state.name,
                     photoURL: imageLink
@@ -40,7 +40,6 @@ export default class Register extends React.Component {
                                 console.log("sent email")
                             })
                         this.RegisterOnSever(result.user.uid)
-
                     })
             })
             .catch((e) => {
@@ -166,7 +165,9 @@ export default class Register extends React.Component {
     RegisterOnSever(uid) {
         console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
-            window.location.href = '/'
+            this.setState({
+                modalOpen: true
+            })
         })
     }
     handleChangesEmail(event) {
@@ -205,6 +206,14 @@ export default class Register extends React.Component {
                             <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo" />
                             <p class="g-text">Sign in with Google</p>
                         </button>
+                        <Modal isOpen={this.state.modalOpen}>
+                            <h3 style={{textAlign:"center"}}>You just registered! Now you can choose to read the manual or start using it now</h3>
+                            <div className="flex-buttons">
+                                <button onClick={() =>{window.location = "/manual"}}>Yes, I want to read the manual</button>
+                                <button onClick={() =>{window.location = "/"}}>No, I have used this site before</button>
+                            </div>
+                            
+                        </Modal>
                     </div>
                 </div>
             </div>

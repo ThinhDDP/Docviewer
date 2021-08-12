@@ -23,7 +23,7 @@
     padding-left: 25vw;
     background-image: url("./../Images/pexels-philippe-donn-1169754.jpg");
     height: 100vh;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-size: cover;
 
 }
@@ -83,6 +83,17 @@ input:focus{
     }
 }
 
+.flex-buttons{
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex-buttons button{
+    margin: 5%;
+    text-align: center;
+    width:10vw;
+}
 
 /* p{
     color: #4f545c ;

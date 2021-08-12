@@ -12,6 +12,7 @@ import Settings from './Pages/Settings'
 import Open from './Pages/Open'
 import Track from './Pages/Track'
 import Recent from "./Pages/Recent"
+import Manual from './Pages/Manual';
 
 
 
@@ -29,7 +30,7 @@ function App() {
             <Route path="/settings" component={Settings}></Route>
             <Route path="/track" component={Track}></Route>
             <Route path="/recent" component={Recent}></Route>
-            
+            <Route path="/manual" component={Manual}></Route>
           </Switch>
         </BrowserRouter>
 

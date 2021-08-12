@@ -1,0 +1,17 @@
+.manual{
+    background-color: #36393f;
+    width: 50vw;
+    height: 200vh;
+    text-align: left;
+    padding: 2%;
+}
+.manualDiv .wrapper{
+    text-align: center;
+    padding: 10vw;
+    padding-left: 25vw;
+    background-image: url("./../Images/pexels-philippe-donn-1169754.jpg");
+    height: 200vh;
+    background-repeat: repeat;
+    background-size: cover;
+
+}

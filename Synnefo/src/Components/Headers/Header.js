@@ -8,6 +8,7 @@ import {FaHome} from 'react-icons/fa'
 import {GiBackwardTime} from 'react-icons/gi'
 import {HiDocumentText} from 'react-icons/hi'
 import {FiArrowLeftCircle, FiArrowRightCircle} from 'react-icons/fi'
+import {GrDocumentVerified} from 'react-icons/gr'
 import Avatar from './Avatar';
 
 
@@ -61,7 +62,8 @@ class Header extends React.Component{
           <MenuItem MenuItem icon={<FaHome />}>
             <Link to="/">Home</Link>
           </MenuItem>
-          <MenuItem NemuItem icon={<GiBackwardTime/>}><Link to="/recent">Recent</Link></MenuItem>
+          <MenuItem MenuItem icon={<GiBackwardTime/>}><Link to="/recent">Recent</Link></MenuItem>
+          <MenuItem MenuItem icon={<GrDocumentVerified />}><Link to="/manual">Manual</Link></MenuItem>
           <SubMenu title="Document" icon={<HiDocumentText/>}>
               <MenuItem><Link to="/create">Create</Link></MenuItem>
               <MenuItem><Link to="/open">Open</Link></MenuItem>
