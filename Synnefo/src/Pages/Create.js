@@ -77,6 +77,7 @@ class Create extends React.Component{
         })
     }
     createButtons(files){
+        files = [... new Set(files)] //Remove dupes
         let length = files.length
         for (let i = 0; i < length; ++i){
             let newBtn = document.createElement('button')
@@ -193,7 +194,7 @@ class Create extends React.Component{
             })
             axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/mail/${code}`, {
                 email: this.mail,
-                author: this.email
+                author: this.state.email
             }).then((result) => {
                 this.setState({
                     state: 'display',

@@ -9,6 +9,13 @@ const toEmail = async (uid) => {
     return (await admin.auth().getUser(uid)).email
 }
 
+const deleteViewed = async (id, usrRef) => {
+    let viewedList = await (await usrRef.get()).get('viewed')
+    delete viewedList[id]
+    const update = await usrRef.update({viewed: viewedList})
+}
+
+
 const checkUser = async (doc, uid, time) => {
     let completedList = await doc.get('completed')
     if (!completedList.hasOwnProperty(uid)){
@@ -22,7 +29,7 @@ const updateUserInfo = async (uid, docRef) => {
     let usrRef = db.collection('Users').doc(uid)
     let completedList = await (await usrRef.get()).get('completed')
     completedList[docRef.id] = await (await docRef.get()).get('title')
-    console.log(completedList)
+    const deleteId = await deleteViewed(docRef.id, usrRef)
     const update = await usrRef.update({completed: completedList})
 }
 
@@ -35,7 +42,6 @@ router.post('/update', async (req, res) => {
     }
     let docRef = db.collection('Document').doc(code)
     let currentCompletedList = await checkUser((await docRef.get()),uid, seconds)
-    console.log(currentCompletedList)
     if (currentCompletedList != null){
         updateUserInfo(uid, docRef)
         console.log(currentCompletedList)
