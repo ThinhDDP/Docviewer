@@ -30,10 +30,13 @@ export default class Open extends React.Component {
     getURLParams(){
         let url = new URL(window.location)
         let idParams = new URLSearchParams(url.search)
-
-        this.setState({
-            code: idParams.get('code')
-        }, () => {this.sendCode(this.state.code)})
+        let code = idParams.get('code')
+        if (code != null){
+            this.setState({
+                code: idParams.get('code')
+            }, () => {this.sendCode(this.state.code)})
+        }
+        return
     }
     countUp(currentTime){
         let offset = Math.floor((Date.now() - currentTime) / 1000)
@@ -67,7 +70,6 @@ export default class Open extends React.Component {
         this.setState({
             isLoading: true
         })
-        console.log(this.state.isLoading)
         let data = {
             uid: this.uid
         }
@@ -120,7 +122,6 @@ export default class Open extends React.Component {
     }
     render() {
         if(this.state.isLoading){
-            console.log("Loading")
             return(
                 <Loading/>
             )
