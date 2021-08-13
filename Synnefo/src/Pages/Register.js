@@ -206,7 +206,7 @@ export default class Register extends React.Component {
                             <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/157px-Google_%22G%22_Logo.svg.png" alt="Google Logo" />
                             <p class="g-text">Sign in with Google</p>
                         </button>
-                        <Modal isOpen={this.state.modalOpen}>
+                        <Modal isOpen={this.state.modalOpen} className="Modal" >
                             <h3 style={{textAlign:"center"}}>You just registered! Now you can choose to read the manual or start using it now</h3>
                             <div className="flex-buttons">
                                 <button onClick={() =>{window.location = "/manual"}}>Yes, I want to read the manual</button>

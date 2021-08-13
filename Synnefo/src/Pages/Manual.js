@@ -1,5 +1,11 @@
 import React from 'react'
 import "./Manual.css"
+import LoggedPic from "../Images/LoggedPic.png"
+import notLoggedPic from "../Images/notLoggedPic.png"
+import step1 from "../Images/step1.png"
+import step2 from "../Images/step2.png"
+import step3 from "../Images/step3.png"
+import step4 from "../Images/step4.png"
 export default class Manual extends React.Component {
     constructor() {
         super()
@@ -14,6 +20,11 @@ export default class Manual extends React.Component {
                 <h1 id="docviewer-manual">Docviewer manual</h1>
                 <p>This is gonna tell you how to use this website</p>
                 <h2 id="sidebar-contents">Sidebar contents</h2>
+                <div className="imgFlex">
+                    <img src={LoggedPic}></img>
+                    <img src={notLoggedPic}></img>
+                </div>
+                <p style={{textAlign:"center"}}>Images of sidebar when the user is logged in and logged in respectively</p>
                 <ol>
                     <li>User<br />
                         If the user is not signed in, it will show Register and Login.<br />
@@ -47,10 +58,21 @@ export default class Manual extends React.Component {
                 </ol>
                 <h2 id="how-to-use-the-site-in-the-best-way">How to use the site in the best way</h2>
                 <p>Following these steps is the way that we desired you to use this site.</p>
+                <div className="steps">
+                    <img src={step1}></img>
+                    <p>Step 1. Navigate to register or login page</p>
+                    <img src={step2}></img>
+                    <p>Step 2. Link your google account and continue to use the wizard</p>
+                    <img src={step3}></img>
+                    <p>Step 3. Open a document or your just created document</p>
+                    <img src={step4}></img>
+                    <p>Step 4. Track a public document or yours</p>
+                </div>
+                
                 <ol>
 
                     <li>Make an account or sign in with google<br />
-                        Make an option if they want to sign in with google or with email, or make a new account with email or google.</li>
+                        Make an option if they want to sign in with google or with email, or make a new account with email or google. It will then popup to get you redirect to homepage or this manual</li>
                     <li>Create a document<br />
                         Most people often create an account to get recent documents or make a document. To make a document, you can do as what the wizard said in the Create section, as said in the Sidebar Content.</li>
                     <li>Open a document<br />
