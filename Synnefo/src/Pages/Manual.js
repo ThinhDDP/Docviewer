@@ -24,7 +24,7 @@ export default class Manual extends React.Component {
                     <img src={LoggedPic}></img>
                     <img src={notLoggedPic}></img>
                 </div>
-                <p style={{textAlign:"center"}}>Images of sidebar when the user is logged in and logged in respectively</p>
+                <p style={{textAlign:"center"}}>Images of sidebar when the user is logged in and not logged in respectively</p>
                 <ol>
                     <li>User<br />
                         If the user is not signed in, it will show Register and Login.<br />
