@@ -68,7 +68,8 @@ router.post('/create', async (req, res) => {
             time: 0,
             author: req.body.uid,
             perm: req.body.perm,
-            title: req.body.name
+            title: req.body.name,
+            type: req.body.type
         }
         const saved = await savedOwned(req.body.uid, docRef, req.body.name)
         const rest = await docRef.set(data)

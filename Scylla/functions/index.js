@@ -7,7 +7,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 
 admin.initializeApp({
-    credential: admin.credential.applicationDefault()
+    credential: admin.credential.applicationDefault(),
+    storageBucket: 'docviewerapi.appspot.com'
 })
 
 const create = require('./src/create')

@@ -4,8 +4,6 @@ import React from "react";
 import "./Open.css";
 import marked from 'marked'
 import Loading from "../Components/Loading";
-import {useParams} from 'react-router-dom'
-
 // function resizeIframe(obj) {
 //     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 // }
@@ -26,6 +24,7 @@ export default class Open extends React.Component {
         this.email = null
         this.startTime = null
         this.uid = null
+        this.docx = React.createRef()
     }
     getURLParams(){
         let url = new URL(window.location)
@@ -79,11 +78,17 @@ export default class Open extends React.Component {
                 state: 'open'
             })
             this.assignDoc(result.data)
-            this.startTimer()
+            // this.startTimer()
         })
     }
+
     assignDoc(data){
-        this.contentRef.current.innerHTML = marked(data)
+        if (data[1] == "office"){
+            this.contentRef.current.innerHTML = data[0]
+        }
+        else if (data[1] == "google"){
+            this.contentRef.current.innerHTML = marked(data[0])
+        }
     }
     handleInputChange(e){                                
         this.setState({
