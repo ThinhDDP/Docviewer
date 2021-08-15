@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
     "firebase": "^8.9.1",
+    "jsonwebtoken": "^8.5.1",
     "textract": "^2.5.0"
   }
 }

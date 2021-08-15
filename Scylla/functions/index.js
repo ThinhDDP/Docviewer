@@ -13,13 +13,15 @@ admin.initializeApp({
 
 const create = require('./src/create')
 const match = require('./src/match')
-const user = require('./src/user')
+const user = require('./src/user').router
 const update = require('./src/update')
 const track = require('./src/track')
 const viewed = require('./src/viewed')
 const owned = require('./src/owned')
 const mail = require('./src/mail')
+const refresh = require('./src/refresh_token')
 const app = express()
+
 
 app.use(cors({ origin: true }))
 app.use(bodyParser.json())
@@ -32,6 +34,8 @@ app.use('/', track)
 app.use('/', viewed)
 app.use('/', owned)
 app.use('/', mail)
+app.use('/', refresh)
+
 
 exports.api = functions
                 .region('asia-east2')
