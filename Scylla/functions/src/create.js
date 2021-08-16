@@ -1,13 +1,7 @@
 const express = require('express')
 const admin = require('firebase-admin')
 
-class Document{
-    constructor(title, code){
-        this.m_title = title
-        this.m_code = code
-    }
-}
-
+const auth = require('../middlewares/auth')
 
 function makeid(length) {
     var result           = '';
@@ -57,7 +51,7 @@ const savedOwned = async (emails, docRef, title) => {
     }
 }
 
-router.post('/create', async (req, res) => {
+router.post('/create', auth, async (req, res) => {
         const code =  await createCode()
         let docRef = db.collection('Document').doc(code)
         const data = {

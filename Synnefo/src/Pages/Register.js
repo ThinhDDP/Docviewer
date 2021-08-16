@@ -164,7 +164,9 @@ export default class Register extends React.Component {
     }
     RegisterOnSever(uid) {
         console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then((result) => {
+            sessionStorage.setItem("token_key", result.data[0])
+            localStorage.setItem("token_refresh", JSON.stringify(result.data[1]))
             this.setState({
                 modalOpen: true
             })

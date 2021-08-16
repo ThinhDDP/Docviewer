@@ -4,6 +4,8 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 const router = express.Router()
 
+const auth = require('../middlewares/auth')
+
 const toEmail = async (uid) => {
     return (await admin.auth().getUser(uid)).email
 }
@@ -32,7 +34,7 @@ const updateUserInfo = async (uid, docRef) => {
     const update = await usrRef.update({completed: completedList})
 }
 
-router.post('/update', async (req, res) => {
+router.post('/update', auth, async (req, res) => {
     const seconds = req.body.seconds
     const code = req.body.code
     const uid = req.body.uid

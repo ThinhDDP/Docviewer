@@ -28,7 +28,7 @@ export default class Login extends React.Component {
         }
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(userCredential => {
-                window.location.href = "/"
+                this.RegisterOnSever(userCredential.user.uid)
 
             })
             .catch((e) => {
@@ -149,8 +149,11 @@ export default class Login extends React.Component {
     }
     RegisterOnSever(uid) {
         console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then(() => {
-            window.location.href = '/'
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then((result) => {
+            console.log(result)
+            sessionStorage.setItem("token_key", result.data[0])
+            localStorage.setItem("token_refresh", JSON.stringify(result.data[1]))
+            window.location.href = "/"
         })
     }
     handleChangesEmail(event) {

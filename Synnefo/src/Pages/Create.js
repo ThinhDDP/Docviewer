@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from '../firebase'
 import './Create.css'
 import axios from 'axios'
+import axiosInstance from '../axios'
 import Loading from '../Components/Loading'
 
 // let user = firebase.auth().currentUser //This is a lazy way because .currentUser is async call, but it will prob load before the user finish typing
@@ -21,7 +22,6 @@ class Create extends React.Component {
         this.token = null
         this.fileId = null
         this.uid = null
-        this.serverURL = 'http://localhost:3333/docviewerapi/asia-east2/api/create'
         this.optionRef = React.createRef()
         this.email = []
         this.handleTitleChange = this.handleTitleChange.bind(this)
@@ -129,7 +129,7 @@ class Create extends React.Component {
         this.setState({
             isLoading: true
         })
-        let result = await axios.post(this.serverURL, data)
+        let result = await axiosInstance.post('http://localhost:3333/docviewerapi/asia-east2/api/create', data)
         return result.data
     }
     componentDidMount() {
@@ -203,7 +203,7 @@ class Create extends React.Component {
             this.setState({
                 code: code
             })
-            axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/mail/${code}`, {
+            axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/mail/${code}`, {
                 email: this.mail,
                 author: this.state.email
             }).then((result) => {

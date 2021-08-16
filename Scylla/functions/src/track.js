@@ -1,5 +1,5 @@
 const express = require('express')
-const { auth } = require('firebase-admin')
+
 const admin = require('firebase-admin')
 
 const db = admin.firestore()
