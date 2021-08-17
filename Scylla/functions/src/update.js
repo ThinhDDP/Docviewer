@@ -4,7 +4,6 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 const router = express.Router()
 
-
 const toEmail = async (uid) => {
     return (await admin.auth().getUser(uid)).email
 }
