@@ -78,7 +78,7 @@ export default class Open extends React.Component {
                 state: 'open'
             })
             this.assignDoc(result.data)
-            // this.startTimer()
+            this.startTimer()
         })
     }
 
