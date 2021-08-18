@@ -40,11 +40,18 @@ export default class Open extends React.Component {
     }
     countUp(currentTime) {
         let offset = Math.floor((Date.now() - currentTime) / 1000)
-
-
+        let seconds = (offset / 60) | 0
+        let minutes = (offset % 60) | 0
+        if (seconds < 10){
+            seconds = '0' + seconds
+        }
+        if (minutes < 10){
+            minutes = '0' + minutes
+        }
+        console.log(seconds)
         this.setState({
-            minutes: (offset / 60) | 0,
-            seconds: (offset % 60) | 0
+            minutes: seconds,
+            seconds: minutes
 
         })
     }
@@ -149,7 +156,7 @@ export default class Open extends React.Component {
                 <div className='doc-wrapper'>
                     
                     <div className="timer-box">
-                        <AiOutlineClockCircle />
+                        <AiOutlineClockCircle /> 
                         <span>You have been reading for {this.state.minutes}:{this.state.seconds}</span>
                     </div>
 

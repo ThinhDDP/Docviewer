@@ -49,14 +49,21 @@ iframe{
     background-size: cover;
 }
 .timer-box{
+
     display: flex;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     align-items: center;
     text-align: center;
-    width: 15vw;
+    width: 14vw;
     height: 5vh;
-    margin: auto;
     background-color: #5865F2;
     color:white;
     border-radius: 8px;
+    position: fixed;
+    z-index: 10; 
+    left: 85.6%;
+}
+
+.timer-box span{
+    margin-left: 0.3vw;
 }
