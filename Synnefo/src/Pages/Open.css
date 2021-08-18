@@ -48,3 +48,15 @@ iframe{
     background-repeat: no-repeat;
     background-size: cover;
 }
+.timer-box{
+    display: flex;
+    font-size: 1.1rem;
+    align-items: center;
+    text-align: center;
+    width: 15vw;
+    height: 5vh;
+    margin: auto;
+    background-color: #5865F2;
+    color:white;
+    border-radius: 8px;
+}

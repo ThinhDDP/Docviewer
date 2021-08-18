@@ -1,7 +1,7 @@
 .manual{
     background-color: #36393f;
     width: 50vw;
-    height: 500vh;
+    height: fit-content;
     text-align: left;
     padding: 2%;
 }
@@ -10,7 +10,7 @@
     padding: 10vw;
     padding-left: 25vw;
     background-image: url("./../Images/pexels-philippe-donn-1169754.jpg");
-    height: 200vh;
+    height:500vh;
     background-repeat: repeat;
     background-size: cover;
 
@@ -25,4 +25,9 @@
 }
 .steps img{
     width: 50vw;
+}
+.text-arrow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
