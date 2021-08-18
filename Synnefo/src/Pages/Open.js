@@ -87,7 +87,7 @@ export default class Open extends React.Component {
         if (data[1] == "office") {
             this.contentRef.current.innerHTML = data[0]
         }
-        else if (data[1] == "google"){
+        else if (data[1] == "google") {
             this.contentRef.current.innerHTML = data[0].data
         }
     }
