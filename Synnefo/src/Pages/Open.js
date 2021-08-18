@@ -4,6 +4,7 @@ import React from "react";
 import "./Open.css";
 import marked from 'marked'
 import Loading from "../Components/Loading";
+import { AiOutlineClockCircle } from "react-icons/ai"
 // function resizeIframe(obj) {
 //     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 // }
@@ -26,32 +27,32 @@ export default class Open extends React.Component {
         this.uid = null
         this.docx = React.createRef()
     }
-    getURLParams(){
+    getURLParams() {
         let url = new URL(window.location)
         let idParams = new URLSearchParams(url.search)
         let code = idParams.get('code')
-        if (code != null){
+        if (code != null) {
             this.setState({
                 code: idParams.get('code')
-            }, () => {this.sendCode(this.state.code)})
+            }, () => { this.sendCode(this.state.code) })
         }
         return
     }
-    countUp(currentTime){
+    countUp(currentTime) {
         let offset = Math.floor((Date.now() - currentTime) / 1000)
 
 
         this.setState({
-            minutes : (offset / 60) | 0,
-            seconds : (offset % 60) | 0
-    
+            minutes: (offset / 60) | 0,
+            seconds: (offset % 60) | 0
+
         })
     }
-    componentDidMount(){
+    componentDidMount() {
 
 
         firebase.auth().onAuthStateChanged(user => {
-            if (user){
+            if (user) {
                 this.email = user.email
                 this.uid = user.uid
             }
@@ -59,13 +60,13 @@ export default class Open extends React.Component {
                 isLoading: false
             })
             this.getURLParams()
-            if(this.state.code){
+            if (this.state.code) {
                 this.sendCode(this.state.code)
             }
         })
-        
+
     }
-    sendCode(){
+    sendCode() {
         this.setState({
             isLoading: true
         })
@@ -82,35 +83,35 @@ export default class Open extends React.Component {
         })
     }
 
-    assignDoc(data){
-        if (data[1] == "office"){
+    assignDoc(data) {
+        if (data[1] == "office") {
             this.contentRef.current.innerHTML = data[0]
         }
-        else if (data[1] == "google"){
+        else if (data[1] == "google") {
             this.contentRef.current.innerHTML = marked(data[0])
         }
     }
-    handleInputChange(e){                                
+    handleInputChange(e) {
         this.setState({
             code: e.target.value.length > 4 ? e.target.value.slice(0, 4) : e.target.value
         })
-        
+
     }
-    startTimer(){
+    startTimer() {
         this.startTime = Date.now()
         setInterval(() => {
             this.countUp(this.startTime)
         }, 1000);
     }
-    docComplete(){
+    docComplete() {
         let seconds = Math.floor((Date.now() - this.startTime) / 1000)
         let data = {
-            "seconds" : seconds,
+            "seconds": seconds,
             "uid": this.uid,
             "code": this.state.code
         }
         axios.post('http://localhost:3333/docviewerapi/asia-east2/api/update', data).then(result => {
-            switch (result.data){
+            switch (result.data) {
                 case 'No account':
                     alert("You must have an account to do this")
                     break
@@ -126,35 +127,40 @@ export default class Open extends React.Component {
         })
     }
     render() {
-        if(this.state.isLoading){
-            return(
-                <Loading/>
+        if (this.state.isLoading) {
+            return (
+                <Loading />
             )
         }
-        else if(!this.state.isLoading && this.state.state === "idle"){
-            return(
+        else if (!this.state.isLoading && this.state.state === "idle") {
+            return (
                 <div className="wrapper">
                     <div className="bg">
                         <div className="content codeInput">
-                            <input value={this.state.code} onChange={this.handleInputChange} placeholder="Document code"></input><br/>
+                            <input value={this.state.code} onChange={this.handleInputChange} placeholder="Document code"></input><br />
                             <button onClick={() => this.sendCode()}>VIEW</button>
                         </div>
                     </div>
                 </div>
             )
         }
-        else if (!this.state.isLoading && this.state.state === 'open'){
-            return(
+        else if (!this.state.isLoading && this.state.state === 'open') {
+            return (
                 <div className='doc-wrapper'>
-                <span>You have been reading for {this.state.minutes}:{this.state.seconds}</span>
+                    
+                    <div className="timer-box">
+                        <AiOutlineClockCircle />
+                        <span>You have been reading for {this.state.minutes}:{this.state.seconds}</span>
+                    </div>
+
                     <div className="doc">
-                        
+
                         <div ref={this.contentRef} >
 
                         </div>
                         <button onClick={() => this.docComplete()}>Complete</button>
                     </div>
-                    </div>
+                </div>
             )
         }
     }

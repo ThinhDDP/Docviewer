@@ -26,7 +26,7 @@ export default class Manual extends React.Component {
     }
     toggleGuide() {
         this.setState({
-            shown_guide: !this.state.guide
+            shown_guide: !this.state.shown_guide
         })
     }
     render() {
