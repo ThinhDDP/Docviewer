@@ -87,7 +87,8 @@ export default class Open extends React.Component {
             this.contentRef.current.innerHTML = data[0]
         }
         else if (data[1] == "google"){
-            this.contentRef.current.innerHTML = marked(data[0])
+
+            this.contentRef.current.innerHTML = data[0].data
         }
     }
     handleInputChange(e){                                
