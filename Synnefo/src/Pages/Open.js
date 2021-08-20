@@ -5,6 +5,7 @@ import "./Open.css";
 import marked from 'marked'
 import Loading from "../Components/Loading";
 import { AiOutlineClockCircle } from "react-icons/ai"
+import axiosInstance from "../axios"
 // function resizeIframe(obj) {
 //     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 // }
@@ -80,7 +81,7 @@ export default class Open extends React.Component {
         let data = {
             uid: this.uid
         }
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/match/${this.state.code}`, data).then(result => {
+        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/match/${this.state.code}`, data).then(result => {
             this.setState({
                 isLoading: false,
                 state: 'open'

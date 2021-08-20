@@ -69,7 +69,7 @@ export default class Recent extends React.Component {
         this.setState({ isLoading: false })
     }
     toggleFavorite(event) {
-        let doc_code = event.target.id;
+        console.log(event)
 
 
     }
@@ -127,7 +127,7 @@ export default class Recent extends React.Component {
                 }
                 arrayDocs_viewed.push(
                     <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
-                        <div onClick={this.toggleFavorite()} id={document_id}>
+                        <div onClick={this.toggleFavorite} id={document_id}>
                             {arrow}
                         </div>
                         <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
