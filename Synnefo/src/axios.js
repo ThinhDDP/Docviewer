@@ -32,17 +32,17 @@ axiosInstance.interceptors.response.use(response => {
 }, async function(error){
     const originalReq = error.config
     if (error.response.status == 401 && !originalReq._retry){
+        originalReq._retry = true
+        const accessToken = await refreshAccessToken()
+        sessionStorage.setItem("token_key", accessToken)
+        console.log(accessToken)
+        return axiosInstance(originalReq)
+
+    }
+    else if (error.response.status == 403){
         if (originalReq.url.includes("refresh")){
             window.location.href = "/login"
         }
-        else {
-            originalReq._retry = true
-            const accessToken = await refreshAccessToken()
-            sessionStorage.setItem("token_key", accessToken)
-            console.log(accessToken)
-            return axiosInstance(originalReq)
-        }
-
     }
     return Promise.reject(error)
 })
