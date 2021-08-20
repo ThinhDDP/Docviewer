@@ -6,6 +6,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import axios from 'axios'
 import Loading from "../Components/Loading.js";
 import firebase from "firebase";
+import { AiOutlineHeart } from "react-icons/ai" //unset
+import { AiFillHeart } from "react-icons/ai" //set
 
 
 export default class Recent extends React.Component {
@@ -15,6 +17,7 @@ export default class Recent extends React.Component {
             code: null,
             viewedDocs: {},
             completedDocs: {},
+            favoriteDocs: {}, //yo get ur doc here
             isLoading: true
 
         }
@@ -26,10 +29,10 @@ export default class Recent extends React.Component {
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            if (user){
+            if (user) {
                 this.getViewedAndCompleted(user.uid)
             }
-            else{
+            else {
                 this.setState({
                     isLoading: "notLoggedIn"
                 })
@@ -48,7 +51,7 @@ export default class Recent extends React.Component {
         console.log(this.state.code)
 
     }
-    getViewedAndCompleted(uid){
+    getViewedAndCompleted(uid) {
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/viewed/${uid}`).then(result => {
             this.setState({
                 viewedDocs: result.data[0],
@@ -57,90 +60,143 @@ export default class Recent extends React.Component {
             })
         })
     }
+    refreshStuff() {
+        this.setState({ isLoading: true })
+
+        //request to update stuff
+
+        this.setState({ isLoading: false })
+    }
+    toggleFavorite(event) {
+        let doc_code = event.target.id;
+
+
+    }
     render() {
-        if (this.state.isLoading == true){
+        if (this.state.isLoading == true) {
             return (
-                <Loading/>
+                <Loading />
             )
         }
-        else if (this.state.isLoading == "notLoggedIn"){
+        else if (this.state.isLoading == "notLoggedIn") {
             return (
                 <div className="wrapper">
-                <div className="bg">
-                    <div className='content'>
-                        <h3>You must be signed in to create a document</h3>
-                    </div>
-                </div>
-                </div>
-            )
-        }
-        else if (!this.state.isLoading && !this.state.code){
-        let completedDocs = this.state.completedDocs;
-        let viewedDocs = this.state.viewedDocs;
-
-        let arrayDocs_viewed = [];
-        let arrayDocs_completed = [];
-
-        for (const document_id in completedDocs) {
-            arrayDocs_completed.push(
-
-                <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
-                    <img src="https://cdn.iconscout.com/icon/free/png-256/document-970-453728.png" id={document_id}></img>
-                    <div className="container">
-                        <p id={document_id}>{completedDocs[document_id]}</p>
+                    <div className="bg">
+                        <div className='content'>
+                            <h3>You must be signed in to create a document</h3>
+                        </div>
                     </div>
                 </div>
             )
         }
+        else if (!this.state.isLoading && !this.state.code) {
+            let completedDocs = this.state.completedDocs;
+            let viewedDocs = this.state.viewedDocs;
+            let favoriteDocs = this.state.favoriteDocs;
+            let favorited_codes = []
+            for (const doc_title in favoriteDocs) {
+                favorited_codes.push(favoriteDocs[doc_title])
+            }
+            let arrayDocs_viewed = [];
+            let arrayDocs_completed = [];
+            let arrayDocs_favorite = []
+            for (const document_id in completedDocs) {
+                let arrow = <AiOutlineHeart />
+                if (favoriteDocs.includes(document_id)) {
+                    arrow = <AiFillHeart />
+                }
+                arrayDocs_completed.push(
 
-        for (const document_id in viewedDocs) {
-            arrayDocs_viewed.push(
-                <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
-                    <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
-                    <div className="container">
-                        <p id={document_id}>{viewedDocs[document_id]}</p>
+                    <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
+                        <div onClick={this.toggleFavorite()} id={document_id}>
+                            {arrow}
+                        </div>
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/document-970-453728.png" id={document_id}></img>
+                        <div className="container">
+                            <p id={document_id}>{completedDocs[document_id]}</p>
+                        </div>
                     </div>
-                </div>
-            )
-        }
+                )
+            }
 
+            for (const document_id in viewedDocs) {
+                let arrow = <AiOutlineHeart />
+                if (favoriteDocs.includes(document_id)) {
+                    arrow = <AiFillHeart />
+                }
+                arrayDocs_viewed.push(
+                    <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
+                        <div onClick={this.toggleFavorite()} id={document_id}>
+                            {arrow}
+                        </div>
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
+                        <div className="container">
+                            <p id={document_id}>{viewedDocs[document_id]}</p>
+                        </div>
+                    </div>
+                )
+            }
 
-        return (
-            <div>
-                <div className="wrapper" id="niceLists">
-                    <div id="docLists">
-                        <Tabs>
-                            <TabList>
-                                <Tab>Viewed Documents</Tab>
-                                <Tab>Completed Documents</Tab>
-                            </TabList>
-                            <TabPanel>
-                                <div id="viewed">
-                                    <h3>Viewed Documents</h3>
-                                    <div className="sectionRecent" id="viewedSection">
-                                        {arrayDocs_viewed}
+            for (const document_title in favoriteDocs) {
+                let arrow = <AiOutlineHeart />
+                
+                arrayDocs_favorite.push(
+                    <div className="cardDoc" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
+                        <div onClick={this.toggleFavorite()} id={favoriteDocs[document_title]}>
+                            {arrow}
+                        </div>
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={favoriteDocs[document_title]}></img>
+                        <div className="container">
+                            <p id={favoriteDocs[document_title]}>{document_title}</p>
+                        </div>
+                    </div>
+                )
+            }
+            return (
+                <div>
+                    <div className="wrapper" id="niceLists">
+                        <div id="docLists">
+                            <Tabs>
+                                <TabList>
+                                    <Tab>Viewed Documents</Tab>
+                                    <Tab>Completed Documents</Tab>
+                                    <Tab>Favorited Documents</Tab>
+                                </TabList>
+                                <TabPanel>
+                                    <div id="viewed">
+                                        <h3>Viewed Documents</h3>
+                                        <div className="sectionRecent" id="viewedSection">
+                                            {arrayDocs_viewed}
+                                        </div>
                                     </div>
-                                </div>
-                            </TabPanel>
-                            <TabPanel>
-                                <div id="completed">
-                                    <h3>Completed Documents</h3>
-                                    <div className="sectionRecent" id="completedSection">
-                                        {arrayDocs_completed}
+                                </TabPanel>
+                                <TabPanel>
+                                    <div id="completed">
+                                        <h3>Completed Documents</h3>
+                                        <div className="sectionRecent" id="completedSection">
+                                            {arrayDocs_completed}
+                                        </div>
                                     </div>
-                                </div>
-                            </TabPanel>
-                        </Tabs>
+                                </TabPanel>
+                                <TabPanel>
+                                    <div id="favorited">
+                                        <h3>Favorited documents</h3>
+                                        <div className="sectionRecent" id="favoriteSection">
+                                            {arrayDocs_favorite}
+                                        </div>
+                                    </div>
+                                </TabPanel>
+                            </Tabs>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        )
+            )
         }
-        else if (this.state.code){
+        else if (this.state.code) {
             return (
                 <>
-                    <Open code={this.state.code}/>
+                    <Open code={this.state.code} />
                 </>
             )
         }

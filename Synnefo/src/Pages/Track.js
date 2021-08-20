@@ -117,44 +117,44 @@ export default class Track extends React.Component {
     }
     checkPublic() {
         let code = this.state.code;
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, {uid: this.uid}).then((data)=> {
-            if (data.data != "This Document only allows the author to track it"){
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, { uid: this.uid }).then((data) => {
+            if (data.data != "This Document only allows the author to track it") {
                 Ispublic = true;
             }
             else {
                 Ispublic = false;
             }
-            if(Ispublic == false){
+            if (Ispublic == false) {
                 document.getElementById("output").style.color = "red";
                 this.setState({
                     output: "This document is not public"
                 })
-            }else{
+            } else {
                 document.getElementById("output").style.color = "green";
                 this.setState({
                     output: "This document is public"
                 })
                 //that is the code
                 this.renderStats(data.data)
-    
+
             }
         })
         let Ispublic = false;
 
 
     }
-    handleDocIdChange(event){
+    handleDocIdChange(event) {
         this.setState({
-            code : event.target.value
+            code: event.target.value
         })
     }
     goBackCheckPublic() {
         document.getElementById("superDocs").style.display = "block"
-        document.getElementById("checkPublic").style.display="none"
+        document.getElementById("checkPublic").style.display = "none"
     }
-    renderDocPublicSection(){
+    renderDocPublicSection() {
         document.getElementById("superDocs").style.display = "none"
-        document.getElementById("checkPublic").style.display="block"
+        document.getElementById("checkPublic").style.display = "block"
     }
     render() {
         if (this.state.isLoading == true) {
@@ -217,7 +217,9 @@ export default class Track extends React.Component {
                             <h3>Choose a document to view its stats</h3>
                             <div className="cardLists">
                                 <div className="cardDoc" onClick={this.renderDocPublicSection}>
+
                                     <img src="https://img.icons8.com/cotton/2x/public-cloud.png"></img>
+
                                     <div className="cotainer">
                                         <p>Public Document</p>
                                     </div>
