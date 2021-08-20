@@ -56,6 +56,7 @@ export default class Recent extends React.Component {
             this.setState({
                 viewedDocs: result.data[0],
                 completedDocs: result.data[1],
+                favoriteDocs: result.data[2],
                 isLoading: false
             })
         })

@@ -11,7 +11,8 @@ router.post('/viewed/:uid', async (req, res) => {
     console.log('********' + doc)
     let viewed = await doc.get('viewed')
     let completed = await doc.get('completed')
-    res.send([viewed, completed])
+    let favourite = await doc.get('favourite')
+    res.send([viewed, completed, favourite])
 })
 
 module.exports = router
