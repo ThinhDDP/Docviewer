@@ -24,7 +24,7 @@ export default class Recent extends React.Component {
         this.handleViewDocClick = this.handleViewDocClick.bind(this)
         // this.renderCards = this.renderCards.bind(this)
 
-
+        this.toggleFavorite = this.toggleFavorite.bind(this)
 
     }
     componentDidMount() {
