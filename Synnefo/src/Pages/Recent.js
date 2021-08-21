@@ -84,8 +84,7 @@ export default class Recent extends React.Component {
         // your code, do do do do it
     }
     unFavorite(event) {
-        console.log("un")
-        let code = event.target.id
+        let code = event.currentTarget.id
         this.setState({ isLoading: true })
         axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/fav/${this.uid}`, {
             code: code,
@@ -153,18 +152,18 @@ export default class Recent extends React.Component {
                 )
             }
 
-            for (const document_title in favoriteDocs) {
-                let arrow = <AiFillHeart id={favoriteDocs[document_title]} onClick={this.unFavorite} />
+            for (const document_id in favoriteDocs) {
+                let arrow = <AiFillHeart id={document_id} onClick={this.unFavorite} />
 
                 arrayDocs_favorite.push(
                     <div className="cardDoc" >
                         <div>
                             {arrow}
                         </div>
-                        <div className="non-image" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
-                            <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={favoriteDocs[document_title]}></img>
+                        <div className="non-image" onClick={this.handleViewDocClick} id={favoriteDocs[document_id]}>
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={favoriteDocs[document_id]}></img>
                             <div className="container">
-                                <p id={favoriteDocs[document_title]}>{document_title}</p>
+                                <p id={favoriteDocs[document_id]}>{favoriteDocs[document_id]}</p>
                             </div>
                         </div>
                     </div>

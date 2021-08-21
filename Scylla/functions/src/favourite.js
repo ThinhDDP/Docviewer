@@ -14,16 +14,19 @@ const getDocTitle = async (code) => {
 router.post('/fav/:uid', auth, async (req, res) => {
     const userRef = db.collection("Users").doc(req.params.uid)
     const user = await userRef.get()
-    const favourite = await user.get("favourite")
     console.log(req.body.code)
-    let title  = await getDocTitle(req.body.code)
+    const favourite = await user.get("favourite")
+
     if (req.body.type == "fav"){
-        favourite[title] = req.body.code
+        let title  = await getDocTitle(req.body.code)
+        favourite[req.body.code] = title
     }
     else {
-        delete favourite[title]
+        console.log(req.body.code)
+        delete favourite[req.body.code]
         console.log(favourite)
     }
+    console.log(favourite)
     const update = await userRef.update({favourite: favourite})
     res.send("Done")
 
