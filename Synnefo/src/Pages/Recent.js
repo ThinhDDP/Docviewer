@@ -83,7 +83,7 @@ export default class Recent extends React.Component {
         })
         // your code, do do do do it
     }
-    unFavorite(event){
+    unFavorite(event) {
         console.log("un")
         let code = event.target.id
         this.setState({ isLoading: true })
@@ -116,26 +116,20 @@ export default class Recent extends React.Component {
             let completedDocs = this.state.completedDocs;
             let viewedDocs = this.state.viewedDocs;
             let favoriteDocs = this.state.favoriteDocs;
-            let favorited_codes = []
-            for (const doc_title in favoriteDocs) {
-                favorited_codes.push(favoriteDocs[doc_title])
-            }
             let arrayDocs_viewed = [];
             let arrayDocs_completed = [];
             let arrayDocs_favorite = []
             for (const document_id in completedDocs) {
                 let arrow = <AiOutlineHeart id={document_id} onClick={this.toggleFavorite} />
-                if (favorited_codes.includes(document_id)) {
-                    arrow = <AiFillHeart id={document_id} onClick={this.toggleFavorite} />
-                }
                 arrayDocs_completed.push(
                     <div className="cardDoc">
-
-                        {arrow}
+                        <div>
+                            {arrow}
+                        </div>
                         <div className="non-arrow" onClick={this.handleViewDocClick} id={document_id}>
                             <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
                             <div className="container">
-                                <p id={document_id}>{viewedDocs[document_id]}</p>
+                                <p id={document_id}>{completedDocs[document_id]}</p>
                             </div>
                         </div>
                     </div>
@@ -144,13 +138,11 @@ export default class Recent extends React.Component {
 
             for (const document_id in viewedDocs) {
                 let arrow = <AiOutlineHeart id={document_id} onClick={this.toggleFavorite} />
-                if (favorited_codes.includes(document_id)) {
-                    arrow = <AiFillHeart id={document_id} onClick={this.toggleFavorite} />
-                }
                 arrayDocs_viewed.push(
                     <div className="cardDoc">
-
-                        {arrow}
+                        <div>
+                            {arrow}
+                        </div>
                         <div className="non-arrow" onClick={this.handleViewDocClick} id={document_id}>
                             <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
                             <div className="container">
@@ -162,11 +154,11 @@ export default class Recent extends React.Component {
             }
 
             for (const document_title in favoriteDocs) {
-                let arrow = <AiOutlineHeart id={favoriteDocs[document_title]} onClick={this.unFavorite} />
+                let arrow = <AiFillHeart id={favoriteDocs[document_title]} onClick={this.unFavorite} />
 
                 arrayDocs_favorite.push(
                     <div className="cardDoc" >
-                        <div onClick={this.toggleFavorite} id={favoriteDocs[document_title]}>
+                        <div>
                             {arrow}
                         </div>
                         <div className="non-image" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
