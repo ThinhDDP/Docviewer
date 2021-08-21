@@ -69,9 +69,9 @@ export default class Recent extends React.Component {
         this.setState({ isLoading: false })
     }
     toggleFavorite(event) {
-        console.log(event)
-
-
+        console.log(event.target.id)
+        let code = event.target.id
+        // your code, do do do do it
     }
     render() {
         if (this.state.isLoading == true) {
@@ -102,53 +102,56 @@ export default class Recent extends React.Component {
             let arrayDocs_completed = [];
             let arrayDocs_favorite = []
             for (const document_id in completedDocs) {
-                let arrow = <AiOutlineHeart />
-                if (favoriteDocs.includes(document_id)) {
-                    arrow = <AiFillHeart />
+                let arrow = <AiOutlineHeart id={document_id} onClick={this.toggleFavorite} />
+                if (favorited_codes.includes(document_id)) {
+                    arrow = <AiFillHeart id={document_id} onClick={this.toggleFavorite} />
                 }
                 arrayDocs_completed.push(
+                    <div className="cardDoc">
 
-                    <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
-                        <div onClick={this.toggleFavorite()} id={document_id}>
-                            {arrow}
-                        </div>
-                        <img src="https://cdn.iconscout.com/icon/free/png-256/document-970-453728.png" id={document_id}></img>
-                        <div className="container">
-                            <p id={document_id}>{completedDocs[document_id]}</p>
+                        {arrow}
+                        <div className="non-arrow" onClick={this.handleViewDocClick} id={document_id}>
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
+                            <div className="container">
+                                <p id={document_id}>{viewedDocs[document_id]}</p>
+                            </div>
                         </div>
                     </div>
                 )
             }
 
             for (const document_id in viewedDocs) {
-                let arrow = <AiOutlineHeart />
-                if (favoriteDocs.includes(document_id)) {
-                    arrow = <AiFillHeart />
+                let arrow = <AiOutlineHeart id={document_id} onClick={this.toggleFavorite} />
+                if (favorited_codes.includes(document_id)) {
+                    arrow = <AiFillHeart id={document_id} onClick={this.toggleFavorite} />
                 }
                 arrayDocs_viewed.push(
-                    <div className="cardDoc" onClick={this.handleViewDocClick} id={document_id}>
-                        <div onClick={this.toggleFavorite} id={document_id}>
-                            {arrow}
-                        </div>
-                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
-                        <div className="container">
-                            <p id={document_id}>{viewedDocs[document_id]}</p>
+                    <div className="cardDoc">
+
+                        {arrow}
+                        <div className="non-arrow" onClick={this.handleViewDocClick} id={document_id}>
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={document_id}></img>
+                            <div className="container">
+                                <p id={document_id}>{viewedDocs[document_id]}</p>
+                            </div>
                         </div>
                     </div>
                 )
             }
 
             for (const document_title in favoriteDocs) {
-                let arrow = <AiOutlineHeart />
-                
+                let arrow = <AiOutlineHeart id={favoriteDocs[document_title]} onClick={this.toggleFavorite} />
+
                 arrayDocs_favorite.push(
-                    <div className="cardDoc" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
+                    <div className="cardDoc" >
                         <div onClick={this.toggleFavorite()} id={favoriteDocs[document_title]}>
                             {arrow}
                         </div>
-                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={favoriteDocs[document_title]}></img>
-                        <div className="container">
-                            <p id={favoriteDocs[document_title]}>{document_title}</p>
+                        <div className="non-image" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={favoriteDocs[document_title]}></img>
+                            <div className="container">
+                                <p id={favoriteDocs[document_title]}>{document_title}</p>
+                            </div>
                         </div>
                     </div>
                 )
