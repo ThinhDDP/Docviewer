@@ -8,6 +8,7 @@ import Loading from "../Components/Loading.js";
 import firebase from "firebase";
 import { AiOutlineHeart } from "react-icons/ai" //unset
 import { AiFillHeart } from "react-icons/ai" //set
+import axiosInstance from "../axios.js";
 
 
 export default class Recent extends React.Component {
@@ -23,14 +24,16 @@ export default class Recent extends React.Component {
         }
         this.handleViewDocClick = this.handleViewDocClick.bind(this)
         // this.renderCards = this.renderCards.bind(this)
-
+        this.uid = null
         this.toggleFavorite = this.toggleFavorite.bind(this)
+        this.unFavorite = this.unFavorite.bind(this)
 
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.getViewedAndCompleted(user.uid)
+                this.uid = user.uid
             }
             else {
                 this.setState({
@@ -69,9 +72,28 @@ export default class Recent extends React.Component {
         this.setState({ isLoading: false })
     }
     toggleFavorite(event) {
-        console.log(event.target.id)
         let code = event.target.id
+        this.setState({ isLoading: true })
+        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/fav/${this.uid}`, {
+            code: code,
+            type: "fav"
+        }).then(() => {
+            this.setState({ isLoading: false })
+            window.location.reload()
+        })
         // your code, do do do do it
+    }
+    unFavorite(event){
+        console.log("un")
+        let code = event.target.id
+        this.setState({ isLoading: true })
+        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/fav/${this.uid}`, {
+            code: code,
+            type: "delete"
+        }).then(() => {
+            this.setState({ isLoading: false })
+            window.location.reload()
+        })
     }
     render() {
         if (this.state.isLoading == true) {
@@ -140,11 +162,11 @@ export default class Recent extends React.Component {
             }
 
             for (const document_title in favoriteDocs) {
-                let arrow = <AiOutlineHeart id={favoriteDocs[document_title]} onClick={this.toggleFavorite} />
+                let arrow = <AiOutlineHeart id={favoriteDocs[document_title]} onClick={this.unFavorite} />
 
                 arrayDocs_favorite.push(
                     <div className="cardDoc" >
-                        <div onClick={this.toggleFavorite()} id={favoriteDocs[document_title]}>
+                        <div onClick={this.toggleFavorite} id={favoriteDocs[document_title]}>
                             {arrow}
                         </div>
                         <div className="non-image" onClick={this.handleViewDocClick} id={favoriteDocs[document_title]}>
