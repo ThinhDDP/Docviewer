@@ -4,6 +4,8 @@ import './Create.css'
 import axios from 'axios'
 import axiosInstance from '../axios'
 import Loading from '../Components/Loading'
+import {AiOutlineUserAdd, AiOutlineLink} from 'react-icons/ai'
+
 
 // let user = firebase.auth().currentUser //This is a lazy way because .currentUser is async call, but it will prob load before the user finish typing
 
@@ -11,25 +13,32 @@ class Create extends React.Component {
     constructor() {
         super();
         this.state = {
+            displayName: null,
             state: 'idle',
             link: '',
             title: '',
             isLoading: true,
             code: null,
             provider: null,
-            isOffice: false
+            isOffice: false,
+            email: null
         }
         this.token = null
         this.fileId = null
         this.uid = null
+        this.title = null
+        this.perm = "only"
         this.optionRef = React.createRef()
         this.email = []
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.uploadFile = this.uploadFile.bind(this)
+        this.inputHandle = this.inputHandle.bind(this)
+        this.switchedDesc = this.switchedDesc.bind(this)
         this.mail = []
         this.sendMail = this.sendMail.bind(this)
         this.progress = React.createRef()
         this.inputFile = React.createRef()
+        this.inputId = React.createRef()
     }
     signInAccount() {
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -49,9 +58,8 @@ class Create extends React.Component {
             })
     }
     switchState() {
-        this.perm = this.optionRef.current.value
         if (this.perm == "Only") {
-            this.getAllEmails()
+            this.getAllColabs()
         }
         this.setState({
             state: "emails"
@@ -87,16 +95,18 @@ class Create extends React.Component {
             let newBtn = document.createElement('button')
             newBtn.innerHTML = files[i].name
             newBtn.className = "fileBtn"
-            newBtn.addEventListener('click', () => this.assignId(files[i].id))
+            newBtn.addEventListener('click', () => this.assignId(files[i].id, files[i].name))
             document.getElementById('container').appendChild(newBtn)
         }
     }
-    assignId(id) {
+    assignId(id, title) {
         var arrayelements = Array.prototype.slice.call(document.getElementsByClassName('fileBtn'));
         for (let i = 0; i < arrayelements.length; i++) {
             arrayelements[i].remove();
         }
+        console.log(title)
         this.fileId = id
+        this.title = title
         this.setState({
             state: "settings"
         })
@@ -104,22 +114,23 @@ class Create extends React.Component {
     async createDocument() {
         console.log(this.fileId)
         let data = {
-            name: this.state.title,
+            name: this.title,
             id: this.fileId
         }
+        console.log(this.perm)
         switch (this.perm) {
-            case 'Only':
+           
+            case 'only':
                 data.perm = 'Only'
-                this.getAllEmails()
                 data.uid = this.email
-                console.log(data)
                 break
             case 'Everyone':
                 data.perm = 'Everyone'
                 data.uid = [this.state.email]
-                console.log(data)
+
                 break
         }
+        console.log(data)
         if (this.state.isOffice){
             data.type = "office"
         }
@@ -132,6 +143,14 @@ class Create extends React.Component {
         let result = await axiosInstance.post('http://localhost:3333/docviewerapi/asia-east2/api/create', data)
         return result.data
     }
+    getAllColabs(){
+        let collabList = document.getElementsByClassName('user')
+        let len = collabList.length
+        for (let i = 0; i < len; ++i){
+            this.email.push(collabList[i])
+        }
+        console.log(this.email)
+    }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
 
@@ -140,8 +159,11 @@ class Create extends React.Component {
                     provider: user.providerData[0].providerId,
                     isLoading: false
                 })
-                this.uid = user.uid                
-                this.state.email = user.email
+                this.uid = user.uid    
+                this.setState({
+                    email: user.email,
+                    displayName: user.displayName
+                })            
             }
             else {
                 this.setState({
@@ -151,14 +173,6 @@ class Create extends React.Component {
 
             }
         })
-    }
-    getAllEmails() {
-        let container = document.getElementById('add')
-        let emails_input = container.getElementsByTagName('input')
-        for (let i = 0; i < emails_input.length; ++i) {
-            this.email.push(emails_input[i].value.trim())
-        }
-        this.email.push(this.state.email)
     }
     chooseAuthor() {
         if (this.optionRef.current.value == "Only") {
@@ -223,8 +237,9 @@ class Create extends React.Component {
     openFile() {
         this.progress.current.style.display = "block"
         this.inputFile.current.click()
-    }        switch (file_extension) {
+        // switch (file_extension) {
 
+        // }
     }
 
     uploadFile(event) {
@@ -232,6 +247,7 @@ class Create extends React.Component {
         event.preventDefault()
         let file = event.target.files[0]
         let file_extension = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);
+        this.title = file.name
         if (file_extension != 'docx'){
             alert("Your file type in invalid")
             return
@@ -255,7 +271,33 @@ class Create extends React.Component {
             }
         )
     }
+    createUserCard(email){
+        const userCardHTML = `
+            <div class="user">
+                <h6>Collaborator</h6>
+                <p>${email}</p>
+            </div>`
+        document.getElementById("perm").innerHTML += userCardHTML
+    }
+    inputHandle(event){
+
+        if (event.key == "Enter"){
+            console.log("Enter pressed")
+            this.createUserCard(event.target.value)
+        }
+    }
+    switchedDesc(event){
+        if (event.target.value == "only"){
+            this.perm = "only"
+            document.getElementById("desc").innerHTML = "Only people added can open with this link"
+        }
+        else {
+            this.perm = "Everyone"
+            document.getElementById("desc").innerHTML = "Anyone on the internet with this link can view"
+        }
+    }
     render() {
+        
         if (this.state.provider === "no") {
             return (
                 <div className="wrapper">
@@ -346,19 +388,35 @@ class Create extends React.Component {
         else if (this.state.state === "settings") {
             return (<div className="wrapper">
                 <div className="bg">
-                    <div className="content">
-                        <input required value={this.state.title} onChange={this.handleTitleChange} placeholder="Document's title"></input>
-                        <h6>Who can see this file statistic</h6>
-                        <select onChange={() => this.chooseAuthor()} ref={this.optionRef} name="options">
-                            <option value="Everyone">Everyone with code</option>
-                            <option value="Only">Only me</option>
-                        </select><br />
-                        <div id="add" className="add" style={{ display: 'none' }}>
-                            <input placeholder="User's email"></input><br />
-                            <button onClick={() => this.addInput()} className="add">Add</button><br />
+                    <div className="perm">
+                        <AiOutlineUserAdd/>
+                        <h2>Share with people</h2>
+                        <input ref={this.inputId} onKeyUp={this.inputHandle}></input>
+                        <div id="perm">
+                        <div className="user">
+                            <h6>{this.state.displayName}</h6>
+                            <p>{this.state.email}</p>
                         </div>
-                        <button className="submitBtn" onClick={() => this.switchState()}>Next</button>
+                        </div>
+                        <hr/>
+
                     </div>
+                    <div className="get-link">
+                            <AiOutlineLink/>
+                            <h2>View stat</h2>
+                            <div className="file-perm">
+                            <div class="select">
+                                <select onChange={this.switchedDesc}>
+                                    <option value="only">Restricted</option>
+                                    <option value="Everyone">Anyone with code</option>
+                                </select>
+                               
+                            </div>
+                            <p id="desc">Only people added can open with this link</p>
+                            </div>
+                            <button onClick={() => this.switchState()}>Create</button>
+                    </div>
+
                 </div>
             </div>
             )
