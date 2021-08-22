@@ -28,7 +28,6 @@ class Create extends React.Component {
         this.uid = null
         this.title = null
         this.perm = "only"
-        this.optionRef = React.createRef()
         this.email = []
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.uploadFile = this.uploadFile.bind(this)
@@ -39,6 +38,7 @@ class Create extends React.Component {
         this.progress = React.createRef()
         this.inputFile = React.createRef()
         this.inputId = React.createRef()
+        this.optionRef = React.createRef()
     }
     signInAccount() {
         var provider = new firebase.auth.GoogleAuthProvider();
