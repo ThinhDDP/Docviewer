@@ -1,5 +1,6 @@
 import React from 'react'
 import './Login.css'
+
 import firebase from '../firebase'
 import axios from 'axios'
 import Modal from 'react-modal'
@@ -20,13 +21,17 @@ export default class Register extends React.Component {
         this.handleChangesName = this.handleChangesName.bind(this)
     }
     async logIn(email, password) {
-        if (email === '' || password === '') {
+	
+	
+	let goodPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)
+	if (email === '' || password === '') {
             document.getElementById('ref').innerHTML = "Password or email must not be empty"
             document.getElementById('ref').style.color = "red"
             return
         }
+	else if(goodPass == true){
         let imageLink = await storageRef.child('users/Default/default.png').getDownloadURL()
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+	firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(result => {
 
                 result.user.updateProfile({
@@ -142,9 +147,15 @@ export default class Register extends React.Component {
                 }
                 document.getElementById("ref").innerText = authErrors[authError]
                 document.getElementById("ref").style.color = "red"
-
+	
             })
+	}else{
+		document.getElementById("ref").innerText = "Your password should have minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"	
+		document.getElementById("ref").style.color = "red"
+	}
 
+
+	
 
     }
     signInAccount() {
