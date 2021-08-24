@@ -51,6 +51,8 @@ export default class Track extends React.Component {
             console.log(result)
             this.setState({
                 document_ids: result.data[0],
+                document_owned: result.data[0],
+                document_shared: result.data[1]
             })
         })
     }

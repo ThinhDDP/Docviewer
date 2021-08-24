@@ -27,7 +27,7 @@ class Create extends React.Component {
         this.fileId = null
         this.uid = null
         this.title = null
-        this.perm = "only"
+        this.perm = "Only"
         this.email = []
         this.handleTitleChange = this.handleTitleChange.bind(this)
         this.uploadFile = this.uploadFile.bind(this)
@@ -59,6 +59,7 @@ class Create extends React.Component {
     }
     switchState() {
         if (this.perm == "Only") {
+            console.log("yes")
             this.getAllColabs()
         }
         this.setState({
@@ -104,7 +105,6 @@ class Create extends React.Component {
         for (let i = 0; i < arrayelements.length; i++) {
             arrayelements[i].remove();
         }
-        console.log(title)
         this.fileId = id
         this.title = title
         this.setState({
@@ -120,7 +120,7 @@ class Create extends React.Component {
         console.log(this.perm)
         switch (this.perm) {
            
-            case 'only':
+            case 'Only':
                 data.perm = 'Only'
                 data.uid = this.email
                 break
@@ -144,10 +144,11 @@ class Create extends React.Component {
         return result.data
     }
     getAllColabs(){
-        let collabList = document.getElementsByClassName('user')
+        let collabList = document.getElementsByClassName('user-input')
         let len = collabList.length
         for (let i = 0; i < len; ++i){
-            this.email.push(collabList[i])
+            console.log(collabList[i])
+            this.email.push(collabList[i].innerHTML)
         }
         console.log(this.email)
     }
@@ -173,14 +174,6 @@ class Create extends React.Component {
 
             }
         })
-    }
-    chooseAuthor() {
-        if (this.optionRef.current.value == "Only") {
-            document.getElementById('add').style.display = "block"
-        }
-        else {
-            document.getElementById('add').style.display = "none"
-        }
     }
     handleTitleChange(event) {
         this.setState({
@@ -212,7 +205,6 @@ class Create extends React.Component {
         for (let i = 0; i < emails_input.length; ++i) {
             this.mail.push(emails_input[i].value.trim())
         }
-        console.log(this.mail)
         this.createDocument().then((code) => {
             this.setState({
                 code: code
@@ -275,7 +267,7 @@ class Create extends React.Component {
         const userCardHTML = `
             <div class="user">
                 <h6>Collaborator</h6>
-                <p>${email}</p>
+                <p class="user-input">${email}</p>
             </div>`
         document.getElementById("perm").innerHTML += userCardHTML
     }
@@ -287,8 +279,8 @@ class Create extends React.Component {
         }
     }
     switchedDesc(event){
-        if (event.target.value == "only"){
-            this.perm = "only"
+        if (event.target.value == "Only"){
+            this.perm = "Only"
             document.getElementById("desc").innerHTML = "Only people added can open with this link"
         }
         else {
@@ -395,7 +387,7 @@ class Create extends React.Component {
                         <div id="perm">
                         <div className="user">
                             <h6>{this.state.displayName}</h6>
-                            <p>{this.state.email}</p>
+                            <p className="user-input">{this.state.email}</p>
                         </div>
                         </div>
                         <hr/>
@@ -407,7 +399,7 @@ class Create extends React.Component {
                             <div className="file-perm">
                             <div class="select">
                                 <select onChange={this.switchedDesc}>
-                                    <option value="only">Restricted</option>
+                                    <option value="Only">Restricted</option>
                                     <option value="Everyone">Anyone with code</option>
                                 </select>
                                

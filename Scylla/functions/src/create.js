@@ -35,6 +35,7 @@ const db = admin.firestore()
 const router = express.Router()
 
 const toUid = async (email) => {
+    console.log(email)
     let userRecord = await admin.auth().getUserByEmail(email)
     return userRecord.uid
 }
@@ -54,7 +55,7 @@ const savedOwned = async (emails, docRef, title) => {
         let usrCompleted = await (await usrRef.get()).get('shared')
         usrCompleted[docRef.id] = title
         console.log(usrCompleted)
-        usrRef.update({owned: usrCompleted})
+        usrRef.update({shared: usrCompleted})
     }
 }
 
