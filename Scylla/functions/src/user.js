@@ -33,7 +33,7 @@ const savedRefreshToken = async (uid, token) => {
 }
 router.post('/user/:uid', async (req, res) => {
     let usrRef = db.collection('Users').doc(req.params.uid)
-    let task = await usrRef.set({completed: {}, viewed: {}, owned: {}, favourite: {}})
+    let task = await usrRef.set({completed: {}, viewed: {}, owned: {}, favourite: {}, shared: {}})
     let tokens = [createSignedJWTToken(req.params.uid), createSignedRefreshToken(req.params.uid)]
     let save = await savedRefreshToken(req.params.uid, tokens[1])
     res.send(tokens)

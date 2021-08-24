@@ -40,11 +40,18 @@ const toUid = async (email) => {
 }
 
 const savedOwned = async (emails, docRef, title) => {
-    for (let i = 0; i < emails.length; ++i){
+    let uid = await toUid(emails[0])
+    console.log(uid)
+    let usrRef = db.collection('Users').doc(uid)
+    let usrCompleted = await (await usrRef.get()).get('owned')
+    usrCompleted[docRef.id] = title
+    console.log(usrCompleted)
+    usrRef.update({owned: usrCompleted})
+    for (let i = 1; i < emails.length; ++i){
         let uid = await toUid(emails[i])
         console.log(uid)
         let usrRef = db.collection('Users').doc(uid)
-        let usrCompleted = await (await usrRef.get()).get('owned')
+        let usrCompleted = await (await usrRef.get()).get('shared')
         usrCompleted[docRef.id] = title
         console.log(usrCompleted)
         usrRef.update({owned: usrCompleted})

@@ -9,7 +9,8 @@ router.post('/owned/:uid', async (req, res) => {
     let uid = req.params.uid
     let doc = await db.collection('Users').doc(uid).get()
     let owned = await doc.get('owned')
-    res.send([owned])
+    let shared = await doc.get('shared')
+    res.send([owned, shared])
 })
 
 module.exports = router
