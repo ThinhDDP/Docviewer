@@ -11,6 +11,8 @@
 #docs{
     background-color: #36393f;
     border-radius: 8px;
+    width:50vw;
+    text-align: center;
 }
 #docsstats{
     background-color: #36393f;
@@ -31,28 +33,40 @@
     transition: 300ms ease; 
 
 }
+
 .cardDoc:hover{
     /* background-color: #7289Da; */
     cursor:pointer;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
+.selectcss{
+    background-color: #36393f;
+    /* width:20vw; */
+    width: fit-content;
+    margin-left: 25vw;
 
+}
+.selectcss select{
+    
+}
 .cardDoc img{
     margin: auto;
     height: 10vh;
     border-radius: 5px 5px 0 0;
 }
-#checkPublic input{
+#Public input{
     width: 15vw;
     height:5vh;
     margin: auto;
 }
-#checkPublic button{
-
+#Public button{
     font-size: 1.2rem;
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
     width:8vw;
     height: 5vh;
+}
+#Public{
+
 }

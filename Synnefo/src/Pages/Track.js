@@ -13,8 +13,8 @@ export default class Track extends React.Component {
         this.state = {
             data: [],
 
-            document_ids: [],
-
+            document_owned: {}, //this.state here
+            document_shared: {}, //this.state here
             document: "",
             tableRows: [],
             chartData: [],
@@ -28,6 +28,7 @@ export default class Track extends React.Component {
         this.renderStats = this.renderStats.bind(this)
         this.checkPublic = this.checkPublic.bind(this)
         this.uid = null
+        this.handleOptionChange = this.handleOptionChange.bind(this)
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -148,6 +149,19 @@ export default class Track extends React.Component {
             code: event.target.value
         })
     }
+    handleOptionChange(event) {
+        console.log(event.target.value)
+        let types = ["Owned", "Shared", "Public"]
+        let index = types.indexOf(event.target.value)
+        if (index > -1) {
+            types.splice(index, 1)
+        }
+        console.log(types)
+        types.forEach(item => {
+            document.getElementById(`${item}`).style.display = "none"
+        })
+        document.getElementById(event.target.value).style.display = "block"
+    }
     goBackCheckPublic() {
         document.getElementById("superDocs").style.display = "block"
         document.getElementById("checkPublic").style.display = "none"
@@ -176,27 +190,30 @@ export default class Track extends React.Component {
         }
         else if (!this.state.isLoading) {
             let data = this.state.data
-
-            // rendering doc cards
-            let documents = this.state.document_ids
-
-            let jsxDocumentsLists = []
-            for (const docId in documents) {
-                jsxDocumentsLists.push(
-                    <div className="cardDoc" onClick={this.viewStats} id={docId}>
-                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docId}></img>
+            let list_owned = []
+            let list_shared = []
+            for (const docid in this.state.document_owned) {
+                list_owned.push(
+                    <div onClick={this.viewStats} id={docid} className="cardDoc">
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docid}></img>
                         <div className="container">
-                            <p id={docId}>{documents[docId]}</p>
+                            <p id={docid}>{this.state.document_owned[docid]}</p>
+                        </div>
+                    </div>
+                )
+            }
+            for (const docid in this.state.document_shared) {
+                list_shared.push(
+                    <div onClick={this.viewStats} id={docid} className="cardDoc">
+                        <img src="https://freeiconshop.com/wp-content/uploads/edd/documents-outline.png" id={docid}></img>
+                        <div className="container">
+                            <p id={docid}>{this.state.document_shared[docid]}</p>
                         </div>
                     </div>
                 )
 
             }
-
-
-
             let currentDocument = this.state.document
-
             let options = {
                 scales: {
                     yAxes: [
@@ -209,29 +226,53 @@ export default class Track extends React.Component {
                 },
                 maintainAspectRatio: false
             }
-            let chartdata = this.state.chartData
             return (
-                <div>
-                    <div className="wrapper needbg" id="superDocs">
-                        <div id="docs">
-                            <h3>Choose a document to view its stats</h3>
-                            <div className="cardLists">
-                                <div className="cardDoc" onClick={this.renderDocPublicSection}>
+                <div className="wrapper">
+                    <div id="doctypes">
+                        <div className="selectcss">
+                            <select onChange={this.handleOptionChange}>
+                                <option value="Public" selected>Public Documents</option>
+                                <option value="Shared">Shared Documents</option>
+                                <option value="Owned">Owned Documents</option>
+                            </select>
+                        </div>
+                        <div id="Public">
+                            
+                            <div id="checkPublic">
+                                <div className="bg">
+                                    <h3>Track public Document</h3>
 
-                                    <img src="https://img.icons8.com/cotton/2x/public-cloud.png"></img>
+                                    <input type="text" placeholder="Document code"></input><br></br>
+                                    <button onClick={this.checkPublic}>Check</button>
+                                    <p id="output">{this.state.output}</p>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <div className="cotainer">
-                                        <p>Public Document</p>
+                        <div id="Owned" style={{ display: "none", }}>
+                            <div className="needbg" id="superDocs">
+                                <div id="docs">
+                                    <h3>Choose a document to view its stats</h3>
+                                    <div className="cardLists">
+                                        {list_owned}
                                     </div>
                                 </div>
-                                {jsxDocumentsLists}
+                            </div>
+                        </div>
+                        <div id="Shared" style={{ display: "none" }}>
+                            <div className="needbg" id="superDocs">
+                                <div id="docs">
+                                    <h3>Choose a document to view its stats</h3>
+                                    <div className="cardLists">
+                                        {list_shared}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="docStats" style={{ display: "none" }} className="wrapper">
-
+                    <div id="docStats" style={{ display: "none" }}>
                         <div id="docsstats">
-                            <p onClick={this.goBack}> &larr; Back</p>
+                            <p onCLick={() => window.location.reload()}>&larr; Back</p>
                             <h3>Stats for {currentDocument}</h3>
                             <p>This document has {this.state.views} views</p>
                             <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
@@ -251,18 +292,9 @@ export default class Track extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="wrapper" id="checkPublic" style={{ display: "none" }}>
-                        <div className="bg">
-                            <p onClick={this.goBackCheckPublic}> &larr; Back</p>
-                            <h3>Track public Document</h3>
-                            <input type="text" placeholder="Document code"></input><br></br>
-                            <button onClick={this.checkPublic}>Check</button>
-                            <p id="output">{this.state.output}</p>
-                        </div>
-                    </div>
                 </div>
-
             )
         }
+
     }
 }
