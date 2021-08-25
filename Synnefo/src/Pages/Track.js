@@ -69,7 +69,7 @@ export default class Track extends React.Component {
             })
 
             this.renderStats(result.data)
-            document.getElementById("superDocs").style.display = "none"
+            document.getElementById("doctypes").style.display = "none"
             document.getElementById("docStats").style.display = "block"
 
         })
@@ -115,7 +115,7 @@ export default class Track extends React.Component {
 
     }
     goBack() {
-        document.getElementById("superDocs").style.display = "block"
+        document.getElementById("doctypes").style.display = "block"
         document.getElementById("docStats").style.display = "none"
     }
     checkPublic() {
@@ -133,6 +133,8 @@ export default class Track extends React.Component {
                     output: "This document is not public"
                 })
             } else {
+                document.getElementById("doctypes").style.display = "none"
+                document.getElementById("docStats").style.display = "block"
                 document.getElementById("output").style.color = "green";
                 this.setState({
                     output: "This document is public"
@@ -231,15 +233,15 @@ export default class Track extends React.Component {
             return (
                 <div className="wrapper">
                     <div id="doctypes">
-                        <div className="selectcss">
-                            <select onChange={this.handleOptionChange}>
-                                <option value="Public" selected>Public Documents</option>
-                                <option value="Shared">Shared Documents</option>
-                                <option value="Owned">Owned Documents</option>
-                            </select>
-                        </div>
+
                         <div id="Public">
-                            
+                            <div className="selectcss specificforpublic">
+                                <select onChange={this.handleOptionChange}>
+                                    <option value="Public" selected>Public Documents</option>
+                                    <option value="Shared">Shared Documents</option>
+                                    <option value="Owned">Owned Documents</option>
+                                </select>
+                            </div>
                             <div id="checkPublic">
                                 <div className="bg">
                                     <h3>Track public Document</h3>
@@ -252,9 +254,16 @@ export default class Track extends React.Component {
                         </div>
 
                         <div id="Owned" style={{ display: "none", }}>
+                            <div className="selectcss">
+                                <select onChange={this.handleOptionChange}>
+                                    <option value="Public" >Public Documents</option>
+                                    <option value="Shared">Shared Documents</option>
+                                    <option value="Owned" selected>Owned Documents</option>
+                                </select>
+                            </div>
                             <div className="needbg" id="superDocs">
                                 <div id="docs">
-                                    <h3>Choose a document to view its stats</h3>
+                                    <h3>Choose a document to view its stats :D</h3>
                                     <div className="cardLists">
                                         {list_owned}
                                     </div>
@@ -262,6 +271,13 @@ export default class Track extends React.Component {
                             </div>
                         </div>
                         <div id="Shared" style={{ display: "none" }}>
+                            <div className="selectcss">
+                                <select onChange={this.handleOptionChange}>
+                                    <option value="Public" >Public Documents</option>
+                                    <option value="Shared" selected>Shared Documents</option>
+                                    <option value="Owned">Owned Documents</option>
+                                </select>
+                            </div>
                             <div className="needbg" id="superDocs">
                                 <div id="docs">
                                     <h3>Choose a document to view its stats</h3>

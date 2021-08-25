@@ -19,7 +19,9 @@
     border-radius: 8px;
     text-align: center ;
 }
-
+#docs h3{
+    margin:0
+}
 .cardDoc {
     flex-basis: auto;
     border: 0;
@@ -42,11 +44,19 @@
 .selectcss{
     background-color: #36393f;
     /* width:20vw; */
-    width: fit-content;
-    margin-left: 25vw;
+    height: 1.2vw;
 
+    width: 20vw;;
+    margin-left: 15vw;
+    border-radius: 8px 8px 0 0;
+}
+.specificforpublic{
+    margin-left: 19vw
 }
 .selectcss select{
+    font-size:1.2rem;
+    text-align: center;
+    text-align-last: center;
     
 }
 .cardDoc img{
