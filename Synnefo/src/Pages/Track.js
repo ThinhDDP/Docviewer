@@ -4,6 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import axios from "axios";
 import Loading from '../Components/Loading'
 import firebase from '../firebase'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 
 export default class Track extends React.Component {
@@ -29,6 +30,7 @@ export default class Track extends React.Component {
         this.checkPublic = this.checkPublic.bind(this)
         this.uid = null
         this.handleOptionChange = this.handleOptionChange.bind(this)
+        this.delete = this.delete.bind(this)
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -174,6 +176,10 @@ export default class Track extends React.Component {
         document.getElementById("superDocs").style.display = "none"
         document.getElementById("checkPublic").style.display = "block"
     }
+    delete(event) {
+        let code = event.target.id;
+        console.log(code)
+    }
     render() {
         if (this.state.isLoading == true) {
             return (
@@ -289,26 +295,42 @@ export default class Track extends React.Component {
                         </div>
                     </div>
                     <div id="docStats" style={{ display: "none" }}>
-                        <div id="docsstats">
-                            <p onCLick={() => window.location.reload()}>&larr; Back</p>
-                            <h3>Stats for {currentDocument}</h3>
-                            <p>This document has {this.state.views} views</p>
-                            <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
-                                <Bar data={this.state.chartData} options={options} />
-                            </div>
-                            <div id="table" style={{ width: "50vw", margin: "auto", textAlign: "left" }}>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <th>User's email</th>
-                                            <th>Time (in seconds)</th>
-                                        </tr>
-                                        {this.state.tableRows}
-                                    </tbody>
-                                </table>
 
-                            </div>
+                        <div id="docsstats">
+
+                            <p onCLick={() => window.location = window.location}>&larr; Back</p>
+                            <Tabs>
+                                <TabList>
+                                    <Tab>Stats</Tab>
+                                    <Tab>Settings</Tab>
+                                </TabList>
+                                <TabPanel>
+                                    <h3>Stats for {currentDocument}</h3>
+                                    <p>This document has {this.state.views} views</p>
+                                    <div id="chart" style={{ width: "50vw", height: "50vh", margin: "auto" }}>
+                                        <Bar data={this.state.chartData} options={options} />
+                                    </div>
+                                    <div id="table" style={{ width: "50vw", margin: "auto", textAlign: "left" }}>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>User's email</th>
+                                                    <th>Time (in seconds)</th>
+                                                </tr>
+                                                {this.state.tableRows}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </TabPanel>
+                                <TabPanel>
+                                    <p>Link :</p>
+                                    <button className="danger" onClick={this.delete} id={currentDocument}>Delete document</button>
+                                </TabPanel>
+                            </Tabs>
+
                         </div>
+
                     </div>
                 </div>
             )

@@ -77,6 +77,16 @@
     width:8vw;
     height: 5vh;
 }
-#Public{
-
+.danger{
+    background-color: #f44336;
+    transition: 300ms ease;
+    border: none; /* Remove borders */
+    color: white; /* Add a text color */
+    /* Add some padding */
+    cursor: pointer; /* Add a pointer cursor on mouse-over */
+    width: 10vw;;
+    font-size: 1.2rem;
+}
+.danger:hover{
+    background: #da190b;
 }
