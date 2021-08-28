@@ -41,6 +41,7 @@ export default class Track extends React.Component {
                     isLoading: false
                 })
                 this.uid = user.uid
+                this.email = user.email
                 this.getDocIds()
             }
             else {
@@ -66,7 +67,9 @@ export default class Track extends React.Component {
             document: id,
             isLoading: true
         })
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${id}`).then(result => {
+        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${id}`, {
+            email: this.email
+        }).then(result => {
             console.log(result)
             this.setState({
                 isLoading: false

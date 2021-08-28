@@ -15,6 +15,7 @@ router.post('/track/:id', async (req, res) => {
         res.send(await [doc.get('views'), doc.get('completed'), doc.get('time')])
     }
     else if (perm == "Only"){
+        console.log(email)
         if (authors.includes(email)){
             res.send(await [doc.get('views'), doc.get('completed'), doc.get('time')])
         }
