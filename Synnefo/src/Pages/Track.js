@@ -5,7 +5,7 @@ import axios from "axios";
 import Loading from '../Components/Loading'
 import firebase from '../firebase'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import axiosIntstance from "../axios"
+
 import axiosInstance from "../axios";
 
 
@@ -33,6 +33,8 @@ export default class Track extends React.Component {
         this.uid = null
         this.handleOptionChange = this.handleOptionChange.bind(this)
         this.delete = this.delete.bind(this)
+        this.publicCodeOnChange = this.publicCodeOnChange.bind(this)
+
     }
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
@@ -125,8 +127,14 @@ export default class Track extends React.Component {
         document.getElementById("doctypes").style.display = "block"
         document.getElementById("docStats").style.display = "none"
     }
+    publicCodeOnChange(event){
+        this.setState({
+            code: event.target.value
+        })
+    }
     checkPublic() {
         let code = this.state.code;
+        console.log(code)
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, { uid: this.uid }).then((data) => {
             if (data.data != "This Document only allows the author to track it") {
                 Ispublic = true;
@@ -261,7 +269,7 @@ export default class Track extends React.Component {
                                 <div className="bg">
                                     <h3>Track public Document</h3>
 
-                                    <input type="text" placeholder="Document code"></input><br></br>
+                                    <input type="text" placeholder="Document code" onChange={this.publicCodeOnChange}></input><br></br>
                                     <button onClick={this.checkPublic}>Check</button>
                                     <p id="output">{this.state.output}</p>
                                 </div>
@@ -278,7 +286,7 @@ export default class Track extends React.Component {
                             </div>
                             <div className="needbg" id="superDocs">
                                 <div id="docs">
-                                    <h3>Choose a document to view its stats :D</h3>
+                                    <h3>Choose a document to view its stats</h3>
                                     <div className="cardLists">
                                         {list_owned}
                                     </div>
