@@ -92,7 +92,12 @@ export default class Track extends React.Component {
         let tableRows = []
         let users = []
         let time = []
-        let views = "" + currentDocumentData[0]
+        let views = ""
+        if(currentDocumentData[0] == 0){
+            views = ""
+        }else{
+            views = "" + currentDocumentData[0]
+        }
         for (const uid in uidsAndTime) { //render table
             tableRows.push(
                 <tr>
@@ -338,7 +343,7 @@ export default class Track extends React.Component {
                                     </div>
                                 </TabPanel>
                                 <TabPanel>
-                                    <p>Link : localhost.com:3000/open?code={currentDocument}</p>
+                                    <p>Link : https://docviewerapi.web.app/open?code={currentDocument}</p>
                                     <button className="danger" onClick={this.delete} id={currentDocument}>Delete document</button>
                                 </TabPanel>
                             </Tabs>
