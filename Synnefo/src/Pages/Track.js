@@ -5,6 +5,8 @@ import axios from "axios";
 import Loading from '../Components/Loading'
 import firebase from '../firebase'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import axiosIntstance from "../axios"
+import axiosInstance from "../axios";
 
 
 export default class Track extends React.Component {
@@ -178,7 +180,11 @@ export default class Track extends React.Component {
     }
     delete(event) {
         let code = event.target.id;
-        console.log(code)
+        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/delete/${code}`, {
+            uid: this.uid
+        }).then(() => {
+            window.location.reload()
+        })
     }
     render() {
         if (this.state.isLoading == true) {
@@ -324,7 +330,7 @@ export default class Track extends React.Component {
                                     </div>
                                 </TabPanel>
                                 <TabPanel>
-                                    <p>Link :</p>
+                                    <p>Link : localhost.com:3000/open?code={currentDocument}</p>
                                     <button className="danger" onClick={this.delete} id={currentDocument}>Delete document</button>
                                 </TabPanel>
                             </Tabs>

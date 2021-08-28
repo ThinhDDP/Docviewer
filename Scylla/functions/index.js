@@ -21,6 +21,7 @@ const owned = require('./src/owned')
 const mail = require('./src/mail')
 const refresh = require('./src/refresh_token')
 const fav = require('./src/favourite')
+const del = require('./src/delete')
 const app = express()
 
 
@@ -37,6 +38,7 @@ app.use('/', owned)
 app.use('/', mail)
 app.use('/', refresh)
 app.use('/', fav)
+app.use('/', del)
 
 
 exports.api = functions
