@@ -81,7 +81,7 @@ export default class Open extends React.Component {
         let data = {
             uid: this.uid
         }
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/match/${this.state.code}`, data).then(result => {
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/match/${this.state.code}`, data).then(result => {
             this.setState({
                 isLoading: false,
                 state: 'open'
@@ -118,7 +118,7 @@ export default class Open extends React.Component {
             "uid": this.uid,
             "code": this.state.code
         }
-        axiosInstance.post('http://localhost:3333/docviewerapi/asia-east2/api/update', data).then(result => {
+        axiosInstance.post('https://asia-east2-docviewerapi.cloudfunctions.net/api/update', data).then(result => {
             switch (result.data) {
                 case 'No account':
                     alert("You must have an account to do this")

@@ -140,7 +140,7 @@ class Create extends React.Component {
         this.setState({
             isLoading: true
         })
-        let result = await axiosInstance.post('http://localhost:3333/docviewerapi/asia-east2/api/create', data)
+        let result = await axiosInstance.post('https://asia-east2-docviewerapi.cloudfunctions.net/api/create', data)
         return result.data
     }
     getAllColabs(){
@@ -209,7 +209,7 @@ class Create extends React.Component {
             this.setState({
                 code: code
             })
-            axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/mail/${code}`, {
+            axiosInstance.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/mail/${code}`, {
                 email: this.mail,
                 author: this.state.email
             }).then((result) => {

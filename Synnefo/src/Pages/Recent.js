@@ -55,7 +55,7 @@ export default class Recent extends React.Component {
 
     }
     getViewedAndCompleted(uid) {
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/viewed/${uid}`).then(result => {
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/viewed/${uid}`).then(result => {
             this.setState({
                 viewedDocs: result.data[0],
                 completedDocs: result.data[1],
@@ -74,7 +74,7 @@ export default class Recent extends React.Component {
     toggleFavorite(event) {
         let code = event.target.id
         this.setState({ isLoading: true })
-        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/fav/${this.uid}`, {
+        axiosInstance.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/fav/${this.uid}`, {
             code: code,
             type: "fav"
         }).then(() => {
@@ -86,7 +86,7 @@ export default class Recent extends React.Component {
     unFavorite(event) {
         let code = event.currentTarget.id
         this.setState({ isLoading: true })
-        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/fav/${this.uid}`, {
+        axiosInstance.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/fav/${this.uid}`, {
             code: code,
             type: "delete"
         }).then(() => {

@@ -10,7 +10,7 @@ const refreshAccessToken = async () => {
             'x-access-token': refreshToken
         }
     }
-    let newAccessToken = await axios.post('http://localhost:3333/docviewerapi/asia-east2/api/refresh', {}, config)
+    let newAccessToken = await axios.post('https://asia-east2-docviewerapi.cloudfunctions.net/api/refresh', {}, config)
     return newAccessToken.data
 }
 

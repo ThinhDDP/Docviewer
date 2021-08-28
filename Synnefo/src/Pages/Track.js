@@ -53,7 +53,7 @@ export default class Track extends React.Component {
         })
     }
     getDocIds() {
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/owned/${this.uid}`).then(result => {
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/owned/${this.uid}`).then(result => {
             console.log(result)
             this.setState({
                 document_ids: result.data[0],
@@ -68,7 +68,7 @@ export default class Track extends React.Component {
             document: id,
             isLoading: true
         })
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${id}`).then(result => {
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/track/${id}`).then(result => {
             console.log(result)
             this.setState({
                 isLoading: false
@@ -132,7 +132,7 @@ export default class Track extends React.Component {
     checkPublic() {
         let code = this.state.code;
         console.log(code)
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, { uid: this.uid }).then((data) => {
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api\/track/${this.state.code}`, { uid: this.uid }).then((data) => {
             if (data.data != "This Document only allows the author to track it") {
                 Ispublic = true;
             }
@@ -188,7 +188,7 @@ export default class Track extends React.Component {
     }
     delete(event) {
         let code = event.target.id;
-        axiosInstance.post(`http://localhost:3333/docviewerapi/asia-east2/api/delete/${code}`, {
+        axiosInstance.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/delete/${code}`, {
             uid: this.uid
         }).then(() => {
             window.location.reload()

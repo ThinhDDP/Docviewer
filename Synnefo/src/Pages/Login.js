@@ -148,8 +148,8 @@ export default class Login extends React.Component {
             })
     }
     RegisterOnSever(uid) {
-        console.log(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`)
-        axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/user/${uid}`).then((result) => {
+        console.log(`https://asia-east2-docviewerapi.cloudfunctions.net/api/user/${uid}`)
+        axios.post(`https://asia-east2-docviewerapi.cloudfunctions.net/api/user/${uid}`).then((result) => {
             console.log(result)
             sessionStorage.setItem("token_key", result.data[0])
             localStorage.setItem("token_refresh", JSON.stringify(result.data[1]))
