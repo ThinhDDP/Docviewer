@@ -138,6 +138,7 @@ export default class Track extends React.Component {
         axios.post(`http://localhost:3333/docviewerapi/asia-east2/api/track/${this.state.code}`, { uid: this.uid }).then((data) => {
             if (data.data != "This Document only allows the author to track it") {
                 Ispublic = true;
+                
             }
             else {
                 Ispublic = false;
@@ -148,6 +149,7 @@ export default class Track extends React.Component {
                     output: "This document is not public"
                 })
             } else {
+                this.setState({ document: code})
                 document.getElementById("doctypes").style.display = "none"
                 document.getElementById("docStats").style.display = "block"
                 document.getElementById("output").style.color = "green";
@@ -341,7 +343,7 @@ export default class Track extends React.Component {
                                     </div>
                                 </TabPanel>
                                 <TabPanel>
-                                    <p>Link : localhost.com:3000/open?code={currentDocument}</p>
+                                    <p>Link : localhost:3000/open?code={currentDocument}</p>
                                     <button className="danger" onClick={this.delete} id={currentDocument}>Delete document</button>
                                 </TabPanel>
                             </Tabs>

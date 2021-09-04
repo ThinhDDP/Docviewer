@@ -118,7 +118,7 @@ const FeaturesTiles = ({
                   Compatibility
                     </h4>
                   <p className="m-0 text-sm">
-                    Docviewer also supports Google SpreadSheet and Google Slide
+                    Docviewer supports Google Doc and Microsoft Word formats.
                     </p>
                 </div>
               </div>
